@@ -1640,7 +1640,8 @@ body > div.layout-container > div > div.middle > div.calculator-box > div.calcul
     float: right;
     cursor: pointer;
     right: 0;
-    margin-right: 6px;
+    margin-right: 10px;
+    margin-top: 10px;
     position: absolute;
     overflow: hidden;
     z-index: 3000;
