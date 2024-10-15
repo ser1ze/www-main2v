@@ -155,6 +155,7 @@ body, html {
     padding: 16px 25px;
     transition: all 0.2s ease-in-out;
     background-color: transparent; 
+    height: 70px;
 }
 
 .logo:active {
