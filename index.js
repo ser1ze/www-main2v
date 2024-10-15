@@ -515,39 +515,39 @@ const phrases = [
   let loggedIn = false;
 
   // Wait for the DOM to be fully loaded before attaching event listeners
-  document.addEventListener('DOMContentLoaded', () => {
-      const buyButton = document.querySelector('.buy-button');
-      const modal = document.getElementById('loginModal');
-      const closeBtn = document.querySelector('.close');
-      const body = document.body;
+  // document.addEventListener('DOMContentLoaded', () => {
+  //     const buyButton = document.querySelector('.buy-button');
+  //     const modal = document.getElementById('loginModal');
+  //     const closeBtn = document.querySelector('.close');
+  //     const body = document.body;
   
-      function openModal() {
-          modal.style.display = 'flex';
-          body.classList.add('modal-open');
-      }
+  //     function openModal() {
+  //         modal.style.display = 'flex';
+  //         body.classList.add('modal-open');
+  //     }
   
-      function closeModal() {
-          modal.style.display = 'none';
-          body.classList.remove('modal-open');
-      }
+  //     function closeModal() {
+  //         modal.style.display = 'none';
+  //         body.classList.remove('modal-open');
+  //     }
   
-      buyButton.addEventListener('click', () => {
-          if (!loggedIn) {
-              openModal();
-          } else {
-              // Proceed with the purchase logic
-              console.log('User is logged in. Proceeding with purchase...');
-          }
-      });
+  //     buyButton.addEventListener('click', () => {
+  //         if (!loggedIn) {
+  //             openModal();
+  //         } else {
+  //             // Proceed with the purchase logic
+  //             console.log('User is logged in. Proceeding with purchase...');
+  //         }
+  //     });
   
-      closeBtn.addEventListener('click', closeModal);
+  //     closeBtn.addEventListener('click', closeModal);
   
-      window.addEventListener('click', (event) => {
-          if (event.target === modal) {
-              closeModal();
-          }
-      });
-  });
+  //     window.addEventListener('click', (event) => {
+  //         if (event.target === modal) {
+  //             closeModal();
+  //         }
+  //     });
+  // });
 
 
   // ------------------------------------- RESIZE INPUT------------------------------------------------//
@@ -565,8 +565,6 @@ function resizeInput(totalPrice) {
 document.addEventListener('DOMContentLoaded', function() {
   const calculatorBox = document.querySelector('.calculator-box');
   const buyButton = document.querySelector('.buy-button');
-  const modal = document.getElementById('loginModal');
-  const closeBtn = document.querySelector('.close');
   const balance = document.querySelector(".balance")
 
  
@@ -589,22 +587,8 @@ document.addEventListener('DOMContentLoaded', function() {
       
     
   }
-
-  function closeModal() {
-      modal.style.display = 'none';
-      
-      show();
-  }
-
-  closeBtn.addEventListener('click', function() {
-      closeModal();
-  });
-
-  window.addEventListener('click', function(event) {
-      if (event.target === modal) {
-          closeModal();
-      }
-  });
+show()
+ 
 });
 
 
