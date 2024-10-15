@@ -536,14 +536,15 @@ margin-right: 20px;
 }
 
 .payment-navigation-btn:active {
-    box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2), inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
+    background: #20272b;
+    box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5), inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
 }
 
 .btn-text {
     display: inline-block;
     justify-content: center;
     transition: transform 300ms ease;
-    will-change: transform, color; /* Оптимизация */
+    will-change: transform, color; 
 }
 
 .btn-text.fast-click {
@@ -578,7 +579,7 @@ margin-right: 20px;
 }
 
 .payment-navigation-btn.active:not(.fast-click) .btn-text {
-    background: linear-gradient(161deg, #08466b 0%, #37779d 19%, #71bdeb 43.18%, #37779d 76%, #08466b 100%);
+    background: linear-gradient(161deg, #37779d 0%, #37779d 19%, #37779d 43.18%, #37779d 76%, #37779d 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -592,15 +593,15 @@ margin-right: 20px;
 .payment-navigation-btn .btn-text {
     font-weight: 700;
     font-size: 20px;
-    line-height: 120%;
+    line-height: 124%;
     text-align: center;
-    background: linear-gradient(297deg, #696969 0%, #fff 50%, #696969 100%);
+    background: linear-gradient(297deg, #a4a4a4 0%, #a4a4a4 50%, #a4a4a4 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
     z-index: 200;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .payment-navigation-btn::before {
