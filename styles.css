@@ -421,11 +421,12 @@ pointer-events: none;
     line-height: 120%;
     text-align: center;
     transition: box-shadow 0.2s ease, background 0.3s ease;
-    width: 157px;
+    width: fit-content;
     height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 43px;
 }
 
 .login:active {
@@ -586,7 +587,7 @@ margin-right: 20px;
 }
 
 .payment-navigation-btn.active {
-    background: #20272b;
+    background: #2a2a2a;
     transition: background 0.3s ease, box-shadow 150ms ease;
 }
 
@@ -634,10 +635,7 @@ margin-right: 20px;
     border-radius: 0px 5px 5px 0px !important;
 }
 
-.payment-navigation-btn.active {
-    background: #20272b;
-    transition: all 0.3s ease;
-}
+
 
 .btn-text.active {
     font-weight: 700;
