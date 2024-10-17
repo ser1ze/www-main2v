@@ -29,6 +29,9 @@
 .login {
 	margin: 0px;
 }
+.logo {
+	padding: 0;
+}
   .logo img {
 	display: none;
   }
@@ -38,7 +41,7 @@
 }
 
   .menu {
-    margin-left: -140px;
+  
     gap: 20px;
     width: 500px;
     height: 14px;

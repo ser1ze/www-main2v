@@ -581,7 +581,7 @@ margin-right: 20px;
 }
 
 .payment-navigation-btn.active:not(.fast-click) .btn-text {
-    background: linear-gradient(161deg, #37779d 0%, #37779d 19%, #37779d 43.18%, #37779d 76%, #37779d 100%);
+    background: linear-gradient( 161deg , #256b95 0%, #2d98d7 19%, #3394cd 43.18%, #4096c9 76%, #61a1c7 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
