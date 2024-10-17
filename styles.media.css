@@ -31,6 +31,8 @@
 }
 .logo {
 	padding: 0;
+	width: 45px;
+	height: 58px;
 }
   .logo img {
 	display: none;
@@ -38,6 +40,8 @@
 
   .logo svg {
     display: flex;
+	width: 45px;
+	height: 58px;
 }
 
   .menu {

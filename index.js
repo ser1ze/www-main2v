@@ -747,6 +747,8 @@ const paymentBtns = document.querySelectorAll(".payment-navigation-btn");
 paymentBtns.forEach(button => makeButtonClickable(button));
 
 const activeBtn = document.querySelector(".payment-navigation-btn.active")
+const activeText = document.querySelector(".btn-text.active")
+makeButtonClickable(activeBtn)
 makeButtonClickable(activeBtn)
 
 const loginButton = document.querySelector('.login');
@@ -800,19 +802,23 @@ window.addEventListener('load', function() {
 
 document.addEventListener('DOMContentLoaded', function () {
   const buttons = document.querySelectorAll('.payment-navigation-btn');
+  const btnTexts = document.querySelectorAll('.btn-text');
 
   buttons.forEach(button => {
-      button.addEventListener('click', function () {
-        
-          buttons.forEach(btn => {
-              btn.classList.remove('active');
-          });
-
-       
-          this.classList.add('active');
-
-         
+    button.addEventListener('click', function () {
+      
+      // Удаление класса active у всех кнопок и текстов
+      buttons.forEach(btn => {
+        btn.classList.remove('active');
       });
+      btnTexts.forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Добавление класса active для текущей кнопки и ее текста
+      this.classList.add('active');
+      this.querySelector('.btn-text').classList.add('active');
+    });
   });
 });
 

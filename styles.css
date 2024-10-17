@@ -431,7 +431,7 @@ pointer-events: none;
 }
 
 .login:active {
-    box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 2px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: inset 2px  2px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 2px 0 rgba(0, 0, 0, 0.5);
     background: rgba(123, 123, 123, 0.2);
 }
 
@@ -457,7 +457,7 @@ pointer-events: none;
 }
 
 .login.fast-click {
-    box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 2px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.5); /* Только тень слева */
     background: rgba(123, 123, 123, 0.2);
 }
 
@@ -534,9 +534,18 @@ margin-right: 20px;
     height: 34px;
     background: #2a2a2a;
     transition: background 0.3s ease, transform 150ms ease, box-shadow 150ms ease;
-    will-change: background, box-shadow, transform; /* Оптимизация */
+    will-change: background, box-shadow, transform;
 }
 
+.payment-navigation-btn.active:active  {
+   
+    background: #20272b !important;
+
+}
+.btn-text.active:active {
+    background: #4A738C !important;
+    background-clip: text !important;
+}
 .payment-navigation-btn:active {
     background: #20272b;
     box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5), inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
@@ -564,16 +573,7 @@ margin-right: 20px;
     box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5), inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
 }
 
-.btn-text.active {
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 120%;
-    text-align: center;
-    background: linear-gradient(161deg, #08466b 0%, #37779d 19%, #71bdeb 43.18%, #37779d 76%, #08466b 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+
 
 .payment-navigation-btn.active .btn-text {
     background: #4A738C;
@@ -638,34 +638,14 @@ margin-right: 20px;
 
 
 
-.btn-text.active {
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 120%;
-    text-align: center;
-    background: linear-gradient(161deg, #08466b 0%, #37779d 19%, #71bdeb 43.18%, #37779d 76%, #08466b 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+
 
 .payment-navigation-btn.active.fast-click {
     box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2), inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
     background: #20272b;
 }
 
-.btn-text.active.fast-click {
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 120%;
-    text-align: center;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    position: relative;
-    z-index: 200;
-    margin-bottom: 3px;
-}
+
 
 
 .word-clone {
@@ -1246,8 +1226,13 @@ z-index: 0
         rgba(164, 164, 164, 1) 76%,
         rgba(232, 232, 232, 1)
     ) border-box;
+   
 }
-
+.buy-button:active span,
+.buy-button.fast-click span {
+    font-size: 23px; 
+    transition: all 0.2s ease; 
+}
 .buy-button.fast-click {
     background: #590620; 
     box-shadow: inset -2px -2px 8px 0 rgba(0, 0, 0, 0.5), inset 2px 2px 8px 0 rgba(0, 0, 0, 0.5);
