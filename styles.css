@@ -1176,7 +1176,7 @@ z-index: 0
     z-index: 0
 }
 
-/* Updated styles for the юbuy button */
+
 .buy-button {
   
     z-index: 1;
@@ -1261,6 +1261,7 @@ z-index: 0
     text-align: center;
     background: linear-gradient(140deg, #727272 0%, #b1b1b1 19%, #e8e8e8 50%, #a4a4a4 76%, #424242 100%);
     background-clip: text;
+    will-change: font-size;
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent; 
 }
