@@ -506,10 +506,13 @@
               </svg>              
           </div>
           <div id="payment-navigation" class="payment-navigation">
-            <button class="payment-navigation-btn active">
+            <div class="payment-wrapper">
+              <button class="payment-navigation-btn active">
                 <span class="btn-text" >Мой аккаунт</span>
             </button>
-            <button class="payment-navigation-btn" data-delay="400">
+            </div>
+            <div class="payment-row-wrapper">
+              <button class="payment-navigation-btn" data-delay="400">
                 <span class="btn-text" data-delay="400">В подарок</span>
             </button>
             <button class="payment-navigation-btn" data-delay="340">
@@ -518,6 +521,8 @@
             <button class="payment-navigation-btn" data-delay="170">
                 <span class="btn-text" data-delay="170">Контакты</span>
             </button>
+            </div>
+            
             <!-- <div id="loginModal" class="modal">
               <div class="modal-content">
                 <button class="close">

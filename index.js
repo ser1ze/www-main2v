@@ -150,16 +150,16 @@ function updateSliderDimensions() {
       SLIDER_WIDTH = 1125;
       isRotated = false;
   } else if (windowWidth <= 1000 && windowWidth > 700) {
-      SLIDER_WIDTH = 800; // Adjust this value as needed
+      SLIDER_WIDTH = 920; // Adjust this value as needed
       isRotated = false;
   } else if (windowWidth <= 700 && windowWidth > 480) {
-      SLIDER_WIDTH = 620; // Adjust this value as needed
+      SLIDER_WIDTH = 600; // Adjust this value as needed
       isRotated = false;
   } else if (windowWidth <= 480 && windowWidth > 360) {
-      SLIDER_WIDTH = 440; // Adjust this value as needed
-      isRotated = false;
+      SLIDER_WIDTH = 360; // Adjust this value as needed
+      isRotated = true;
   } else {
-      SLIDER_WIDTH = 310;
+      SLIDER_WIDTH = 320;
       SLIDER_HEIGHT = 460;
       isRotated = true;
   }
@@ -604,8 +604,8 @@ show()
     overlay.style.position = 'absolute';
     overlay.style.top = '-20%';
     overlay.style.left = '-35px';  // Align with the slider
-    overlay.style.width = 'calc(100% + 70px)';  // Extend width to match slider
-    overlay.style.height = '140%';
+    overlay.style.width = 'calc(100%)';  // Extend width to match slider
+    overlay.style.height = '100%';
     overlay.style.zIndex = '0';  // Ensure it's above other elements
     overlay.style.cursor = 'default';  // Keep the default cursor
     overlay.style.pointerEvents = 'none';  // Disable pointer events by default
