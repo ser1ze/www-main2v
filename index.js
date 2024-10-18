@@ -648,62 +648,77 @@ createSliderOverlay();
 
 
 // ===================================================CURSOR-TRAIL--------------------------------------//
-const coords = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+const coords = { x: 0, y: 0 };
 const circles = document.querySelectorAll(".circle");
 const colors = [
-  "#08466b", 
-  "#1b567c", 
-  "#2a668e", 
-  "#3976a0", 
-  "#4787b2", 
-  "#5599c5", 
-  "#63abd8", 
-  "#71bdeb"
+  "#B0B0B0", 
+  "#A0A0A0",
+  "#909090",
+  "#808080",
+  "#707070",
+  "#606060",
+  "#505050",
+  "#404040"  
 ];
 
-let animationStarted = false; // Флаг, чтобы отслеживать, запущена ли анимация
+let animationStarted = false; 
+let firstMove = false; 
 
-// Инициализация кругов
 circles.forEach(function (circle, index) {
-  circle.x = coords.x;
-  circle.y = coords.y;
+  circle.x = window.innerWidth / 2;
+  circle.y = window.innerHeight / 2;
   const colorIndex = Math.floor(index / 20);
   circle.style.backgroundColor = colors[colorIndex % colors.length];
+  circle.style.position = "absolute";
+  circle.style.opacity = 0; 
 });
 
-// Обработчик движения мыши
 window.addEventListener("mousemove", function(e) {
+  if (!firstMove) {
+    coords.x = e.clientX;
+    coords.y = e.clientY;
+    circles.forEach(circle => {
+      circle.x = coords.x;
+      circle.y = coords.y;
+      circle.style.opacity = 1; 
+    });
+    firstMove = true;
+
+    circles.forEach(circle => {
+      circle.style.transition = "opacity 0.3s ease"; 
+      circle.style.opacity = 1; 
+    });
+  }
+
   coords.x = e.clientX;
   coords.y = e.clientY;
 
-  // Запускаем анимацию только один раз при первом движении мыши
   if (!animationStarted) {
     animationStarted = true;
     setTimeout(animateCircles, 100);
   }
 });
 
-// Функция анимации кругов
 function animateCircles() {
   let x = coords.x;
   let y = coords.y;
 
   circles.forEach(function (circle, index) {
-    circle.style.left = `${Math.min(window.innerWidth - 8, Math.max(0, x - 4))}px`;
-    circle.style.top = `${Math.min(window.innerHeight - 8, Math.max(0, y - 4))}px`;
+    const nextCircle = circles[index - 1] || { x: coords.x, y: coords.y };
+
+    circle.x += (nextCircle.x - circle.x) * 0.9;
+    circle.y += (nextCircle.y - circle.y) * 0.9;
+
+    circle.style.left = `${Math.min(window.innerWidth - 25, Math.max(4, circle.x))}px`;
+    circle.style.top = `${Math.min(window.innerHeight - 15, Math.max(4, circle.y))}px`;
 
     circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
-
-    circle.x = x;
-    circle.y = y;
-
-    const nextCircle = circles[index + 1] || circles[0];
-    x += (nextCircle.x - x) * 0.07;
-    y += (nextCircle.y - y) * 0.07;
   });
 
   requestAnimationFrame(animateCircles);
 }
+
+
 
 
 
@@ -807,7 +822,7 @@ document.addEventListener('DOMContentLoaded', function () {
   buttons.forEach(button => {
     button.addEventListener('click', function () {
       
-      // Удаление класса active у всех кнопок и текстов
+    
       buttons.forEach(btn => {
         btn.classList.remove('active');
       });
@@ -815,7 +830,7 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.classList.remove('active');
       });
 
-      // Добавление класса active для текущей кнопки и ее текста
+ 
       this.classList.add('active');
       this.querySelector('.btn-text').classList.add('active');
     });
