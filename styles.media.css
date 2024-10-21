@@ -157,7 +157,7 @@ color: #4B4B4B;
 
   }
   .price-slider-block, .price-middle, .price-slider {
-	max-width: 940px;
+	width: 940px;
   } 
   .price-slider p {
 	margin-top: 5px;
@@ -339,6 +339,7 @@ line-height: 19px;
 
 	.price-slider {
 		font-size: 13px;
+		
 	}
 	.price-counter-active {
 		font-size: 16px;
@@ -636,9 +637,7 @@ margin-top: 12px;
 	.progress-bottom p b {
 		font-size: 20px;
 	}
-	.microphone, .microphone > p:nth-child(1), .microphone > p:nth-child(3) {
-		margin-right: 0px;
-	}
+	
 	body > div.layout-container > div > div.middle > div.calculator-box > div.price-display-box > div.change-price-box > div.calculator-value > div {
 		width: 50px;
 	}
@@ -651,6 +650,9 @@ margin-top: 12px;
 	.microphone > p:nth-child(3) {
 		margin-top: 58px;
 		margin-left: 0px;
+	}
+	.price-slider {
+		margin-top: 18px;
 	}
 	
 	
@@ -715,6 +717,10 @@ margin: 0 auto;
 	  .responsive-header img {
 		width: 20px;
 	  }
+	  .price-slider {
+		margin-top: 22px;
+	}
+	
 
 	  .payment-navigation {
 		margin: 20px 0;
@@ -852,7 +858,10 @@ text-wrap: nowrap;
 		position: absolute;
 		z-index: 1;
 	}
-	
+	.microphone > p:nth-child(3) {
+		margin-top: 0 !important;
+		margin-left: 0px;
+	}
 	  .calculator-value {
 margin-top: 15px;
 		display: flex;
@@ -935,8 +944,16 @@ background-clip: text;
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 	  }
+
 	  .price-counter-active {
-		display: none;
+		transform: rotate(270deg);
+		padding-left: 25px;
+		padding-bottom: 15px;
+		width: 62px;
+		font-weight: 500;
+font-size: 11px;
+line-height: 120%;
+
 	  }
 
 	 

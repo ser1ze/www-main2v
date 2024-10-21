@@ -426,7 +426,7 @@ pointer-events: none;
     line-height: 120%;
     text-align: center;
     transition: box-shadow 0.2s ease, background 0.3s ease;
-    width: fit-content;
+    max-width: fit-content;
     height: 70px;
     display: flex;
     justify-content: center;
@@ -436,7 +436,9 @@ pointer-events: none;
 }
 
 .login:active {
-    box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);; 
+   
+
+    box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5), inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
     background: rgba(123, 123, 123, 0.2);
    color: #AB1443;
 }
@@ -467,7 +469,7 @@ pointer-events: none;
     outline: none;
 }
 .login.fast-click {
-    box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 2px  rgba(0, 0, 0, 0.25);; 
+    box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5), inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
     background: rgba(123, 123, 123, 0.2);
 }
 

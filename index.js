@@ -153,13 +153,13 @@ function updateSliderDimensions() {
       SLIDER_WIDTH = 920; // Adjust this value as needed
       isRotated = false;
   } else if (windowWidth <= 700 && windowWidth > 480) {
-      SLIDER_WIDTH = 600; // Adjust this value as needed
+      SLIDER_WIDTH = 700; // Adjust this value as needed
       isRotated = false;
-  } else if (windowWidth <= 480 && windowWidth > 360) {
-      SLIDER_WIDTH = 360; // Adjust this value as needed
-      isRotated = true;
+  } else if (windowWidth <= 480 && windowWidth > 425) {
+      SLIDER_WIDTH = 340; // Adjust this value as needed
+      isRotated = false;
   } else {
-      SLIDER_WIDTH = 320;
+      SLIDER_WIDTH = 340;
       SLIDER_HEIGHT = 460;
       isRotated = true;
   }
