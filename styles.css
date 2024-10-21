@@ -1251,12 +1251,12 @@ z-index: 0
     ) border-box;
    
 }
-.buy-button:active span,
-.buy-button.fast-click span {
+.card:active span,
+.card.fast-click span {
     font-size: 23px; 
     transition: all 0.2s ease; 
 }
-.buy-button.fast-click {
+.card.fast-click {
     background: #590620; 
     box-shadow: inset -2px -2px 8px 0 rgba(0, 0, 0, 0.5), inset 2px 2px 8px 0 rgba(0, 0, 0, 0.5);
     border: 1px solid transparent; 
@@ -1270,7 +1270,7 @@ z-index: 0
         rgba(232, 232, 232, 1)
     ) border-box; }
 
-.buy-button span.fast-click {
+.card span.fast-click {
     font-size: 23px;
     transition: all 0.2s ease; 
 }
@@ -1289,7 +1289,7 @@ z-index: 0
     -webkit-text-fill-color: transparent; 
 }
 
-.buy-button::before {
+.card::before {
     background: radial-gradient(
         250px circle at var(--mouse-x) var(--mouse-y), 
         #c7c7c738,
@@ -1308,7 +1308,7 @@ z-index: 0
 }
 
 
-.buy-button:hover::before {
+.card:hover::before {
     opacity: 1; 
 }
 
@@ -1426,8 +1426,7 @@ justify-content: center;
   .card:hover:before {
     animation: none;
    
-    background-position: 50% 50%;
-    background-size: 250% 250%;
+ 
     opacity: .88;
     filter: brightness(.66) contrast(1.33);
     transition: none;
@@ -1447,12 +1446,12 @@ justify-content: center;
 }
   
   .card.animated:before { 
-    transition: none;
+    transition: all  0.3S ease-in-out;
     animation: holoGradient 5s ease 0s 1;
   }
   
   .card.animated:after {
-    transition: none;
+    transition: all  0.3S ease-in-out;
     animation: holoSparkle 5s ease 0s 1;
   }
   
@@ -1471,18 +1470,7 @@ justify-content: center;
     30% {
         transform: rotateZ(0deg) rotateX(3deg) rotateY(-3deg);
     }
-    40% {
-        transform: rotateZ(0deg) rotateX(3deg) rotateY(3deg);
-    }
-    50% {
-        transform: rotateZ(0deg) rotateX(3deg) rotateY(-2deg);
-    }
-    60% {
-        transform: rotateZ(0deg) rotateX(3deg) rotateY(2deg);
-    }
-    70% {
-        transform: rotateZ(0deg) rotateX(3deg) rotateY(0deg);
-    }
+   
 }
 
   

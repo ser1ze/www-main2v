@@ -771,7 +771,7 @@ makeButtonClickable(loginButton);
 
 const anotherButton = document.querySelector('.logo'); 
 const logoImg = document.querySelector('.logo-img'); 
-const buyBtn = document.querySelector(".buy-button");
+const buyBtn = document.querySelector(".card");
 const priceLeft = document.querySelector('.change-price-left');
 const priceRight = document.querySelector('.change-price-right');
 const currencyBtn = document.querySelector('.currency-lang-nav');
