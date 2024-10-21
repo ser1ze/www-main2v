@@ -1387,7 +1387,7 @@ z-index: 0
     bottom: 0;
     top: 0;
     background-repeat: no-repeat;
-    opacity: .5;
+    opacity: .4;
     mix-blend-mode: color-dodge;
     transition: all .33s ease;
   }
