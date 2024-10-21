@@ -892,5 +892,5 @@ $cards
     $card.removeAttr("style");
     x = setTimeout(function() {
       $card.addClass("animated");
-    },0);
+    },100);
   });
