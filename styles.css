@@ -1211,7 +1211,7 @@ z-index: 0
     box-sizing: border-box;
     cursor: pointer;
     overflow: hidden;
-    transition: opacity 0.3s ease-in, box-shadow 0.3s ease-in-out, font-size 0.3s ease-in-out; 
+   
     backdrop-filter: blur(1.2px);
     border-radius: 5px;
     height: 50px !important;
@@ -1251,10 +1251,65 @@ z-index: 0
     ) border-box;
    
 }
-.card:active span,
-.card.fast-click span {
-    font-size: 23px; 
-    transition: all 0.2s ease; 
+
+
+
+.buy-button span {
+    font-family: 'ST-SimpleSquare';
+    font-weight: 400;
+    font-size: 24px; 
+    line-height: 110%;
+    letter-spacing: 0.02em;
+    text-align: center;
+    background: linear-gradient(140deg, #727272 0%, #b1b1b1 19%, #e8e8e8 50%, #a4a4a4 76%, #424242 100%);
+    background-clip: text;
+    will-change: font-size;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+}
+
+
+.card-wrap {
+    perspective: 250px;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    z-index: 2000;
+    position: relative;
+    margin-top: 20px;
+}
+
+.card {
+    position: relative;
+    max-width: 300px;
+    padding: 17px;
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 5px;
+    transition: transform 0.5s ease-out;
+    z-index: 1;
+    color: #fff;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    background: linear-gradient(
+        rgba(144, 15, 55, 1),
+        rgba(144, 15, 55, 1)
+    ) padding-box,
+    linear-gradient(
+        90deg,
+        rgba(232, 232, 232, 1),
+        rgba(177, 177, 177, 1) 19%,
+        rgba(232, 232, 232, 1) 50%,
+        rgba(164, 164, 164, 1) 76%,
+        rgba(232, 232, 232, 1)
+    ) border-box;
+    background-clip: padding-box, border-box;
+  
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    backface-visibility: hidden;
 }
 .card.fast-click {
     background: #590620; 
@@ -1270,23 +1325,18 @@ z-index: 0
         rgba(232, 232, 232, 1)
     ) border-box; }
 
-.card span.fast-click {
-    font-size: 23px;
+.card-content span.fast-click {
+    transform: scale(0.97);
     transition: all 0.2s ease; 
 }
 
-.buy-button span {
-    font-family: 'ST-SimpleSquare';
-    font-weight: 400;
-    font-size: 24px; 
-    line-height: 110%;
-    letter-spacing: 0.02em;
-    text-align: center;
-    background: linear-gradient(140deg, #727272 0%, #b1b1b1 19%, #e8e8e8 50%, #a4a4a4 76%, #424242 100%);
-    background-clip: text;
-    will-change: font-size;
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
+.card:active span.fast-click{
+    transform: scale(0.97);
+    transition: all 0.2s ease; 
+}
+.card:active span {
+    transform: scale(0.97);
+    transition: all 0.2s ease; 
 }
 
 .card::before {
@@ -1311,75 +1361,28 @@ z-index: 0
 .card:hover::before {
     opacity: 1; 
 }
-
-.registration {
-    padding-right: 50px;
-    padding-top: 8px;
-}
-
-  
-  .card {
-    max-width: 300px;
-    width: 100%;
-    height: 50px !important;
-  }
-  
-  
-  @media screen and (min-width: 600px) {
-    .card {
-      width: clamp(12.9vw, 61vh, 18vw);
-      height: clamp(18vw, 85vh, 25.2vw);
-    }
-  }
-  .card:active {
+.card:active {
     background: #590620; 
     box-shadow: inset -2px -2px 8px 0 rgba(0, 0, 0, 0.5), inset 2px 2px 8px 0 rgba(0, 0, 0, 0.5);
     border: 1px solid transparent; 
-    background: linear-gradient(#590620 , #590620) padding-box,
+    background: linear-gradient(#590620, #590620) padding-box,
     linear-gradient(
         90deg,
-        rgba(232, 232, 232, 1),  
-        rgba(177, 177, 177,1) 19%,
-        rgba(232, 232, 232,1) 50%,
+        rgba(232, 232, 232, 1),
+        rgba(177, 177, 177, 1) 19%,
+        rgba(232, 232, 232, 1) 50%,
         rgba(164, 164, 164, 1) 76%,
         rgba(232, 232, 232, 1)
     ) border-box;
-  }
-  .card {
-    
-    overflow: hidden;
-    margin: 20px;
-    z-index: 10;
-    touch-action: none;
-    border-radius: 5px;
-    height: 50px !important;
-    color: #fff;
-    cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-    text-align: center;
-    background: linear-gradient(
-        rgba(144, 15, 55, 1 ), 
-        rgba(144, 15, 55, 1)
-    ) padding-box,
-    linear-gradient(
-        90deg,
-        rgba(232, 232, 232, 1),  
-        rgba(177, 177, 177,1) 19%,
-        rgba(232, 232, 232,1) 50%,
-        rgba(164, 164, 164, 1) 76%,
-        rgba(232, 232, 232, 1)
-    ) border-box;
-    border: 1px solid transparent;
-    background-clip: padding-box, border-box;
-   
-    transition: transform 0.5s ease, box-shadow 0.2s ease;
-    will-change: transform, filter;
-    
-    transform-origin: center;
-  }
-  .card span { 
+}
+.card-content {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    height: 100%;
+    backface-visibility: hidden; 
+}
+.card-content span {
     font-family: 'ST-SimpleSquare';
     font-weight: 400;
     font-size: 24px; 
@@ -1388,119 +1391,24 @@ justify-content: center;
     text-align: center;
     background: linear-gradient(140deg, #727272 0%, #b1b1b1 19%, #e8e8e8 50%, #a4a4a4 76%, #424242 100%);
     background-clip: text;
-    will-change: font-size;
+    will-change: transform;
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent; 
-  }
-  .card:before,
-  .card:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    background-repeat: no-repeat;
-    opacity: .4;
-    mix-blend-mode: color-dodge;
-    transition: all .33s ease;
-  }
-  
-
-  
- 
-  
-  .card.active:after,
-  .card:hover:after {
-   
-    opacity: 1;
-  }
-  
-  .card.active,
-  .card:hover {
-    animation: none;
-    transition: box-shadow 0.1s ease-out;
-  }
-  
-  .card.active:before,
-  .card:hover:before {
-    animation: none;
-   
- 
-    opacity: .88;
-    filter: brightness(.66) contrast(1.33);
-    transition: none;
-  }
-  
-  .card.active:before,
-  .card:hover:before,
-  .card.active:after,
-  .card:hover:after {
-    animation: none;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .card.animated {
-    transition: none;
-    animation: holoCard 5s cubic-bezier(0.42, 0, 0.58, 1) 0s 1;
-}
-  
-  
-
-
-  @keyframes holoCard {
-    0%, 100% {
-        transform: rotateZ(0deg) rotateX(0deg) rotateY(0deg);
-    }
-    10% {
-        transform: rotateZ(0deg) rotateX(3deg) rotateY(-4deg);
-    }
-    20% {
-        transform: rotateZ(0deg) rotateX(-3deg) rotateY(4deg);
-    }
-  
+    backface-visibility: hidden;
+    
+    
    
 }
 
-  
-  .cards { 
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    perspective: 200px;
 
-    z-index: 1;
-    transform: translate3d(0.1px, 0.1px, 0.1px);
-  }
+.registration {
+    padding-right: 50px;
+    padding-top: 8px;
+}
+
   
- 
   
-  
-  .cards .card:nth-child(2),
-  .cards .card:nth-child(2):before,
-  .cards .card:nth-child(2):after {
-    animation-delay: 0.25s;
-  }
-  
-  .cards .card:nth-child(3),
-  .cards .card:nth-child(3):before,
-  .cards .card:nth-child(3):after {
-    animation-delay: 0.5s;
-  }
-  
-  .cards .card:nth-child(4),
-  .cards .card:nth-child(4):before,
-  .cards .card:nth-child(4):after {
-    animation-delay: 0.75s;
-  }
-  
-  .cards .card:nth-child(5),
-  .cards .card:nth-child(5):before,
-  .cards .card:nth-child(5):after {
-    animation-delay: 1s;
-  }
+
   
 .modal {
     display: flex;
