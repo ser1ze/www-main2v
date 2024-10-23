@@ -836,7 +836,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
-
 document.querySelectorAll('.card-wrap').forEach(card => {
   const cardElement = card.querySelector('.card');
 
@@ -845,16 +844,14 @@ document.querySelectorAll('.card-wrap').forEach(card => {
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
 
-      const rotateX = ((mouseY / rect.height) * 15) - 7.5;
-      const rotateY = ((mouseX / rect.width) * -15) + 7.5;
+      const rotateX = ((mouseY / rect.height) * 30) - 15;
+      const rotateY = ((mouseX / rect.width) * -30) + 15;
 
-      cardElement.style.transition = 'transform 0.1s';
-      cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-
+      cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`; // Add translateZ for depth
   });
 
   card.addEventListener('mouseleave', () => {
       cardElement.style.transition = 'transform 0.5s ease-out';
-      cardElement.style.transform = 'rotateX(0deg) rotateY(0deg)'; 
+      cardElement.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)'; 
   });
 });
