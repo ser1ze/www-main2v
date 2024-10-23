@@ -1445,15 +1445,6 @@ justify-content: center;
     animation: holoCard 5s cubic-bezier(0.42, 0, 0.58, 1) 0s 1;
 }
   
-  .card.animated:before { 
-    transition: all  0.3S ease-in-out;
-    animation: holoGradient 5s ease 0s 1;
-  }
-  
-  .card.animated:after {
-    transition: all  0.3S ease-in-out;
-    animation: holoSparkle 5s ease 0s 1;
-  }
   
 
 
@@ -1465,11 +1456,9 @@ justify-content: center;
         transform: rotateZ(0deg) rotateX(3deg) rotateY(-4deg);
     }
     20% {
-        transform: rotateZ(0deg) rotateX(3deg) rotateY(4deg);
+        transform: rotateZ(0deg) rotateX(-3deg) rotateY(4deg);
     }
-    30% {
-        transform: rotateZ(0deg) rotateX(3deg) rotateY(-3deg);
-    }
+  
    
 }
 
@@ -1480,7 +1469,7 @@ justify-content: center;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    perspective: 500px;
+    perspective: 200px;
 
     z-index: 1;
     transform: translate3d(0.1px, 0.1px, 0.1px);
@@ -1512,6 +1501,7 @@ justify-content: center;
   .cards .card:nth-child(5):after {
     animation-delay: 1s;
   }
+  
 .modal {
     display: flex;
     justify-content: center;
@@ -1930,7 +1920,7 @@ body > div.layout-container > div > div.middle > div.calculator-box > div.calcul
 
 .circle {
     height: 10px;
-    width: 10px;
+    width: 5px;
     border-radius: 50%;
     background-color: black;
     position: fixed; 
