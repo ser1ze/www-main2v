@@ -664,6 +664,7 @@ const colors = [
 let animationStarted = false; 
 let firstMove = false; 
 
+// Настройка каждого круга
 circles.forEach(function (circle, index) {
   circle.x = window.innerWidth / 2;
   circle.y = window.innerHeight / 2;
@@ -671,6 +672,9 @@ circles.forEach(function (circle, index) {
   circle.style.backgroundColor = colors[colorIndex % colors.length];
   circle.style.position = "absolute";
   circle.style.opacity = 0; 
+  circle.style.width = "10px";  
+  circle.style.height = "10px"; 
+  circle.style.borderRadius = "50%"; 
 });
 
 window.addEventListener("mousemove", function(e) {
@@ -706,17 +710,22 @@ function animateCircles() {
   circles.forEach(function (circle, index) {
     const nextCircle = circles[index - 1] || { x: coords.x, y: coords.y };
 
+   
     circle.x += (nextCircle.x - circle.x) * 0.9;
     circle.y += (nextCircle.y - circle.y) * 0.9;
 
-    circle.style.left = `${Math.min(window.innerWidth - 25, Math.max(4, circle.x))}px`;
-    circle.style.top = `${Math.min(window.innerHeight - 15, Math.max(4, circle.y))}px`;
 
+    const circleSize = parseFloat(circle.style.width);
+    circle.style.left = `${Math.min(window.innerWidth - circleSize, Math.max(0, circle.x - circleSize / 2))}px`;
+    circle.style.top = `${Math.min(window.innerHeight - circleSize, Math.max(0, circle.y - circleSize / 2))}px`;
+
+   
     circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
   });
 
   requestAnimationFrame(animateCircles);
 }
+
 
 
 
