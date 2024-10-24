@@ -672,8 +672,8 @@ circles.forEach(function (circle, index) {
   circle.style.backgroundColor = colors[colorIndex % colors.length];
   circle.style.position = "absolute";
   circle.style.opacity = 0; 
-  circle.style.width = "10px";  
-  circle.style.height = "10px"; 
+  circle.style.width = "5px";  
+  circle.style.height = "5px"; 
   circle.style.borderRadius = "50%"; 
 });
 
