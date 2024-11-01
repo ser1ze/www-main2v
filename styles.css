@@ -627,28 +627,13 @@ html {
   background: #20272b !important;
 }
 .rate-btn.active .main-price {
-  background: linear-gradient(
-    168deg,
-    #08466b 0%,
-    #37779d 19%,
-    #71bdeb 43.18%,
-    #37779d 76%,
-    #08466b 100%
-  ) !important;
   background-clip: text !important;
   opacity: 1 !important;
   text-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.9) !important;
 }
 
 .rate-btn.active:active .main-price {
-  background: linear-gradient(
-    168deg,
-    #08466b 0%,
-    #37779d 19%,
-    #71bdeb 43.18%,
-    #37779d 76%,
-    #08466b 100%
-  ) !important;
+  opacity: 0.6;
   background-clip: text !important;
 }
 .btn-text.active:active {
@@ -680,15 +665,6 @@ html {
 }
 
 .rate-btn:active .main-price {
-  transform: scale(0.95);
-  background: linear-gradient(
-    168deg,
-    #08466b 0%,
-    #37779d 19%,
-    #71bdeb 43.18%,
-    #37779d 76%,
-    #08466b 100%
-  );
   background-clip: text;
 }
 
@@ -720,6 +696,7 @@ html {
 .price-range:active {
   transform: scale(0.95);
 }
+
 .home-btn {
   position: relative;
   overflow: hidden;
@@ -772,14 +749,6 @@ html {
 }
 
 .rate-btn.active:not(.fast-click) .main-price {
-  background: linear-gradient(
-    161deg,
-    #256b95 0%,
-    #2d98d7 19%,
-    #3394cd 43.18%,
-    #4096c9 76%,
-    #61a1c7 100%
-  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -841,6 +810,20 @@ html {
   opacity: 0;
   transition: opacity 300ms ease;
   z-index: 20;
+}
+
+.rate-btn.active:active .main-price {
+  background: #4a738c !important;
+  background-clip: text !important;
+}
+.main-price.active:active {
+  background: #4a738c !important;
+  background-clip: text !important;
+}
+.rate-btn:active .main-price {
+  transform: scale(0.95);
+  background: #4a738c;
+  background-clip: text;
 }
 
 .rate-btn:hover::before {
