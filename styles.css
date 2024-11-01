@@ -1036,6 +1036,9 @@ html {
 
 .typing-block-1 {
   padding-right: 10px;
+  font-weight: 400;
+  font-size: 20px;
+  color: #111;
 }
 
 .typing-block-2 {
@@ -1044,16 +1047,17 @@ html {
   letter-spacing: 1px;
   position: relative;
   display: inline-block;
+  font-weight: 400;
+  font-size: 20px;
   background: linear-gradient(
-    97.78deg,
-    rgba(255, 255, 255, 0.2) 5.43%,
-    #cccccc 50%,
-    rgba(255, 255, 255, 0.2) 94.57%
+    96deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    #ccc 50%,
+    rgba(255, 255, 255, 0.2) 100%
   );
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
 }
 
 .reflection {
@@ -1064,15 +1068,20 @@ html {
 
   transform: scaleY(-1);
   letter-spacing: 1px;
-  margin-left: 219.3px;
+  margin-left: 209px;
 
   width: 380px !important;
-
-  background: linear-gradient(180deg, #cccccc9b, #333 100%);
+  font-weight: 400;
+  font-size: 20px;
+  background: linear-gradient(
+    96deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    #ccc 50%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
   filter: blur(2px);
   opacity: 0.6;
 }
