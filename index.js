@@ -890,7 +890,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   activateButtonGroup(".payment-navigation-btn", ".btn-text");
   activateButtonGroup(".rate-btn", ".main-price");
-  activateButtonGroup("home-btn");
 });
 document.querySelectorAll(".card-wrap").forEach((card) => {
   const cardElement = card.querySelector(".card");
