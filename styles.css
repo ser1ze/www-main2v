@@ -776,7 +776,6 @@ html {
   height: 63px;
 }
 .rate-btn.active {
-  background: #252525;
   transition: background 0.3s ease, box-shadow 150ms ease;
 }
 
