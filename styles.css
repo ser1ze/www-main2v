@@ -717,12 +717,25 @@ html {
   box-shadow: inset 2px 2px 4px 0 #151f25, inset -2px -2px 4px 0 #151f25;
 }
 
-.home-btn img {
+.home-btn svg {
   transition: transform 300ms ease;
   will-change: transform, color;
 }
+.home-btn .icon-path {
+  fill: url(#paint0_linear_1_2992);
+}
+.home-btn.active:active .icon-path {
+  fill: #4a738c; 
+}
 
-.home-btn img.fast-click {
+
+.home-btn.active .icon-path {
+ fill: #61a1c7;
+}
+
+
+
+.home-btn svg.fast-click {
   transform: scale(0.97);
 }
 .home-btn::before {

@@ -537,9 +537,48 @@
             </div>
             <div class="menu-wrapper">
               <div class="pricing-menu">
-                <button class="home-btn">
-                  <img src="./img/home.svg" alt="">
-                </button>
+                <button class="home-btn rate-btn">
+                  <svg width="68" height="68" viewBox="0 0 68 68" xmlns="http://www.w3.org/2000/svg">
+                      <g opacity="0.6" filter="url(#filter0_d_1_2992)">
+                          <path class="icon-path" d="M21.0856 20.3249C14.0059 26.0035 7.93904 30.8694 7.61196 31.133L7 31.6273L8.86753 34.1426L10.7351 36.6689L11.1043 36.3613C11.3154 36.1856 16.5487 31.9897 22.7526 27.036L34.0106 18.0183L45.279 27.036C51.4725 31.9897 56.7057 36.1856 56.9168 36.3613L57.286 36.6689L59.143 34.1536L61 31.6492L60.7784 31.4296C60.6518 31.3197 58.9214 29.9248 56.9379 28.3321L53.3189 25.4543V15.2613L49.4467 15.2833L45.5639 15.3162L45.5322 17.2055C45.5217 18.2489 45.4795 19.1057 45.4478 19.1057C45.4162 19.1057 42.8312 17.0517 39.7081 14.5474C36.5744 12.043 34 9.98906 33.9894 10C33.9683 10 28.1653 14.6462 21.0856 20.3249Z" fill="url(#paint0_linear_1_2992)"/>
+                          <path class="icon-path" d="M24.7046 29.6282L15.4408 37.0533V57H30.3177V42.3915H38.3365V57H52.5803V37.0533L43.3376 29.6392C38.2521 25.5642 34.0528 22.2251 34.0211 22.2141C33.9894 22.2031 29.7902 25.5422 24.7046 29.6282Z" fill="url(#paint1_linear_1_2992)"/>
+                      </g>
+                      <defs>
+                          <filter id="filter0_d_1_2992" x="2" y="5" width="64" height="57" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                              <feOffset/>
+                              <feGaussianBlur stdDeviation="2.5"/>
+                              <feComposite in2="hardAlpha" operator="out"/>
+                              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0"/>
+                              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_2992"/>
+                              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_2992" result="shape"/>
+                          </filter>
+                          <linearGradient id="paint0_linear_1_2992" x1="10.0375" y1="3.65499" x2="68.7566" y2="18.4705" gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#727272"/>
+                              <stop offset="0.19" stop-color="#B1B1B1"/>
+                              <stop offset="0.5" stop-color="#E8E8E8"/>
+                              <stop offset="0.76" stop-color="#A4A4A4"/>
+                              <stop offset="1" stop-color="#424242"/>
+                          </linearGradient>
+                          <linearGradient id="paint1_linear_1_2992" x1="10.0375" y1="3.65499" x2="68.7566" y2="18.4705" gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#727272"/>
+                              <stop offset="0.19" stop-color="#B1B1B1"/>
+                              <stop offset="0.5" stop-color="#E8E8E8"/>
+                              <stop offset="0.76" stop-color="#A4A4A4"/>
+                              <stop offset="1" stop-color="#424242"/>
+                          </linearGradient>
+                          <linearGradient id="active-gradient" x1="10.0375" y1="3.65499" x2="68.7566" y2="18.4705" gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#08466b"/>
+                              <stop offset="0.19" stop-color="#37779d"/>
+                              <stop offset="0.43" stop-color="#71bdeb"/>
+                              <stop offset="0.76" stop-color="#37779d"/>
+                              <stop offset="1" stop-color="#08466b"/>
+                          </linearGradient>
+                      </defs>
+                  </svg>
+              </button>
+              
                 <button class="rate-btn">
                   <span class="pricing-wrapper">
                     <span class="main-price">4 ₽</span>
@@ -731,7 +770,7 @@
               </div>
               <h3>Итого</h3>
               <h1>3</h1>
-              <button class="payment-navigation-btn">
+              <button style = "display: none !important;"  class="payment-navigation-btn">
                 <span class="btn-text">Все тарифы</span>
               </button>
               <div class="cards">
