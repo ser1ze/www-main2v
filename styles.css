@@ -607,7 +607,7 @@ html {
   border: 1px solid #202020;
   width: 176px;
   height: 70px;
-  background: #252525;
+  background: #2a2a2a;
   transition: background 0.3s ease, transform 150ms ease, box-shadow 150ms ease;
   will-change: background, box-shadow, transform;
 }
@@ -649,8 +649,7 @@ html {
 }
 .rate-btn:active {
   background: #20272b;
-  box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5),
-    inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
+  box-shadow: inset 2px 2px 4px 0 #151f25, inset -2px -2px 4px 0 #151f25;
 }
 
 .main-price {
@@ -670,20 +669,21 @@ html {
 
 .rate-btn.active.fast-click {
   background: #20272b;
-  box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5),
-    inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
+  box-shadow: inset 2px 2px 4px 0 #151f25, inset -2px -2px 4px 0 #151f25;
 }
 
 .rate-btn.active .main-price {
   background: linear-gradient(
-    168deg,
-    #08466b 0%,
-    #37779d 19%,
-    #71bdeb 43.18%,
-    #37779d 76%,
-    #08466b 100%
+    161deg,
+    #256b95 0%,
+    #2d98d7 19%,
+    #3394cd 43.18%,
+    #4096c9 76%,
+    #61a1c7 100%
   );
   background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .price-range {
   transition: transform 300ms ease;
@@ -703,20 +703,18 @@ html {
   border: 1px solid #202020;
   width: 176px;
   height: 70px;
-  background: #252525;
+  background: #2a2a2a;
   transition: background 0.3s ease, transform 150ms ease, box-shadow 150ms ease;
   will-change: background, box-shadow, transform;
 }
 
 .home-btn.active.fast-click {
   background: #20272b;
-  box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5),
-    inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
+  box-shadow: inset 2px 2px 4px 0 #151f25, inset -2px -2px 4px 0 #151f25;
 }
 .home-btn:active {
   background: #20272b;
-  box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5),
-    inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
+  box-shadow: inset 2px 2px 4px 0 #151f25, inset -2px -2px 4px 0 #151f25;
 }
 
 .home-btn img {
@@ -749,6 +747,14 @@ html {
 }
 
 .rate-btn.active:not(.fast-click) .main-price {
+  background: linear-gradient(
+    161deg,
+    #256b95 0%,
+    #2d98d7 19%,
+    #3394cd 43.18%,
+    #4096c9 76%,
+    #61a1c7 100%
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -792,6 +798,10 @@ html {
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.9);
   opacity: 0.6;
+}
+.pricing-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .rate-btn::before {
@@ -1470,7 +1480,7 @@ body
 }
 
 .calculator-value-numb {
-  width: 106px;
+  width: 150px;
   height: 34px;
   position: relative;
   padding-top: 0;
