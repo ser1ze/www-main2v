@@ -727,7 +727,9 @@ html {
 .home-btn.active:active .icon-path {
   fill: #4a738c; 
 }
-
+.home-btn:active .icon-path {
+  fill: #4a738c; 
+}
 
 .home-btn.active .icon-path {
  fill: #61a1c7;
