@@ -345,32 +345,7 @@ function updateCalculatorValue(changeAmount) {
   updateDisplay(currentMinutes, true);
 }
 
-document.querySelectorAll(".image-container").forEach((container) => {
-  const images = container.querySelectorAll("img");
 
-  container.addEventListener("mouseenter", () => {
-    images[0].classList.add("hide:hover");
-    images[1].classList.remove("hide:hover");
-  });
-
-  container.addEventListener("mouseleave", () => {
-    images[0].classList.remove("hide:hover");
-    images[1].classList.add("hide:hover");
-  });
-});
-document.querySelectorAll(".image-container-price").forEach((container) => {
-  const images = container.querySelectorAll("img");
-
-  container.addEventListener("mouseenter", () => {
-    images[0].classList.add("hide:hover");
-    images[1].classList.remove("hide:hover");
-  });
-
-  container.addEventListener("mouseleave", () => {
-    images[0].classList.remove("hide:hover");
-    images[1].classList.add("hide:hover");
-  });
-});
 
 // Keep your existing code
 const leftArrow = document.querySelector(".change-price-left");
