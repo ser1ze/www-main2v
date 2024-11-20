@@ -524,7 +524,7 @@
                 </button>
               </div>
               <div class="payment-row-wrapper">
-                <button class="payment-navigation-btn" data-delay="400">
+                <button class="payment-navigation-btn" id = "gift" data-delay="400">
                   <span class="btn-text" data-delay="400">В подарок</span>
                 </button>
                 <button class="payment-navigation-btn" data-delay="340">
@@ -537,11 +537,11 @@
             </div>
             <div class="menu-wrapper">
               <div class="pricing-menu">
-                <button class="home-btn rate-btn">
+                <button class="home-btn rate-btn active">
                   <svg width="64" height="57" viewBox="0 0 64 57" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g opacity="0.6" filter="url(#filter0_d_160_3689)">
-                      <path d="M19.0856 15.3249C12.0059 21.0035 5.93904 25.8694 5.61196 26.133L5 26.6273L6.86753 29.1426L8.73505 31.6689L9.10434 31.3613C9.31536 31.1856 14.5487 26.9897 20.7526 22.036L32.0106 13.0183L43.279 22.036C49.4725 26.9897 54.7057 31.1856 54.9168 31.3613L55.286 31.6689L57.143 29.1536L59 26.6492L58.7784 26.4296C58.6518 26.3197 56.9214 24.9248 54.9379 23.3321L51.3189 20.4543V10.2613L47.4467 10.2833L43.5639 10.3162L43.5322 12.2055C43.5217 13.2489 43.4795 14.1057 43.4478 14.1057C43.4162 14.1057 40.8312 12.0517 37.7081 9.54736C34.5744 7.04304 32 4.98906 31.9894 5.00004C31.9683 5.00004 26.1653 9.64622 19.0856 15.3249Z" fill="#A4A4A4" />
-                      <path d="M22.7046 24.6282L13.4408 32.0533V52H28.3177V37.3915H36.3365V52H50.5803V32.0533L41.3376 24.6392C36.2521 20.5642 32.0528 17.2251 32.0211 17.2141C31.9894 17.2031 27.7902 20.5422 22.7046 24.6282Z" fill="#A4A4A4" />
+                    <g opacity="1" >
+                      <path class = "icon-path" d="M19.0856 15.3249C12.0059 21.0035 5.93904 25.8694 5.61196 26.133L5 26.6273L6.86753 29.1426L8.73505 31.6689L9.10434 31.3613C9.31536 31.1856 14.5487 26.9897 20.7526 22.036L32.0106 13.0183L43.279 22.036C49.4725 26.9897 54.7057 31.1856 54.9168 31.3613L55.286 31.6689L57.143 29.1536L59 26.6492L58.7784 26.4296C58.6518 26.3197 56.9214 24.9248 54.9379 23.3321L51.3189 20.4543V10.2613L47.4467 10.2833L43.5639 10.3162L43.5322 12.2055C43.5217 13.2489 43.4795 14.1057 43.4478 14.1057C43.4162 14.1057 40.8312 12.0517 37.7081 9.54736C34.5744 7.04304 32 4.98906 31.9894 5.00004C31.9683 5.00004 26.1653 9.64622 19.0856 15.3249Z" fill="#A4A4A4" />
+                      <path class = "icon-path" d="M22.7046 24.6282L13.4408 32.0533V52H28.3177V37.3915H36.3365V52H50.5803V32.0533L41.3376 24.6392C36.2521 20.5642 32.0528 17.2251 32.0211 17.2141C31.9894 17.2031 27.7902 20.5422 22.7046 24.6282Z" fill="#A4A4A4" />
                     </g>
                     <defs>
                       <filter id="filter0_d_160_3689" x="0" y="0" width="64" height="57" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -557,7 +557,12 @@
                     </defs>
                   </svg>
               </button>
-              
+              <button class="rate-btn">
+                <span class="pricing-wrapper">
+                  <span class="main-price">5 ₽</span>
+                  <span class="price-range"> 1 - 999</span>
+                </span>
+              </button>
                 <button class="rate-btn">
                   <span class="pricing-wrapper">
                     <span class="main-price">4 ₽</span>
@@ -570,23 +575,36 @@
                     <span class="price-range">10 000 - 49 999</span>
                   </span>
                 </button>
-                <button class="rate-btn">
-                  <span class="pricing-wrapper">
-                    <span class="main-price">2 ₽</span>
-                    <span class="price-range">50 000 - 99 999</span>
-                  </span>
-                </button>
+                
               </div>
 
               <div class="prev-arrow"></div>
               <div class="next-arrow">
                 <div class="image-container-price">
-                  <img
-                    src="./img/right-arrow.svg"
-                    draggable="false"
-                    alt="arrow right"
-                    class="arrow right-arrow"
-                  >
+                  <svg class="t-rail" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.87061 0.480469L1 0.480469" stroke="#252525" stroke-width="0.83" stroke-linecap="round" />
+                  </svg>
+                  <svg class = "arrow right-arrow" width="33" height="51" viewBox="0 0 33 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g filter="url(#filter0_d_255_2916)">
+                      <path d="M3.51074 2H12.2238L31.1578 25.4474L12.2238 48.8948H3.51074L22.4448 25.4474L3.51074 2Z" fill="#252525" />
+                      <path d="M12.0256 48.4801H4.37866L22.7674 25.7079L22.9778 25.4474L22.7674 25.1869L4.37866 2.41471H12.0256L30.6248 25.4474L12.0256 48.4801Z" stroke="#424242" stroke-width="0.829412" />
+                    </g>
+                    <defs>
+                      <filter id="filter0_d_255_2916" x="0.510742" y="0" width="31.647" height="50.8945" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dx="-1" />
+                        <feGaussianBlur stdDeviation="1" />
+                        <feComposite in2="hardAlpha" operator="out" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_255_2916" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_255_2916" result="shape" />
+                      </filter>
+                    </defs>
+                  </svg>
+                  <svg class="b-rail" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.87061 0.480469L1 0.480469" stroke="#252525" stroke-width="0.83" stroke-linecap="round" />
+                  </svg>
                   
                 </div>
               </div>
@@ -679,11 +697,27 @@
                 </button>
                 <button class="change-price-left">
                   <span class="image-container">
-                    <img
-                      src="./img/left-arrow.svg"
-                      draggable="false"
-                      alt="arrow left"
-                    >
+                    <svg class = "arrow left-arrow" width="24" height="38" viewBox="0 0 24 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g filter="url(#filter0_d_255_2906)">
+                        <path d="M21 2H14.697L1 18.962L14.697 35.9239H21L7.30303 18.962L21 2Z" fill="#252525" />
+                        <path d="M14.8403 35.6239H20.3721L7.06963 19.1504L6.91743 18.962L7.06963 18.7735L20.3721 2.3H14.8403L1.3856 18.962L14.8403 35.6239Z" stroke="#424242" stroke-width="0.6" />
+                      </g>
+                      <defs>
+                        <filter id="filter0_d_255_2906" x="0" y="0" width="24" height="37.9238" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                          <feOffset dx="1" />
+                          <feGaussianBlur stdDeviation="1" />
+                          <feComposite in2="hardAlpha" operator="out" />
+                          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0" />
+                          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_255_2906" />
+                          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_255_2906" result="shape" />
+                        </filter>
+                      </defs>
+                    </svg>
+                    <svg class="b-rail-calc" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.87061 0.480469L1 0.480469" stroke="#252525" stroke-width="0.83" stroke-linecap="round" />
+                    </svg>
                    
                   </span>
                 </button>
@@ -702,12 +736,24 @@
                 </div>
                 <button class="change-price-right">
                   <span class="image-container">
-                    <img
-                      src="./img/right-arrow.svg"
-                      draggable="false"
-                      alt="arrow right"
-                      class="arrow right-arrow"
-                    >
+                    <svg class="arrow right-arrow" width="25" height="38" viewBox="0 0 25 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g filter="url(#filter0_d_255_2902)">
+                        <path d="M3.66699 2H9.97002L23.667 18.962L9.97002 35.9239H3.66699L17.364 18.962L3.66699 2Z" fill="#252525" />
+                        <path d="M9.82668 35.6239H4.29484L17.5974 19.1504L17.7496 18.962L17.5974 18.7735L4.29484 2.3H9.82668L23.2814 18.962L9.82668 35.6239Z" stroke="#424242" stroke-width="0.6" />
+                      </g>
+                      <defs>
+                        <filter id="filter0_d_255_2902" x="0.666992" y="0" width="24" height="37.9238" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                          <feOffset dx="-1" />
+                          <feGaussianBlur stdDeviation="1" />
+                          <feComposite in2="hardAlpha" operator="out" />
+                          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0" />
+                          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_255_2902" />
+                          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_255_2902" result="shape" />
+                        </filter>
+                      </defs>
+                    </svg>
                     
                   </span>
                 </button>
@@ -763,6 +809,20 @@
                 alt="доллар"
               >
             </div>
+          </div>
+          <div class="gift-description">
+            <div class="giftMainDesc">
+              Выполните <span class="square">ВХОД</span> - мы сохраним историю покупок <br> для накопительной системы скидок. <br/>
+              Перевод минут без выполненного входа — бонусная система <br> передается получателю. <br/>
+              
+            </div>
+            <p class = "preDescList"> Зарегистрированные пользователи видят информацию:</p>
+            <ul class="infoList">
+              <li class="infoListItem">Баланс;</li>
+              <li class="infoListItem">Текущий тариф;</li>
+              <li class="infoListItem">Стоимость за минуту;</li>
+              <li class="infoListItem">Сколько необходимо купить минут, для перехода на следующий тарифный план.</li>
+            </ul>
           </div>
           <div class="typing-block">
             <h2 class="typing-block-1" data-text="СКОЛЬКО МИНУТ">
@@ -905,6 +965,116 @@
       <div class="circle"></div>
       <div class="circle"></div>
     </div>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const giftButton = document.getElementById("gift");
+  const calculatorBox = document.querySelector(".calculator-box");
+  const typingBlock = document.querySelector(".typing-block");
+  const giftDescription = document.querySelector(".gift-description");
+  const microphone = document.querySelector(".microphone");
+  const minutesInput = document.querySelector(".calculator-value input");
+  const paymentNavigationButtons = document.querySelectorAll(".payment-navigation-btn");
+
+  let isGiftModeActive = false;
+  let resetTimer;
+
+  const toggleGiftMode = () => {
+    if (isGiftModeActive) {
+      calculatorBox.style.display = "none";
+      typingBlock.style.display = "none";
+      giftDescription.style.display = "block";
+    } else {
+      calculatorBox.style.display = "block";
+      typingBlock.style.display = "flex";
+      giftDescription.style.display = "none";
+    }
+  };
+
+  const resetBlocksToDefault = () => {
+    isGiftModeActive = false;
+    calculatorBox.style.display = "block";
+    typingBlock.style.display = "flex";
+    giftDescription.style.display = "none";
+   
+    toggleGiftMode();
+  };
+
+  const startResetTimer = () => {
+    if (resetTimer) {
+      clearTimeout(resetTimer);
+    }
+
+    resetTimer = setTimeout(() => {
+      resetBlocksToDefault();
+    }, 8000);
+  };
+
+  if (microphone) {
+    const observer = new MutationObserver(() => {
+      startResetTimer();
+    });
+
+    observer.observe(microphone, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+  }
+
+  if (minutesInput) {
+    minutesInput.addEventListener("input", () => {
+      resetBlocksToDefault();
+      if (resetTimer) {
+        clearTimeout(resetTimer);
+      }
+    });
+  }
+
+  if (giftButton) {
+    giftButton.addEventListener("click", () => {
+      isGiftModeActive = !isGiftModeActive;
+      toggleGiftMode();
+
+      if (isGiftModeActive) {
+        startResetTimer();
+      } else {
+        clearTimeout(resetTimer);
+      }
+    });
+  }
+
+  const microphonePositionObserver = new MutationObserver(() => {
+    resetBlocksToDefault();
+  });
+
+  microphonePositionObserver.observe(microphone, {
+    attributes: true,
+    attributeFilter: ["style"]
+  });
+
+  if (paymentNavigationButtons.length > 0) {
+    paymentNavigationButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        if (!button.classList.contains("active") && giftButton.classList.contains("active")) {
+          resetBlocksToDefault();
+        }
+      });
+    });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+</script>
+
+    </script>
+    
     <script>
       window.onload = function () {
         const nav = document.getElementById("payment-navigation");

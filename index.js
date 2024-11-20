@@ -886,3 +886,4 @@ document.querySelectorAll(".card-wrap").forEach((card) => {
     cardElement.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(0px)";
   });
 });
+

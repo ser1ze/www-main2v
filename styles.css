@@ -182,8 +182,7 @@ html {
 }
 
 .logo:active {
-  box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.5),
-    inset -4px -4px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 .logo-img {
@@ -194,8 +193,7 @@ html {
   transform: scale(0.95);
 }
 .logo.fast-click {
-  box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.5),
-  inset -4px -4px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 .logo-img.fast-click {
   transform: scale(0.95);
@@ -521,8 +519,7 @@ html {
 }
 
 .login:active {
-    box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.5),
-    inset -4px -4px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 4px 0 rgba(0, 0, 0, 0.5);
   background: rgba(123, 123, 123, 0.2);
   color: #ab1443;
 }
@@ -553,8 +550,7 @@ html {
   outline: none;
 }
 .login.fast-click {
-  box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.5),
-  inset -4px -4px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 4px 0 rgba(0, 0, 0, 0.5);
   background: rgba(123, 123, 123, 0.2);
 }
 
@@ -599,21 +595,40 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
+  
 }
 .rate-btn {
   position: relative;
-  overflow: hidden;
-
   border: 1px solid #202020;
-  width: 176px;
-  height: 70px;
+  width: 178px;
+  height: 68px;
   background: #2a2a2a;
   transition: background 0.3s ease, transform 150ms ease, box-shadow 150ms ease;
   will-change: background, box-shadow, transform;
+  
 }
 .pricing-menu {
   display: flex;
   align-items: center;
+  
+}
+.payment-navigation, .pricing-menu {
+  max-width: 708px; 
+  width: 100%; 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+}
+
+.payment-navigation .payment-wrapper,
+.pricing-menu .rate-btn {
+  flex-shrink: 0; 
+}
+
+.payment-navigation, .pricing-menu {
+  display: flex;
+  justify-content: center; 
 }
 
 .price-range {
@@ -683,8 +698,8 @@ html {
   position: relative;
   overflow: hidden;
   border: 1px solid #202020;
-  width: 176px;
-  height: 70px;
+  width: 178px;
+  height: 68px;
   background: #2a2a2a;
   transition: background 0.3s ease, transform 150ms ease, box-shadow 150ms ease;
   will-change: background, box-shadow, transform;
@@ -702,19 +717,23 @@ html {
 .home-btn svg {
   transition: transform 300ms ease;
   will-change: transform, color;
+  height: 40px;
 }
 .home-btn .icon-path {
-  fill: url(#paint0_linear_1_2992);
+  fill: #A4A4A4; 
 }
-.home-btn.active:active .icon-path {
-  fill: #4a738c; 
-}
+
+.home-btn.active:active .icon-path,
 .home-btn:active .icon-path {
-  fill: #4a738c; 
+  fill: #4a738c;
 }
 
 .home-btn.active .icon-path {
- fill: #61a1c7;
+  fill: #37779d;
+}
+.home-btn.active:active.fast-click.icon-path,
+.home-btn:active .icon-path {
+  fill: #4a738c;
 }
 
 
@@ -759,10 +778,7 @@ html {
   transform: translateX(5px);
 }
 
-.next-arrow img {
-  width: 63px;
-  height: 63px;
-}
+
 .rate-btn.active {
   transition: background 0.3s ease, box-shadow 150ms ease;
 }
@@ -1000,14 +1016,15 @@ html {
 }
 
 .typing-block-2 {
-  margin-top: -2px;
+ 
   width: 380px;
   letter-spacing: 1px;
   position: relative;
-  display: inline-block;
+  display: flex;
   font-weight: 400;
   font-size: 20px;
   background: #A4A4A4;
+  align-items: center;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1219,8 +1236,52 @@ body
   margin-top: 20px;
   height: 210px;
   width: 360px;
+  position: relative;
 }
+.gift-description {
+ 
+  display: flex;
 
+  flex-direction: column;
+  gap: 30px;
+  padding: 53px;
+  display: none;
+}
+.giftMainDesc {
+  font-family: "Mulish";
+  font-weight: 700;
+font-size: 20px;
+line-height: 140%;
+color: #ccc;
+}
+.preDescList {
+  font-family: "Mulish";
+  font-weight: 500;
+font-size: 16px;
+line-height: 140%;
+color: #ccc;
+}
+.infoList {
+  font-family: "Mulish";
+  font-weight: 500;
+font-size: 16px;
+line-height: 140%;
+color: #ccc;
+
+}
+.infoListItem {
+  list-style-type: disc;
+list-style: disc;
+margin-left: 20px;
+width: fit-content;
+}
+.square {
+  font-weight: 400;
+  font-family: "ST-SimpleSquare";
+text-decoration: underline;
+text-decoration-skip-ink: none;
+color: #ab1241;
+}
 .calculator-bg {
   margin-top: 70px;
   width: 360px;
@@ -1345,13 +1406,17 @@ body
 .full-arrows-left {
   margin-left: -80px;
 }
+.b-rail-calc {
+  position: absolute;
+  stroke-width: 0.83px;
+stroke: #252525;
+}
 
 .change-price-left,
 .change-price-right,
 .change-price-left-double,
 .change-price-right-double {
-  width: 48px;
-  height: 33.92px;
+  
   display: flex;
   overflow: hidden;
   position: relative;
@@ -1370,29 +1435,39 @@ body
 .next-arrow:active .right-arrow {
   transform: translateX(5px);
 }
-
-.image-container img {
- 
-  height: 34px;
+.arrow {
+  fill: #252525;
+  stroke-width: 0.83px;
+  stroke: #424242;
+  filter: drop-shadow -1px 0 2px 0 rgba(0, 0, 0, 0.6);
+  position: relative;
 }
+.b-rail {
+  position: absolute;
+bottom: 1.26px;
+z-index: -1;
+}
+.t-rail {
+  position: absolute;
+  top: 1.26px;
+  z-index: -1;
+}
+
+
 .image-container-price {
   width: 100%;
   height: fit-content;
-  overflow: hidden;
+  
   display: flex;
   cursor: pointer;
+  position: relative;
   align-items: center;
+
 }
 
 
-.image-container-price img {
-  position: absolute;
-  height: 63px;
-  width: 63px;
-}
-.image-container {
-  height: 34px;
-}
+
+
 
 .calculator-value {
   z-index: 2;
@@ -1485,10 +1560,7 @@ input[type="number"] {
   z-index: 1;
   color: rgba(96, 165, 206, 0.6);
 }
-.arrow {
-  height: 34px;
-  width: 46px;
-}
+
 
 .price-display-box h1 {
   font-family: "Mulish";
