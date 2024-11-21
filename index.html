@@ -581,6 +581,7 @@
               <div class="prev-arrow"></div>
               <div class="next-arrow">
                 <div class="image-container-price">
+
                   <svg class="t-rail" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8.87061 0.480469L1 0.480469" stroke="#252525" stroke-width="0.83" stroke-linecap="round" />
                   </svg>
@@ -696,7 +697,10 @@
                   </span>
                 </button>
                 <button class="change-price-left">
-                  <span class="image-container">
+                  <span class="image-container-price">
+                    <svg class="t-rail-price" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.87061 0.480469L1 0.480469" stroke="#252525" stroke-width="0.83" stroke-linecap="round" />
+                  </svg>
                     <svg class = "arrow left-arrow" width="24" height="38" viewBox="0 0 24 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g filter="url(#filter0_d_255_2906)">
                         <path d="M21 2H14.697L1 18.962L14.697 35.9239H21L7.30303 18.962L21 2Z" fill="#252525" />
@@ -715,7 +719,7 @@
                         </filter>
                       </defs>
                     </svg>
-                    <svg class="b-rail-calc" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="b-rail-price" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M8.87061 0.480469L1 0.480469" stroke="#252525" stroke-width="0.83" stroke-linecap="round" />
                     </svg>
                    
@@ -724,18 +728,21 @@
                 <div class="calc">
                   <div class="calculator-value">
                     <input
-                      type="number"
+                    type="text"
                       value="0"
                       min="1"
                       max="100000"
                       class="calculator-value-numb"
                       placeholder="минуты"
                     >
-                    <span></span>
+                   
                   </div>
                 </div>
                 <button class="change-price-right">
-                  <span class="image-container">
+                  <span class="image-container-price">
+                    <svg class="t-rail" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.87061 0.480469L1 0.480469" stroke="#252525" stroke-width="0.83" stroke-linecap="round" />
+                    </svg>
                     <svg class="arrow right-arrow" width="25" height="38" viewBox="0 0 25 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g filter="url(#filter0_d_255_2902)">
                         <path d="M3.66699 2H9.97002L23.667 18.962L9.97002 35.9239H3.66699L17.364 18.962L3.66699 2Z" fill="#252525" />
@@ -754,7 +761,9 @@
                         </filter>
                       </defs>
                     </svg>
-                    
+                    <svg class="b-rail" width="10" height="1" viewBox="0 0 10 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.87061 0.480469L1 0.480469" stroke="#252525" stroke-width="0.83" stroke-linecap="round" />
+                    </svg>
                   </span>
                 </button>
                 <button class="change-price-right-double">
@@ -778,8 +787,11 @@
                   draggable="false"
                 >
               </div>
-              <h3>Итого</h3>
-              <h1>3</h1>
+              <div class="summary-wrapper">
+                <h3>Итого</h3>
+                <h1 class="totalPrice">3</h1>
+              </div>
+              
               <button style = "display: none !important;"  class="payment-navigation-btn">
                 <span class="btn-text">Все тарифы</span>
               </button>
@@ -1061,15 +1073,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-
-
-
-
-
-
-
-
 
 </script>
 

@@ -116,7 +116,7 @@ document.addEventListener("click", (event) => {
 // ----------------------------------------------------------MICROPHONE--------------------------------------------------------//
 const slider = document.querySelector(".price-slider");
 const microphone = document.querySelector(".microphone");
-const totalPrice = document.querySelector(".price-display-box h1");
+const totalPrice = document.querySelector(".totalPrice");
 const priceCounters = document.querySelectorAll(".price-top .price-counter");
 const priceCountersPercent = document.querySelectorAll(
   ".price-bottom .price-counter-percent"
@@ -338,13 +338,33 @@ if (slider) {
   });
 }
 
-function updateCalculatorValue(changeAmount) {
+function updateCalculatorValue(amount) {
+
   let currentMinutes = parseInt(calculatorInput.value, 10);
-  currentMinutes += changeAmount;
+
+  if (isNaN(currentMinutes)) {
+    currentMinutes = 0;
+  }
+
+  currentMinutes += amount;
+
   currentMinutes = Math.max(0, Math.min(currentMinutes, 100000));
-  updateDisplay(currentMinutes, true);
+
+  updateDisplay(currentMinutes);
 }
 
+function startUpdating(amount) {
+
+  updateCalculatorValue(amount);
+  timeoutId = setTimeout(() => {
+    startUpdating(amount);
+  }, 100); 
+}
+
+function stopUpdating() {
+ 
+  clearTimeout(timeoutId);
+}
 
 
 // Keep your existing code
@@ -379,7 +399,12 @@ function stopUpdating() {
 }
 
 function handleMouseDown(amount) {
-  // Immediate update on mouse down
+
+  if (isNaN(amount)) {
+    amount = 0; 
+  }
+
+
   updateCalculatorValue(amount);
 
   timeoutId = setTimeout(() => {
@@ -414,14 +439,25 @@ rightArrow.addEventListener("selectstart", (e) => e.preventDefault());
 
 function handleInputChange(e) {
   let minutes = parseInt(e.target.value, 10);
-  if (isNaN(minutes) || minutes < 1) {
+  
+  if (isNaN(minutes)) {
+    if (e.target.value === "минуты") {
+      minutes = 0; // Если текст "минуты", заменяем на 0
+    } else {
+      minutes = 0; // Если не число, сбрасываем на 0
+    }
+  }
+
+  if (minutes < 1) {
     minutes = 0;
   } else if (minutes > 100000) {
     minutes = 100000;
   }
+
+  e.target.value = minutes === 0 ? "минуты" : minutes;  // Если 0, устанавливаем "минуты"
+  
   updateDisplay(minutes);
 }
-
 // Add event listener for the input field
 if (calculatorInput) {
   calculatorInput.addEventListener("input", handleInputChange);
