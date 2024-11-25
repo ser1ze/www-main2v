@@ -438,33 +438,42 @@ leftArrow.addEventListener("selectstart", (e) => e.preventDefault());
 rightArrow.addEventListener("selectstart", (e) => e.preventDefault());
 
 function handleInputChange(e) {
-  let minutes = parseInt(e.target.value, 10);
-  
-  if (isNaN(minutes)) {
-    if (e.target.value === "минуты") {
-      minutes = 0; // Если текст "минуты", заменяем на 0
-    } else {
-      minutes = 0; // Если не число, сбрасываем на 0
-    }
+  let value = e.target.value.replace(/\D/g, "");
+  if (value === "") {
+    updateDisplay(0);
+    return;
   }
-
-  if (minutes < 1) {
-    minutes = 0;
-  } else if (minutes > 100000) {
-    minutes = 100000;
-  }
-
-  e.target.value = minutes === 0 ? "минуты" : minutes;  // Если 0, устанавливаем "минуты"
-  
+  let minutes = Math.max(0, Math.min(parseInt(value, 10), 100000));
+  e.target.value = minutes;
   updateDisplay(minutes);
 }
-// Add event listener for the input field
+
 if (calculatorInput) {
-  calculatorInput.addEventListener("input", handleInputChange);
+  calculatorInput.addEventListener("input", function (e) {
+    if (this.value === "минуты") this.value = "";
+    handleInputChange(e);
+  });
+
+  calculatorInput.addEventListener("focus", function () {
+    if (this.value === "минуты") this.value = "";
+  });
+
   calculatorInput.addEventListener("blur", function () {
-    this.value = Math.max(0, Math.min(parseInt(this.value, 10) || 0, 100000));
+    let value = this.value.replace(/\D/g, "");
+    if (value === "") {
+      this.value = "минуты";
+      updateDisplay(0);
+    } else {
+      let minutes = Math.max(0, Math.min(parseInt(value, 10), 100000));
+      this.value = minutes;
+      updateDisplay(minutes);
+    }
   });
 }
+
+
+
+
 // Initialize
 updateSliderDimensions();
 function animateDisplay() {

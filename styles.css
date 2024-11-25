@@ -9,6 +9,7 @@
 @font-face {
   font-family: Gilroy-light;
   src: url("./fonts/Gilroy-Light.otf");
+
 }
 * {
   padding: 0px;
@@ -197,7 +198,7 @@ html {
 }
 .logo-img.fast-click {
   transform: scale(0.95);
-  filter: brightness(127%);
+ 
 }
 
 .responsive-header {
@@ -522,7 +523,7 @@ html {
 .login:active {
   box-shadow: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.5), inset -2px -2px 4px 0 rgba(0, 0, 0, 0.5);
   background: rgba(123, 123, 123, 0.2);
-  color: #ab1443;
+
 }
 
 .login-text {
@@ -537,15 +538,11 @@ html {
 
 .login:active .login-text {
   transform: scale(0.96);
-  background: #ab1443;
-  background-clip: text;
+ 
 }
 
 .login.fast-click .login-text {
-  background: #ab1443;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  
   transform: scale(0.96);
 }
 .login:focus {
@@ -637,15 +634,16 @@ html {
 .price-range {
   font-weight: 700;
   font-size: 16px;
-  line-height: 120%;
+  line-height: 1;
   text-align: center;
+  letter-spacing: -0.05em;
   color: #424242;
 }
 .rate-btn.active:active {
   background: #20272b !important;
 }
 .rate-btn.active .main-price {
-  font-weight: bold;
+ 
   text-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.9) !important;
 }
 
@@ -678,13 +676,39 @@ html {
   position: absolute;
   top: 1.16px;
   z-index: -1;
-  left: 13px;
+
+
+}
+.t-rail-price-right {
+  position: absolute;
+  top: 2.16px;
+  z-index: -1;
+left: 2.16px;
+}
+.b-rail-price-right {
+  position: absolute;
+  bottom: 2.16px;
+  z-index: -1;
+  left: 2.16px;
 }
 .b-rail-price {
   position: absolute;
   bottom: 1.16px;
   z-index: -1;
-  left: 13px;
+  left: 1.16px;
+ 
+}
+.b-rail-price-left {
+  position: absolute;
+  left: 13.2px;
+  bottom: 2.16px;
+  z-index: -1;
+}
+.t-rail-price-left {
+  position: absolute;
+  top: 2.16px;
+  left: 13.2px;
+  z-index: -1;
 }
 
 
@@ -799,8 +823,8 @@ html {
 .pricing-wrapper .main-price {
   font-weight: 400;
 font-size: 39px;
-line-height: 120%;
-letter-spacing: -0.05em;
+line-height: 1;
+letter-spacing: -0.11em;
   text-align: center;
   color:#A4A4A4;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
@@ -931,13 +955,13 @@ letter-spacing: -0.05em;
 }
 .payment-navigation-btn.active .btn-text {
   color: #4a738c;
-  font-weight: bold;
+  
   
 }
 
 .payment-navigation-btn.active:not(.fast-click) .btn-text {
   color: #37779D;
-  font-weight: bold;
+
 
 }
 
@@ -953,7 +977,7 @@ letter-spacing: -0.05em;
   text-align: center;
   color: #a4a4a4;
   z-index: 200;
- 
+ margin-bottom: 3px;
   text-shadow: 0 0 2px  rgba(0, 0, 0, 0.8);
 }
 
@@ -1142,7 +1166,7 @@ letter-spacing: -0.05em;
 .price-top {
   width: 100%;
   margin-bottom: 10px;
-  padding-right: 3px;
+
 }
 
 .price-bottom {
@@ -1151,18 +1175,20 @@ letter-spacing: -0.05em;
   align-items: center;
   margin-top: 22px;
   width: 100%;
-  padding-right: 3px;
+
+
 }
+
 
 .price-counter,
 .price-counter-percent {
-  font-weight: 700;
+  font-family: "Gilroy";
   font-size: 20px;
-  line-height: 120%;
   text-align: center;
   color: #ccc;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
   opacity: 0.8;
+  letter-spacing: -0.1em;
 }
 .payment-row-wrapper {
   display: flex;
@@ -1194,14 +1220,25 @@ body
   width: 52px;
   text-align: center;
   color: #37779D;
-  
+  letter-spacing: -0.1em;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
 }
 
 .price-middle {
   margin-top: -10px;
-}
 
+}
+.totalPriceWrapper {
+display: flex;
+
+align-items: center;
+justify-content: center;
+
+}
+.totalPrice {
+  text-align: center;
+  letter-spacing: -0.1em;
+}
 .slider {
   position: absolute;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 -4px 8px rgba(0, 0, 0, 0.25);
@@ -1335,8 +1372,9 @@ color: #ab1241;
   display: flex;
   width: 360px;
   padding-top: 24px;
-  justify-content: space-around;
-  gap: 10px;
+  justify-content: center;
+  gap: 50px;
+
 }
 
 .change-price-box img:nth-child(6) {
@@ -1429,11 +1467,7 @@ color: #ab1241;
 .full-arrows-left {
   margin-left: -80px;
 }
-.b-rail-calc {
-  position: absolute;
-  stroke-width: 0.83px;
-stroke: #252525;
-}
+
 
 .change-price-left,
 .change-price-right,
@@ -1474,7 +1508,7 @@ z-index: -1;
   position: absolute;
   top: 1.26px;
   z-index: -1;
-  left: 2px;
+  
 }
 
 
@@ -1507,25 +1541,31 @@ z-index: -1;
     inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
   background: #252525;
   border-radius: 4px;
+  
 }
 
 .calculator-value-numb {
   width: 150px;
   height: 34px;
-  position: relative;
-  padding-top: 0;
-  text-align: center;
-  padding: 4px 8px;
-  box-sizing: border-box;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  border-radius: 4px;
+    position: relative;
+    text-align: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.3s ease-out;
+    box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2),
+                inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
+    background: #252525;
+    font-size: 20px;
 
-  transition: color 0.3s ease-out;
-  box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2),
-    inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
-  background: #252525;
+    text-align: center;
+    color: #b1b1b1;
+    line-height: 1;
+    line-height: 1;
+display: inline-block;
+vertical-align: baseline; /* Выравнивание по базовой линии */
+
+  
+   
 }
 
 .calculator-value-numb:focus {
@@ -1591,7 +1631,7 @@ input[type="number"] {
   font-style: normal;
   font-weight: 700;
   font-size: 48px;
-  line-height: 40px;
+ 
   z-index: 1;
   font-family: "Mulish";
   font-style: normal;
