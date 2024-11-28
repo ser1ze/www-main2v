@@ -234,8 +234,14 @@ let activatedIndices = [];
 
 function updateDisplay(minutes, smooth = false) {
   minutes = Math.max(0, Math.min(minutes, 100000));
+
+  const formattedMinutes =
+    minutes === 0
+      ? "минуты"
+      : minutes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
   if (calculatorInput) {
-    calculatorInput.value = minutes === 0 ? "минуты" : minutes;
+    calculatorInput.value = formattedMinutes;
     resizeInput.call(calculatorInput);
   }
 
@@ -339,7 +345,6 @@ if (slider) {
 }
 
 function updateCalculatorValue(amount) {
-
   let currentMinutes = parseInt(calculatorInput.value, 10);
 
   if (isNaN(currentMinutes)) {
@@ -354,18 +359,15 @@ function updateCalculatorValue(amount) {
 }
 
 function startUpdating(amount) {
-
   updateCalculatorValue(amount);
   timeoutId = setTimeout(() => {
     startUpdating(amount);
-  }, 100); 
+  }, 100);
 }
 
 function stopUpdating() {
- 
   clearTimeout(timeoutId);
 }
-
 
 // Keep your existing code
 const leftArrow = document.querySelector(".change-price-left");
@@ -399,11 +401,9 @@ function stopUpdating() {
 }
 
 function handleMouseDown(amount) {
-
   if (isNaN(amount)) {
-    amount = 0; 
+    amount = 0;
   }
-
 
   updateCalculatorValue(amount);
 
@@ -470,9 +470,6 @@ if (calculatorInput) {
     }
   });
 }
-
-
-
 
 // Initialize
 updateSliderDimensions();
@@ -910,7 +907,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   activateButtonGroup(".payment-navigation-btn", ".btn-text");
   activateButtonGroup(".rate-btn", ".main-price");
- 
 });
 document.querySelectorAll(".card-wrap").forEach((card) => {
   const cardElement = card.querySelector(".card");
@@ -931,4 +927,3 @@ document.querySelectorAll(".card-wrap").forEach((card) => {
     cardElement.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(0px)";
   });
 });
-
