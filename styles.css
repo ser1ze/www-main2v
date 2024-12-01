@@ -513,15 +513,19 @@ html {
   font-weight: 400;
   font-size: 24px;
   line-height: 120%;
+  letter-spacing: 0;
+  width: fit-content;
+ 
   text-align: center;
   transition: box-shadow 0.2s ease, background 0.3s ease;
   max-width: fit-content;
+
   height: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 35px;
-  overflow: hidden;
+  
 }
 
 .login:active {
@@ -592,7 +596,7 @@ html {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-left: 46px;
+  margin-left: 54px;
 }
 .menu-wrapper {
   display: flex;
@@ -638,7 +642,7 @@ html {
   font-size: 16px;
   line-height: 1;
   text-align: center;
-  letter-spacing: 0%;
+ 
   color: #424242;
 }
 .rate-btn.active:active {
@@ -798,6 +802,10 @@ html {
 .home-btn:hover::before {
   opacity: 1;
 }
+.next-arrow {
+
+  user-select: none;
+}
 
 .rate-btn.active:not(.fast-click) .main-price {
   color: #37779d;
@@ -819,10 +827,16 @@ html {
   font-weight: 400;
   font-size: 39px;
   line-height: 1;
-  letter-spacing: 0%;
+ 
+  
+  
   text-align: center;
   color: #a4a4a4;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+}
+.negative {
+  
+  letter-spacing: -0.14em
 }
 .pricing-wrapper {
   display: flex;
@@ -1048,7 +1062,6 @@ html {
 .typing-block-2 {
   font-family: "ST-SimpleSquare" !important;
   width: 380px;
-  letter-spacing: 1px;
   position: relative;
   display: flex;
   font-weight: 400;
@@ -1068,7 +1081,7 @@ html {
   pointer-events: none;
 
   transform: scaleY(-1);
-  letter-spacing: 1px;
+ 
   margin-left: 209px;
 
   width: 380px !important;
@@ -1113,7 +1126,7 @@ html {
 }
 
 .price-bottom {
-  padding-left: 0px;
+  padding-right: 1px;
 }
 
 .price-bottom p {
@@ -1127,7 +1140,7 @@ html {
 .price-top > p:nth-child(4) {
   margin-right: -41px;
   position: relative;
-  left: 3px;
+  left: 1px;
 }
 
 .price-top > p:nth-child(3) {
@@ -1147,7 +1160,7 @@ html {
 .price-bottom > p:nth-child(4) {
   margin-right: -44px;
   position: relative;
-  left: 4px;
+  left: 3px;
 }
 
 .price-top {
@@ -1165,13 +1178,14 @@ html {
 
 .price-counter,
 .price-counter-percent {
-  font-family: "Gilroy";
+ 
   font-size: 20px;
   text-align: center;
   color: #ccc;
+  line-height: 120%;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
   opacity: 0.8;
-  letter-spacing: 0%;
+ 
 }
 .payment-row-wrapper {
   display: flex;
@@ -1196,14 +1210,14 @@ body
 }
 
 .price-counter-active {
-  font-family: "Gilroy";
+  
   font-size: 20px;
   font-weight: 700;
   position: absolute;
   width: 52px;
   text-align: center;
   color: #37779d;
-  letter-spacing: 0%;
+
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
 }
 
@@ -1273,6 +1287,7 @@ body
   cursor: pointer;
   z-index: 2;
   margin-left: -1.8px;
+  margin-top: 0.3px;
 }
 
 .calculator-box {
@@ -2100,8 +2115,12 @@ body
   z-index: 0;
 }
 * {
-  font-family: Arial, sans-serif;
+  
+    font-family: "Arial", "Helvetica", "Verdana", sans-serif;
 }
+
+
+
 
 #timer-circle {
   width: 150px;

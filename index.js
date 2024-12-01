@@ -163,13 +163,13 @@ function updateSliderDimensions() {
     SLIDER_WIDTH = 1125;
     isRotated = false;
   } else if (windowWidth <= 1000 && windowWidth > 700) {
-    SLIDER_WIDTH = 920; // Adjust this value as needed
+    SLIDER_WIDTH = 920; 
     isRotated = false;
   } else if (windowWidth <= 700 && windowWidth > 480) {
-    SLIDER_WIDTH = 700; // Adjust this value as needed
+    SLIDER_WIDTH = 700; 
     isRotated = false;
   } else if (windowWidth <= 480 && windowWidth > 425) {
-    SLIDER_WIDTH = 340; // Adjust this value as needed
+    SLIDER_WIDTH = 340; 
     isRotated = false;
   } else {
     SLIDER_WIDTH = 340;
@@ -177,7 +177,7 @@ function updateSliderDimensions() {
     isRotated = true;
   }
 
-  // Recalculate widths for each range
+ 
   let totalPercentage = PRICE_RANGES.reduce(
     (sum, range) => sum + range.widthPercentage,
     0
@@ -208,7 +208,7 @@ function calculateMinutes(position) {
     }
     accumulatedWidth += range.width;
   }
-  return 100000; // Max value
+  return 100000;
 }
 
 function calculatePrice(minutes) {
@@ -232,9 +232,11 @@ function calculateDiscount(minutes) {
 let lastActiveIndex = -1;
 let activatedIndices = [];
 
-function updateDisplay(minutes, smooth = false) {
-  minutes = Math.max(0, Math.min(minutes, 100000));
 
+function updateDisplay(minutes, smooth = false) {
+  minutes = Math.max(0, Math.min(minutes, 100000)); 
+
+  
   const formattedMinutes =
     minutes === 0
       ? "минуты"
@@ -251,6 +253,7 @@ function updateDisplay(minutes, smooth = false) {
   const price = currentRange.price;
   const discount = currentRange.discount;
 
+  
   if (totalPrice) {
     const formattedPrice = (price * minutes)
       .toFixed(0)
@@ -258,8 +261,10 @@ function updateDisplay(minutes, smooth = false) {
     totalPrice.textContent = formattedPrice;
   }
 
+  
   const position = calculatePosition(minutes);
   updatePositions(position, smooth);
+
 
   if (activePriceCounter) {
     activePriceCounter.textContent = price + " ₽";
@@ -312,7 +317,7 @@ function moveMicrophone(e, smooth = false) {
     position = Math.max(0, Math.min(position, SLIDER_WIDTH));
   }
 
-  // Directly update microphone position for instant movement
+  
   updatePositions(position, smooth);
 
   const minutes = calculateMinutes(position);
@@ -324,7 +329,7 @@ if (microphone) {
     e.preventDefault();
 
     function onMouseMove(e) {
-      moveMicrophone(e, false); // No smooth transition during drag
+      moveMicrophone(e, false); 
     }
 
     document.addEventListener("mousemove", onMouseMove);
@@ -340,12 +345,12 @@ if (microphone) {
 
 if (slider) {
   slider.addEventListener("click", (e) => {
-    moveMicrophone(e, true); // Smooth transition on direct slider click
+    moveMicrophone(e, true); 
   });
 }
 
 function updateCalculatorValue(amount) {
-  let currentMinutes = parseInt(calculatorInput.value, 10);
+  let currentMinutes = parseInt(calculatorInput.value.replace(/\D/g, ""), 10); 
 
   if (isNaN(currentMinutes)) {
     currentMinutes = 0;
@@ -353,10 +358,12 @@ function updateCalculatorValue(amount) {
 
   currentMinutes += amount;
 
+  
   currentMinutes = Math.max(0, Math.min(currentMinutes, 100000));
 
   updateDisplay(currentMinutes);
 }
+
 
 function startUpdating(amount) {
   updateCalculatorValue(amount);
@@ -377,9 +384,9 @@ const doubleRightArrow = document.querySelector(".change-price-right-double");
 
 let intervalId = null;
 let timeoutId = null;
-const updateInterval = 100; // 10 times per second
-const holdDelay = 500; // 0.5 seconds
-const updateAmount = 1;
+const updateInterval = 100; 
+const holdDelay = 500; 
+let updateAmount = 1;
 
 function startUpdating(amount) {
   if (intervalId === null) {
@@ -388,7 +395,6 @@ function startUpdating(amount) {
     }, updateInterval);
   }
 }
-
 function stopUpdating() {
   if (intervalId !== null) {
     clearInterval(intervalId);
@@ -405,8 +411,10 @@ function handleMouseDown(amount) {
     amount = 0;
   }
 
+
   updateCalculatorValue(amount);
 
+  
   timeoutId = setTimeout(() => {
     startUpdating(amount);
   }, holdDelay);
@@ -415,7 +423,6 @@ function handleMouseDown(amount) {
 function handleMouseUp() {
   stopUpdating();
 }
-
 if (doubleLeftArrow)
   doubleLeftArrow.addEventListener("click", () => updateCalculatorValue(-10));
 if (doubleRightArrow)
@@ -427,16 +434,16 @@ if (leftArrow) {
   leftArrow.addEventListener("mouseleave", handleMouseUp);
 }
 
+
 if (rightArrow) {
   rightArrow.addEventListener("mousedown", () => handleMouseDown(updateAmount));
   rightArrow.addEventListener("mouseup", handleMouseUp);
   rightArrow.addEventListener("mouseleave", handleMouseUp);
 }
 
-// Prevent text selection during rapid clicking
+
 leftArrow.addEventListener("selectstart", (e) => e.preventDefault());
 rightArrow.addEventListener("selectstart", (e) => e.preventDefault());
-
 function handleInputChange(e) {
   let value = e.target.value.replace(/\D/g, "");
   if (value === "") {
@@ -927,3 +934,5 @@ document.querySelectorAll(".card-wrap").forEach((card) => {
     cardElement.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(0px)";
   });
 });
+
+
