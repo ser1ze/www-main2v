@@ -888,7 +888,7 @@ html {
 .rate-btn, .home-btn {
   opacity: 0;
   visibility: hidden;
-  transform: rotateX(90deg) translateY(-20px);
+  transform: rotateX(90deg) translateY(-10px);
   animation-name: swingdown;
   animation-duration: 1s;
   animation-timing-function: ease;
@@ -915,16 +915,16 @@ html {
 @keyframes swingdown {
   0% {
     opacity: 0;
-    transform: rotateX(90deg) translateY(-20px);
+    transform: rotateX(90deg) translateY(-50px);
   }
 
   30% {
     opacity: 1;
-    transform: rotateX(-10deg) rotateY(3deg) translateY(5px);
+    transform: rotateX(-20deg) rotateY(5deg) translateY(10px);
   }
 
   65% {
-    transform: rotateX(10deg) rotateY(-2deg) translateY(0);
+    transform: rotateX(20deg) rotateY(-3deg) translateY(0);
   }
 
   100% {
@@ -959,7 +959,6 @@ html {
 .home-btn.active .icon-path {
   fill: #37779d;
 }
-
 
 
 
