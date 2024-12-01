@@ -888,7 +888,7 @@ html {
 .rate-btn, .home-btn {
   opacity: 0;
   visibility: hidden;
-  transform: rotateX(90deg);
+  transform: rotateX(90deg) translateY(-20px);
   animation-name: swingdown;
   animation-duration: 1s;
   animation-timing-function: ease;
@@ -901,35 +901,35 @@ html {
 }
 
 .rate-btn:nth-child(2), .home-btn:nth-child(2) {
-  animation-delay: 0.5s; /* Уменьшена задержка до 0.5 секунды */
+  animation-delay: 0.5s;
 }
 
 .rate-btn:nth-child(3), .home-btn:nth-child(3) {
-  animation-delay: 1s; /* Уменьшена задержка до 1 секунды */
+  animation-delay: 1s;
 }
 
 .rate-btn:nth-child(4), .home-btn:nth-child(4) {
-  animation-delay: 1.5s; /* Уменьшена задержка до 1.5 секунды */
+  animation-delay: 1.5s;
 }
 
 @keyframes swingdown {
   0% {
     opacity: 0;
-    transform: rotateX(90deg);
+    transform: rotateX(90deg) translateY(-20px);
   }
 
   30% {
     opacity: 1;
-    transform: rotateX(-20deg) rotateY(5deg);
+    transform: rotateX(-10deg) rotateY(3deg) translateY(5px);
   }
 
   65% {
-    transform: rotateX(20deg) rotateY(-3deg);
+    transform: rotateX(10deg) rotateY(-2deg) translateY(0);
   }
 
   100% {
     opacity: 1;
-    transform: rotateX(0);
+    transform: rotateX(0) translateY(0);
     visibility: visible;
   }
 }
@@ -959,6 +959,9 @@ html {
 .home-btn.active .icon-path {
   fill: #37779d;
 }
+
+
+
 
 
 
