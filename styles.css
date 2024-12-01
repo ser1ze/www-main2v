@@ -668,6 +668,7 @@ html {
   justify-content: center;
   transition: transform 300ms ease;
   will-change: transform, color;
+  font-family: "Gilroy" !important;
 }
 
 .main-price.fast-click {
@@ -1259,7 +1260,7 @@ html {
 
 .price-counter,
 .price-counter-percent {
- 
+ font-family: "Gilroy" !important;
   font-size: 20px;
   text-align: center;
   color: #ccc;
