@@ -803,7 +803,7 @@ html {
   opacity: 1;
 }
 .next-arrow {
-
+  -webkit-user-select: none;
   user-select: none;
 }
 
