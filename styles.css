@@ -882,7 +882,7 @@ html {
 }
 
 .menu-wrapper {
-  perspective: 800px;
+  perspective: 600px;
   position: relative;
 }
 
@@ -891,7 +891,8 @@ html {
   transform-style: preserve-3d;
 }
 
-.rate-btn {
+.rate-btn,
+.home-btn {
   opacity: 0;
   visibility: hidden;
   transform: rotateX(90deg) translateY(-20px);
@@ -926,13 +927,11 @@ html {
     transform: rotateX(90deg) translateY(-20px);
   }
   30% {
-    opacity: 1;
-    transform: rotateX(-20deg) rotateY(5deg);
-    animation-timing-function: ease-in-out;
+    opacity: 0.5;
+    transform: rotateX(90deg) translateY(-20px) rotateY(5deg);
   }
   65% {
-    transform: rotateX(20deg) rotateY(-3deg);
-    animation-timing-function: ease-in-out;
+    transform: rotateX(-20deg) rotateY(-3deg);
   }
   100% {
     opacity: 1;
