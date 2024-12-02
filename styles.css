@@ -515,7 +515,7 @@ html {
   line-height: 120%;
   letter-spacing: 0;
   width: fit-content;
- 
+
   text-align: center;
   transition: box-shadow 0.2s ease, background 0.3s ease;
   max-width: fit-content;
@@ -525,7 +525,6 @@ html {
   justify-content: center;
   align-items: center;
   padding: 0 35px;
-  
 }
 
 .login:active {
@@ -642,7 +641,7 @@ html {
   font-size: 16px;
   line-height: 1;
   text-align: center;
- 
+
   color: #424242;
 }
 .rate-btn.active:active {
@@ -828,16 +827,12 @@ html {
   font-weight: 400;
   font-size: 39px;
   line-height: 1;
- 
-  
-  
   text-align: center;
   color: #a4a4a4;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
 }
 .negative {
-  
-  letter-spacing: -0.14em
+  letter-spacing: -0.14em;
 }
 .pricing-wrapper {
   display: flex;
@@ -885,86 +880,66 @@ html {
     inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
   background: #20272b;
 }
-.rate-btn, .home-btn {
+
+.menu-wrapper {
+  perspective: 800px;
+  position: relative;
+}
+
+.pricing-menu {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.rate-btn {
   opacity: 0;
   visibility: hidden;
-  transform: rotateX(90deg) translateY(-10px);
+  transform: rotateX(90deg) translateY(-20px);
   animation-name: swingdown;
   animation-duration: 1s;
   animation-timing-function: ease;
   animation-fill-mode: forwards;
   height: 68px;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
 }
 
-.rate-btn:nth-child(1), .home-btn:nth-child(1) {
+.rate-btn:nth-child(1) {
   animation-delay: 0s;
 }
 
-.rate-btn:nth-child(2), .home-btn:nth-child(2) {
+.rate-btn:nth-child(2) {
   animation-delay: 0.5s;
 }
 
-.rate-btn:nth-child(3), .home-btn:nth-child(3) {
+.rate-btn:nth-child(3) {
   animation-delay: 1s;
 }
 
-.rate-btn:nth-child(4), .home-btn:nth-child(4) {
+.rate-btn:nth-child(4) {
   animation-delay: 1.5s;
 }
 
 @keyframes swingdown {
   0% {
     opacity: 0;
-    transform: rotateX(90deg) translateY(-50px);
+    transform: rotateX(90deg) translateY(-20px);
   }
-
   30% {
     opacity: 1;
-    transform: rotateX(-20deg) rotateY(5deg) translateY(10px);
+    transform: rotateX(-20deg) rotateY(5deg);
+    animation-timing-function: ease-in-out;
   }
-
   65% {
-    transform: rotateX(20deg) rotateY(-3deg) translateY(0);
+    transform: rotateX(20deg) rotateY(-3deg);
+    animation-timing-function: ease-in-out;
   }
-
   100% {
     opacity: 1;
     transform: rotateX(0) translateY(0);
     visibility: visible;
   }
 }
-
-.rate-btn.active, .home-btn.active {
-  background: #20272b;
-  box-shadow: inset 2px 2px 4px 0 #151f25, inset -2px -2px 4px 0 #151f25;
-  transform: scale(0.95);
-}
-
-.rate-btn.active.fast-click, .home-btn.active.fast-click {
-  background: #20272b;
-  box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2), inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
-  transform: scale(0.95);
-}
-
-.home-btn svg {
-  transition: transform 300ms ease;
-  will-change: transform, color;
-  height: 40px;
-}
-
-.home-btn .icon-path {
-  fill: #a4a4a4;
-}
-
-.home-btn.active .icon-path {
-  fill: #37779d;
-}
-
-
-
-
-
-
 
 .payment-navigation {
   display: flex;
@@ -1162,7 +1137,7 @@ html {
   pointer-events: none;
 
   transform: scaleY(-1);
- 
+
   margin-left: 209px;
 
   width: 380px !important;
@@ -1259,14 +1234,13 @@ html {
 
 .price-counter,
 .price-counter-percent {
- font-family: "Gilroy" !important;
+  font-family: "Gilroy" !important;
   font-size: 20px;
   text-align: center;
   color: #ccc;
   line-height: 120%;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
   opacity: 0.8;
- 
 }
 .payment-row-wrapper {
   display: flex;
@@ -2196,12 +2170,8 @@ body
   z-index: 0;
 }
 * {
-  
-    font-family: "Arial", "Helvetica", "Verdana", sans-serif;
+  font-family: "Arial", "Helvetica", "Verdana", sans-serif;
 }
-
-
-
 
 #timer-circle {
   width: 150px;
