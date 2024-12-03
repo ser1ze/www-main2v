@@ -128,6 +128,7 @@ const activePriceCounterPercent = document.querySelector(
   ".microphone .price-counter-active:last-child"
 );
 const calculatorInput = document.querySelector(".calculator-value input");
+
 const styles = `
 .microphone, .microphone-glow {
     transition: none;
@@ -140,12 +141,11 @@ const styles = `
     transition: transform 0.2s ease-out;
 }
 `;
-
-// Add the styles to the document
 const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = styles;
 document.head.appendChild(styleSheet);
+
 let SLIDER_WIDTH = 1125; // Default width, will be updated based on window size
 let SLIDER_HEIGHT = 0; // Will be used for the rotated slider
 let isRotated = false; // Flag to check if the slider is rotated
@@ -231,6 +231,28 @@ function calculateDiscount(minutes) {
 let lastActiveIndex = -1;
 let activatedIndices = [];
 
+function calculateTotalPrice(minutes) {
+  let total = 0;
+  let remainingMinutes = minutes;
+
+  for (let i = 0; i < PRICE_RANGES.length; i++) {
+    const range = PRICE_RANGES[i];
+    const prevMax = i > 0 ? PRICE_RANGES[i - 1].max : 0;
+    const rangeMinutes = range.max - prevMax;
+
+    if (remainingMinutes > rangeMinutes) {
+      total += rangeMinutes * range.price;
+      remainingMinutes -= rangeMinutes;
+    } else {
+      total += remainingMinutes * range.price;
+      remainingMinutes = 0;
+      break;
+    }
+  }
+
+  return total;
+}
+
 function updateDisplay(minutes, smooth = false) {
   minutes = Math.max(0, Math.min(minutes, 100000));
 
@@ -241,7 +263,10 @@ function updateDisplay(minutes, smooth = false) {
 
   if (calculatorInput) {
     calculatorInput.value = formattedMinutes;
-    resizeInput.call(calculatorInput);
+    // Assuming resizeInput is defined elsewhere
+    if (typeof resizeInput === 'function') {
+      resizeInput.call(calculatorInput);
+    }
   }
 
   const currentRange =
@@ -251,7 +276,7 @@ function updateDisplay(minutes, smooth = false) {
   const discount = currentRange.discount;
 
   if (totalPrice) {
-    const totalPriceValue = price * minutes;
+    const totalPriceValue = calculateTotalPrice(minutes);
     const formattedPrice =
       totalPriceValue === 0
         ? "0 Рублей"
@@ -287,6 +312,7 @@ function moveMicrophone(e, smooth = false) {
   const minutes = calculateMinutes(position);
   updateDisplay(minutes, smooth);
 }
+
 function calculatePosition(minutes) {
   let accumulatedWidth = 0;
   for (let range of PRICE_RANGES) {
@@ -303,30 +329,12 @@ function calculatePosition(minutes) {
   return SLIDER_WIDTH;
 }
 
-function moveMicrophone(e, smooth = false) {
-  if (!slider) return;
-  const rect = slider.getBoundingClientRect();
-  let position;
-  if (isRotated) {
-    position = e.clientY - rect.top;
-    position = Math.max(0, Math.min(position, SLIDER_HEIGHT));
-  } else {
-    position = e.clientX - rect.left;
-    position = Math.max(0, Math.min(position, SLIDER_WIDTH));
-  }
-
-  updatePositions(position, smooth);
-
-  const minutes = calculateMinutes(position);
-  updateDisplay(minutes, smooth);
-}
-
 if (microphone) {
   microphone.addEventListener("mousedown", (e) => {
     e.preventDefault();
 
-    function onMouseMove(e) {
-      moveMicrophone(e, false);
+    function onMouseMove(eMove) {
+      moveMicrophone(eMove, false);
     }
 
     document.addEventListener("mousemove", onMouseMove);
@@ -360,6 +368,8 @@ function updateCalculatorValue(amount) {
   updateDisplay(currentMinutes);
 }
 
+let timeoutId = null;
+
 function startUpdating(amount) {
   updateCalculatorValue(amount);
   timeoutId = setTimeout(() => {
@@ -371,25 +381,26 @@ function stopUpdating() {
   clearTimeout(timeoutId);
 }
 
-// Keep your existing code
 const leftArrow = document.querySelector(".change-price-left");
 const rightArrow = document.querySelector(".change-price-right");
 const doubleLeftArrow = document.querySelector(".change-price-left-double");
 const doubleRightArrow = document.querySelector(".change-price-right-double");
 
+const changeTotalPriceLeft = document.querySelector(".change-total-price-left");
+const changeTotalPriceRight = document.querySelector(".change-total-price-right");
+
 let intervalId = null;
 let holdTimeoutId = null;
 let quadrupleSpeedTimeoutId = null;
 
-
-const updateInterval = 100; 
-const holdDelay = 500; 
-const quadrupleSpeedDelay = 3000; 
-const normalAmount = 1; 
-const quadrupleAmount = 20;
+const updateInterval = 100; // Интервал обновления в миллисекундах
+const holdDelay = 500; // Задержка перед началом автоматического обновления
+const quadrupleSpeedDelay = 3000; // Задержка перед увеличением скорости обновления
+const normalAmount = 1; // Шаг при обычном обновлении
+const quadrupleAmount = 20; // Шаг при увеличенной скорости обновления
 
 /**
- 
+ * 
  * @param {number} amount 
  * @param {number} multiplier 
  */
@@ -400,9 +411,6 @@ function startUpdatingAuto(amount, multiplier = 1) {
   }, updateInterval);
 }
 
-/**
- * Stops any ongoing auto-updating.
- */
 function stopUpdatingAuto() {
   if (intervalId !== null) {
     clearInterval(intervalId);
@@ -419,18 +427,18 @@ function stopUpdatingAuto() {
 }
 
 /**
- * Handles the mouse down event on an arrow button.
- * @param {number} amount - The amount to change the minutes by on each update.
+ * Обработчик нажатия кнопок изменения минут.
+ * @param {number} amount 
  */
 function handleArrowMouseDown(amount) {
-  // Immediately update once
+  
   updateCalculatorValue(amount);
 
-  // Start hold timeout to begin auto-updating after holdDelay
+ 
   holdTimeoutId = setTimeout(() => {
     startUpdatingAuto(amount);
 
-    
+   
     quadrupleSpeedTimeoutId = setTimeout(() => {
       stopUpdatingAuto(); 
       startUpdatingAuto(amount, quadrupleAmount); 
@@ -438,11 +446,12 @@ function handleArrowMouseDown(amount) {
   }, holdDelay);
 }
 
-
+/**
+ * Обработчик отпускания кнопок изменения минут.
+ */
 function handleArrowMouseUp() {
   stopUpdatingAuto();
 }
-
 
 if (leftArrow) {
   leftArrow.addEventListener("mousedown", () => handleArrowMouseDown(-1));
@@ -456,7 +465,6 @@ if (rightArrow) {
   rightArrow.addEventListener("mouseleave", handleArrowMouseUp);
 }
 
-
 if (doubleLeftArrow) {
   doubleLeftArrow.addEventListener("click", () => updateCalculatorValue(-10));
 }
@@ -464,12 +472,15 @@ if (doubleRightArrow) {
   doubleRightArrow.addEventListener("click", () => updateCalculatorValue(10));
 }
 
-
 if (leftArrow && rightArrow) {
   leftArrow.addEventListener("selectstart", (e) => e.preventDefault());
   rightArrow.addEventListener("selectstart", (e) => e.preventDefault());
 }
 
+/**
+ * Обработчик изменения ввода в поле минут.
+ * @param {Event} e 
+ */
 function handleInputChange(e) {
   let value = e.target.value.replace(/\D/g, "");
   if (value === "") {
@@ -504,8 +515,188 @@ if (calculatorInput) {
   });
 }
 
-// Initialize
+/**
+ * Функция для изменения итоговой стоимости.
+ * @param {number} amount - Сумма, на которую изменяется итоговая стоимость.
+ */
+function adjustTotalPrice(amount) {
+    let currentTotalPrice = parseInt(totalPrice.textContent.replace(/\D/g, ''), 10);
+
+    if (isNaN(currentTotalPrice)) {
+        currentTotalPrice = 0;
+    }
+
+    let newTotalPrice = currentTotalPrice + amount;
+
+  
+    newTotalPrice = Math.max(0, Math.min(newTotalPrice, calculateTotalPrice(100000))); 
+
+    let newMinutes = calculateMinutesFromTotalPrice(newTotalPrice);
+
+    
+    newMinutes = Math.max(0, Math.min(newMinutes, 100000));
+
+    updateDisplay(newMinutes);
+}
+
+function calculateMinutesFromTotalPrice(desiredTotalPrice) {
+    let remainingPrice = desiredTotalPrice;
+    let calculatedMinutes = 0;
+
+    for (let i = 0; i < PRICE_RANGES.length; i++) {
+        const range = PRICE_RANGES[i];
+        const prevMax = i > 0 ? PRICE_RANGES[i - 1].max : 0;
+        const rangeMinutes = range.max - prevMax;
+        const rangePrice = range.price;
+        const rangeTotalPrice = rangeMinutes * rangePrice;
+
+        if (remainingPrice >= rangeTotalPrice) {
+            calculatedMinutes += rangeMinutes;
+            remainingPrice -= rangeTotalPrice;
+        } else {
+            calculatedMinutes += Math.floor(remainingPrice / rangePrice);
+            remainingPrice = 0;
+            break;
+        }
+    }
+
+    return Math.round(calculatedMinutes);
+}
+
+if (changeTotalPriceLeft) {
+    changeTotalPriceLeft.addEventListener("click", () => adjustTotalPrice(-10)); 
+
+    // Добавляем поддержку зажатия для уменьшения
+    let totalPriceIntervalId = null;
+    let totalPriceHoldTimeoutId = null;
+    let totalPriceQuadrupleSpeedTimeoutId = null;
+
+    const totalPriceUpdateInterval = 100; 
+    const totalPriceHoldDelay = 500; 
+    const totalPriceQuadrupleSpeedDelay = 3000; 
+    const totalPriceNormalAmount = -10; 
+    const totalPriceQuadrupleAmount = -50;
+
+    function startTotalPriceUpdatingAuto(amount, multiplier = 1) {
+      if (totalPriceIntervalId !== null) return; 
+      totalPriceIntervalId = setInterval(() => {
+          adjustTotalPrice(amount * multiplier);
+      }, totalPriceUpdateInterval);
+    }
+
+    function stopTotalPriceUpdatingAuto() {
+      if (totalPriceIntervalId !== null) {
+          clearInterval(totalPriceIntervalId);
+          totalPriceIntervalId = null;
+      }
+      if (totalPriceHoldTimeoutId !== null) {
+          clearTimeout(totalPriceHoldTimeoutId);
+          totalPriceHoldTimeoutId = null;
+      }
+      if (totalPriceQuadrupleSpeedTimeoutId !== null) {
+          clearTimeout(totalPriceQuadrupleSpeedTimeoutId);
+          totalPriceQuadrupleSpeedTimeoutId = null;
+      }
+    }
+
+    changeTotalPriceLeft.addEventListener("mousedown", () => {
+        adjustTotalPrice(totalPriceNormalAmount);
+        totalPriceHoldTimeoutId = setTimeout(() => {
+            startTotalPriceUpdatingAuto(totalPriceNormalAmount);
+
+            totalPriceQuadrupleSpeedTimeoutId = setTimeout(() => {
+                stopTotalPriceUpdatingAuto(); 
+                startTotalPriceUpdatingAuto(totalPriceQuadrupleAmount); 
+            }, totalPriceQuadrupleSpeedDelay);
+        }, totalPriceHoldDelay);
+    });
+
+    changeTotalPriceLeft.addEventListener("mouseup", stopTotalPriceUpdatingAuto);
+    changeTotalPriceLeft.addEventListener("mouseleave", stopTotalPriceUpdatingAuto);
+}
+
+if (changeTotalPriceRight) {
+    changeTotalPriceRight.addEventListener("click", () => adjustTotalPrice(10)); 
+
+    // Добавляем поддержку зажатия для увеличения
+    let totalPriceIntervalIdRight = null;
+    let totalPriceHoldTimeoutIdRight = null;
+    let totalPriceQuadrupleSpeedTimeoutIdRight = null;
+
+    const totalPriceUpdateIntervalRight = 100; 
+    const totalPriceHoldDelayRight = 500; 
+    const totalPriceQuadrupleSpeedDelayRight = 3000; 
+    const totalPriceNormalAmountRight = 10; 
+    const totalPriceQuadrupleAmountRight = 50;
+
+    function startTotalPriceUpdatingAutoRight(amount, multiplier = 1) {
+      if (totalPriceIntervalIdRight !== null) return; 
+      totalPriceIntervalIdRight = setInterval(() => {
+          adjustTotalPrice(amount * multiplier);
+      }, totalPriceUpdateIntervalRight);
+    }
+
+    function stopTotalPriceUpdatingAutoRight() {
+      if (totalPriceIntervalIdRight !== null) {
+          clearInterval(totalPriceIntervalIdRight);
+          totalPriceIntervalIdRight = null;
+      }
+      if (totalPriceHoldTimeoutIdRight !== null) {
+          clearTimeout(totalPriceHoldTimeoutIdRight);
+          totalPriceHoldTimeoutIdRight = null;
+      }
+      if (totalPriceQuadrupleSpeedTimeoutIdRight !== null) {
+          clearTimeout(totalPriceQuadrupleSpeedTimeoutIdRight);
+          totalPriceQuadrupleSpeedTimeoutIdRight = null;
+      }
+    }
+
+    changeTotalPriceRight.addEventListener("mousedown", () => {
+        adjustTotalPrice(totalPriceNormalAmountRight);
+        totalPriceHoldTimeoutIdRight = setTimeout(() => {
+            startTotalPriceUpdatingAutoRight(totalPriceNormalAmountRight);
+
+            totalPriceQuadrupleSpeedTimeoutIdRight = setTimeout(() => {
+                stopTotalPriceUpdatingAutoRight(); 
+                startTotalPriceUpdatingAutoRight(totalPriceQuadrupleAmountRight); 
+            }, totalPriceQuadrupleSpeedDelayRight);
+        }, totalPriceHoldDelayRight);
+    });
+
+    changeTotalPriceRight.addEventListener("mouseup", stopTotalPriceUpdatingAutoRight);
+    changeTotalPriceRight.addEventListener("mouseleave", stopTotalPriceUpdatingAutoRight);
+}
+
+/**
+ * Функция для расчета итоговой стоимости на основе количества минут.
+ * @param {number} minutes 
+ * @returns {number} totalPrice
+ */
+function calculateTotalPrice(minutes) {
+  let total = 0;
+  let remainingMinutes = minutes;
+
+  for (let i = 0; i < PRICE_RANGES.length; i++) {
+    const range = PRICE_RANGES[i];
+    const prevMax = i > 0 ? PRICE_RANGES[i - 1].max : 0;
+    const rangeMinutes = range.max - prevMax;
+
+    if (remainingMinutes > rangeMinutes) {
+      total += rangeMinutes * range.price;
+      remainingMinutes -= rangeMinutes;
+    } else {
+      total += remainingMinutes * range.price;
+      remainingMinutes = 0;
+      break;
+    }
+  }
+
+  return total;
+}
+
+// Инициализация
 updateSliderDimensions();
+
 function animateDisplay() {
   const phases = [{ start: 1000, end: 0, duration: 1500 }];
 
@@ -541,14 +732,15 @@ function animateDisplay() {
   requestAnimationFrame(update);
 }
 
-// Usage
 animateDisplay();
 
-// Add event listener for window resize
 window.addEventListener("resize", () => {
   updateSliderDimensions();
-  updateDisplay(calculateMinutes(parseFloat(microphone.style.left)));
+  const currentPosition = parseFloat(microphone.style.left) || 0;
+  const minutes = calculateMinutes(currentPosition);
+  updateDisplay(minutes);
 });
+
 
 //-------------------------------------------------------TEXT ANIMATION--------------------------------------------------//
 const phrases = [

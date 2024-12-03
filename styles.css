@@ -895,7 +895,7 @@ html {
 .home-btn {
   opacity: 0;
   visibility: hidden;
-  transform: rotateX(90deg) translateY(-20px);
+  transform: rotateX(15deg) translateY(0px);
   animation-name: swingdown;
   animation-duration: 1s;
   animation-timing-function: ease;
@@ -924,11 +924,11 @@ html {
 @keyframes swingdown {
   0% {
     opacity: 0;
-    transform: rotateX(90deg) translateY(-20px);
+    transform: rotateX(15deg) translateY(0px);
   }
   30% {
     opacity: 0.5;
-    transform: rotateX(90deg) translateY(-20px) rotateY(5deg);
+    transform: rotateX(90deg) translateY(0px) rotateY(5deg);
   }
   65% {
     transform: rotateX(-20deg) rotateY(-3deg);
@@ -1355,7 +1355,7 @@ body
 
   flex-direction: column;
   gap: 30px;
-  padding: 54px;
+  padding: 53px;
   display: none;
 }
 .giftMainDesc {
