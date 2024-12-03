@@ -263,7 +263,6 @@ function updateDisplay(minutes, smooth = false) {
 
   if (calculatorInput) {
     calculatorInput.value = formattedMinutes;
-    // Assuming resizeInput is defined elsewhere
     if (typeof resizeInput === 'function') {
       resizeInput.call(calculatorInput);
     }
@@ -393,11 +392,11 @@ let intervalId = null;
 let holdTimeoutId = null;
 let quadrupleSpeedTimeoutId = null;
 
-const updateInterval = 100; // Интервал обновления в миллисекундах
-const holdDelay = 500; // Задержка перед началом автоматического обновления
-const quadrupleSpeedDelay = 3000; // Задержка перед увеличением скорости обновления
-const normalAmount = 1; // Шаг при обычном обновлении
-const quadrupleAmount = 20; // Шаг при увеличенной скорости обновления
+const updateInterval = 100; 
+const holdDelay = 500; 
+const quadrupleSpeedDelay = 3000; 
+const normalAmount = 1; 
+const quadrupleAmount = 20; 
 
 /**
  * 
@@ -427,7 +426,7 @@ function stopUpdatingAuto() {
 }
 
 /**
- * Обработчик нажатия кнопок изменения минут.
+ * 
  * @param {number} amount 
  */
 function handleArrowMouseDown(amount) {
@@ -446,9 +445,7 @@ function handleArrowMouseDown(amount) {
   }, holdDelay);
 }
 
-/**
- * Обработчик отпускания кнопок изменения минут.
- */
+
 function handleArrowMouseUp() {
   stopUpdatingAuto();
 }
@@ -478,7 +475,7 @@ if (leftArrow && rightArrow) {
 }
 
 /**
- * Обработчик изменения ввода в поле минут.
+ * 
  * @param {Event} e 
  */
 function handleInputChange(e) {
@@ -516,8 +513,8 @@ if (calculatorInput) {
 }
 
 /**
- * Функция для изменения итоговой стоимости.
- * @param {number} amount - Сумма, на которую изменяется итоговая стоимость.
+ * 
+ * @param {number} amount
  */
 function adjustTotalPrice(amount) {
     let currentTotalPrice = parseInt(totalPrice.textContent.replace(/\D/g, ''), 10);
@@ -566,7 +563,6 @@ function calculateMinutesFromTotalPrice(desiredTotalPrice) {
 if (changeTotalPriceLeft) {
     changeTotalPriceLeft.addEventListener("click", () => adjustTotalPrice(-10)); 
 
-    // Добавляем поддержку зажатия для уменьшения
     let totalPriceIntervalId = null;
     let totalPriceHoldTimeoutId = null;
     let totalPriceQuadrupleSpeedTimeoutId = null;
@@ -618,7 +614,6 @@ if (changeTotalPriceLeft) {
 if (changeTotalPriceRight) {
     changeTotalPriceRight.addEventListener("click", () => adjustTotalPrice(10)); 
 
-    // Добавляем поддержку зажатия для увеличения
     let totalPriceIntervalIdRight = null;
     let totalPriceHoldTimeoutIdRight = null;
     let totalPriceQuadrupleSpeedTimeoutIdRight = null;
@@ -668,7 +663,7 @@ if (changeTotalPriceRight) {
 }
 
 /**
- * Функция для расчета итоговой стоимости на основе количества минут.
+ * 
  * @param {number} minutes 
  * @returns {number} totalPrice
  */
@@ -694,7 +689,6 @@ function calculateTotalPrice(minutes) {
   return total;
 }
 
-// Инициализация
 updateSliderDimensions();
 
 function animateDisplay() {
