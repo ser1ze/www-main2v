@@ -236,7 +236,7 @@ function updateDisplay(minutes, smooth = false) {
 
   const formattedMinutes =
     minutes === 0
-      ? "минуты"
+      ? "0 Минут"
       : minutes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
   if (calculatorInput) {
@@ -251,12 +251,16 @@ function updateDisplay(minutes, smooth = false) {
   const discount = currentRange.discount;
 
   if (totalPrice) {
-    const formattedPrice = (price * minutes)
-      .toFixed(0)
-      .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    const totalPriceValue = price * minutes;
+    const formattedPrice =
+      totalPriceValue === 0
+        ? "0 Рублей"
+        : totalPriceValue
+            .toFixed(0)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
     totalPrice.textContent = formattedPrice;
   }
-
   const position = calculatePosition(minutes);
   updatePositions(position, smooth);
 
@@ -374,63 +378,98 @@ const doubleLeftArrow = document.querySelector(".change-price-left-double");
 const doubleRightArrow = document.querySelector(".change-price-right-double");
 
 let intervalId = null;
-let timeoutId = null;
-const updateInterval = 100;
-const holdDelay = 500;
-let updateAmount = 1;
+let holdTimeoutId = null;
+let quadrupleSpeedTimeoutId = null;
 
-function startUpdating(amount) {
-  if (intervalId === null) {
-    intervalId = setInterval(() => {
-      updateCalculatorValue(amount);
-    }, updateInterval);
-  }
+
+const updateInterval = 100; 
+const holdDelay = 500; 
+const quadrupleSpeedDelay = 3000; 
+const normalAmount = 1; 
+const quadrupleAmount = 20;
+
+/**
+ 
+ * @param {number} amount 
+ * @param {number} multiplier 
+ */
+function startUpdatingAuto(amount, multiplier = 1) {
+  if (intervalId !== null) return; 
+  intervalId = setInterval(() => {
+    updateCalculatorValue(amount * multiplier);
+  }, updateInterval);
 }
-function stopUpdating() {
+
+/**
+ * Stops any ongoing auto-updating.
+ */
+function stopUpdatingAuto() {
   if (intervalId !== null) {
     clearInterval(intervalId);
     intervalId = null;
   }
-  if (timeoutId !== null) {
-    clearTimeout(timeoutId);
-    timeoutId = null;
+  if (holdTimeoutId !== null) {
+    clearTimeout(holdTimeoutId);
+    holdTimeoutId = null;
+  }
+  if (quadrupleSpeedTimeoutId !== null) {
+    clearTimeout(quadrupleSpeedTimeoutId);
+    quadrupleSpeedTimeoutId = null;
   }
 }
 
-function handleMouseDown(amount) {
-  if (isNaN(amount)) {
-    amount = 0;
-  }
-
+/**
+ * Handles the mouse down event on an arrow button.
+ * @param {number} amount - The amount to change the minutes by on each update.
+ */
+function handleArrowMouseDown(amount) {
+  // Immediately update once
   updateCalculatorValue(amount);
 
-  timeoutId = setTimeout(() => {
-    startUpdating(amount);
+  // Start hold timeout to begin auto-updating after holdDelay
+  holdTimeoutId = setTimeout(() => {
+    startUpdatingAuto(amount);
+
+    
+    quadrupleSpeedTimeoutId = setTimeout(() => {
+      stopUpdatingAuto(); 
+      startUpdatingAuto(amount, quadrupleAmount); 
+    }, quadrupleSpeedDelay);
   }, holdDelay);
 }
 
-function handleMouseUp() {
-  stopUpdating();
+
+function handleArrowMouseUp() {
+  stopUpdatingAuto();
 }
-if (doubleLeftArrow)
-  doubleLeftArrow.addEventListener("click", () => updateCalculatorValue(-10));
-if (doubleRightArrow)
-  doubleRightArrow.addEventListener("click", () => updateCalculatorValue(10));
+
 
 if (leftArrow) {
-  leftArrow.addEventListener("mousedown", () => handleMouseDown(-updateAmount));
-  leftArrow.addEventListener("mouseup", handleMouseUp);
-  leftArrow.addEventListener("mouseleave", handleMouseUp);
+  leftArrow.addEventListener("mousedown", () => handleArrowMouseDown(-1));
+  leftArrow.addEventListener("mouseup", handleArrowMouseUp);
+  leftArrow.addEventListener("mouseleave", handleArrowMouseUp);
 }
 
 if (rightArrow) {
-  rightArrow.addEventListener("mousedown", () => handleMouseDown(updateAmount));
-  rightArrow.addEventListener("mouseup", handleMouseUp);
-  rightArrow.addEventListener("mouseleave", handleMouseUp);
+  rightArrow.addEventListener("mousedown", () => handleArrowMouseDown(1));
+  rightArrow.addEventListener("mouseup", handleArrowMouseUp);
+  rightArrow.addEventListener("mouseleave", handleArrowMouseUp);
 }
 
-leftArrow.addEventListener("selectstart", (e) => e.preventDefault());
-rightArrow.addEventListener("selectstart", (e) => e.preventDefault());
+
+if (doubleLeftArrow) {
+  doubleLeftArrow.addEventListener("click", () => updateCalculatorValue(-10));
+}
+if (doubleRightArrow) {
+  doubleRightArrow.addEventListener("click", () => updateCalculatorValue(10));
+}
+
+
+if (leftArrow && rightArrow) {
+  leftArrow.addEventListener("selectstart", (e) => e.preventDefault());
+  rightArrow.addEventListener("selectstart", (e) => e.preventDefault());
+}
+
 function handleInputChange(e) {
   let value = e.target.value.replace(/\D/g, "");
   if (value === "") {
@@ -444,18 +483,18 @@ function handleInputChange(e) {
 
 if (calculatorInput) {
   calculatorInput.addEventListener("input", function (e) {
-    if (this.value === "минуты") this.value = "";
+    if (this.value === "0 Минут") this.value = "";
     handleInputChange(e);
   });
 
   calculatorInput.addEventListener("focus", function () {
-    if (this.value === "минуты") this.value = "";
+    if (this.value === "0 Минут") this.value = "";
   });
 
   calculatorInput.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
     if (value === "") {
-      this.value = "минуты";
+      this.value = "0 Минут";
       updateDisplay(0);
     } else {
       let minutes = Math.max(0, Math.min(parseInt(value, 10), 100000));
@@ -571,43 +610,46 @@ setInterval(blinkCursor, 530);
 // Запуск анимации
 typePhrase();
 
-//------------------------------------------------------POP-UP----------------------------------------------//
-let loggedIn = false;
+//------------------------------------------------------POP-UP----------------------------------------------//\
+const loginBtn = document.querySelector('.login');
+const modalOverlay = document.getElementById('modal-overlay');
+const closeModal = document.getElementById('close-modal');
+const togglePassword = document.getElementById('toggle-password');
+const passwordInput = document.getElementById('password');
+const modal = document.querySelector('.modal');
 
-// Wait for the DOM to be fully loaded before attaching event listeners
-// document.addEventListener('DOMContentLoaded', () => {
-//     const buyButton = document.querySelector('.buy-button');
-//     const modal = document.getElementById('loginModal');
-//     const closeBtn = document.querySelector('.close');
-//     const body = document.body;
+loginBtn.addEventListener('click', function() {
+    modalOverlay.style.display = 'flex';
+});
 
-//     function openModal() {
-//         modal.style.display = 'flex';
-//         body.classList.add('modal-open');
-//     }
+closeModal.addEventListener('click', function() {
+    modal.classList.add('modal-closing'); 
+    setTimeout(function() {
+        modalOverlay.style.display = 'none'; 
+        modal.classList.remove('modal-closing');
+    }, 400); 
+});
 
-//     function closeModal() {
-//         modal.style.display = 'none';
-//         body.classList.remove('modal-open');
-//     }
+modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) { 
+        closeModal.click(); 
+    }
+});
 
-//     buyButton.addEventListener('click', () => {
-//         if (!loggedIn) {
-//             openModal();
-//         } else {
-//             // Proceed with the purchase logic
-//             console.log('User is logged in. Proceeding with purchase...');
-//         }
-//     });
+togglePassword.addEventListener('click', function() {
+    const password = passwordInput.value;
 
-//     closeBtn.addEventListener('click', closeModal);
+    if (passwordInput.type === 'password') {
+        passwordInput.setAttribute('type', 'text');
+        passwordInput.value = password;
+        togglePassword.textContent = '🙈';
+    } else {
+        passwordInput.setAttribute('type', 'password');
+        passwordInput.value = password;
+        togglePassword.textContent = '👁️';
+    }
+});
 
-//     window.addEventListener('click', (event) => {
-//         if (event.target === modal) {
-//             closeModal();
-//         }
-//     });
-// });
 
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 

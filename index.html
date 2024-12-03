@@ -12,6 +12,51 @@
   </head>
   <body>
     <div class="layout-container">
+      <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+          <svg class="close-modal" id="close-modal"  width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L23.7071 22.2929C24.0976 22.6834 24.0976 23.3166 23.7071 23.7071C23.3166 24.0976 22.6834 24.0976 22.2929 23.7071L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z" fill="#CCCCCC" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M23.7071 8.29289C24.0976 8.68342 24.0976 9.31658 23.7071 9.70711L9.70711 23.7071C9.31658 24.0976 8.68342 24.0976 8.29289 23.7071C7.90237 23.3166 7.90237 22.6834 8.29289 22.2929L22.2929 8.29289C22.6834 7.90237 23.3166 7.90237 23.7071 8.29289Z" fill="#CCCCCC" />
+          </svg>
+           
+      
+            <div class="input-group">
+                <input type="email" id="email" placeholder="email@email.com" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Пароль" required>
+                <span class="toggle-password" id="toggle-password">👁️</span>
+            </div>
+            <div class="forgot-password-container">
+                <button class="forgot-password" id="forgot-password">Забыли пароль?</button>
+            </div>
+            <div class="btn-container">
+              <div class="cards">
+                <div class="card-wrap enter-wrap">
+                  <div class="card enter">
+                    <div class="card-content enter-content">
+                      <span>Войти</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="register-container">
+                <button class="register">Зарегистрироваться</button>
+            </div>
+            <div class="social-login">
+                <button class="google">Google</button>
+                <button class="vk">VK</button>
+                <button class="yandex">Yandex</button>
+                <button class="apple">Apple ID</button>
+            </div>
+            <div class="terms">
+              <span class="opacity">Используя AUDIO SECTOR, Вы соглашаетесь </span>
+              <a href="/privacy-policy" target="_blank" class="terms-link">с политикой конфиденциальности</a>
+          </div>
+        </div>
+    </div>
+
       <div class="main-block main-block-solid">
         <header class="header">
           <a href="#" class="logo">
