@@ -232,7 +232,7 @@ function updateDisplay(minutes, smooth = false) {
 
   const formattedMinutes =
     minutes === 0
-      ? "0 минут"
+      ? "0 Минут"
       : minutes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
   if (calculatorInput) {
@@ -426,18 +426,18 @@ function handleInputChange(e) {
 
 if (calculatorInput) {
   calculatorInput.addEventListener("input", function (e) {
-    if (this.value === "0 минут") this.value = "";
+    if (this.value === "0 Минут") this.value = "";
     handleInputChange(e);
   });
 
   calculatorInput.addEventListener("focus", function () {
-    if (this.value === "0 минут") this.value = "";
+    if (this.value === "0 Минут") this.value = "";
   });
 
   calculatorInput.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
     if (value === "") {
-      this.value = "0 минут";
+      this.value = "0 Минут";
       updateDisplay(0);
     } else {
       let minutes = Math.max(0, Math.min(parseInt(value, 10), 100000));
