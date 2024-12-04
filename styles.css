@@ -1422,6 +1422,7 @@ body
   width: 360px;
   padding-top: 24px;
   justify-content: center;
+  align-items: center;
   gap: 50px;
 }
 
@@ -1446,6 +1447,7 @@ body
 }
 .change-price-left {
   transition: all 0.2s ease;
+  height: 38px;
 }
 
 .image-container .double-right,
@@ -1519,7 +1521,7 @@ body
 .change-price-left-double,
 .change-price-right-double {
   display: flex;
-
+  height: 38px;
   transition: all 0.2s ease-in-out;
 }
 
