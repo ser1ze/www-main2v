@@ -130,15 +130,6 @@ const activePriceCounterPercent = document.querySelector(
 );
 const calculatorInput = document.querySelector(".calculator-value input");
 
-console.log("slider:", slider);
-console.log("microphone:", microphone);
-console.log("totalPrice:", totalPrice);
-console.log("priceCounters:", priceCounters);
-console.log("priceCountersPercent:", priceCountersPercent);
-console.log("activePriceCounter:", activePriceCounter);
-console.log("activePriceCounterPercent:", activePriceCounterPercent);
-console.log("calculatorInput:", calculatorInput);
-
 const styles = `
   .microphone, .microphone-glow {
       transition: none;
