@@ -921,3 +921,25 @@ if (loginForm) {
     console.log("Отправка данных:", { email, password });
   });
 }
+const logInItems = document.querySelectorAll(".log_in_item");
+
+// Проходим по каждому элементу
+logInItems.forEach(function (item) {
+  item.addEventListener("mouseenter", function () {
+    // Проверяем, если ширина окна больше 1180px
+    if (window.innerWidth > 1180) {
+      const inner = item.querySelector(".log_in_item--inner");
+      inner.classList.remove("leave-rotation");
+      inner.classList.add("start-rotation");
+    }
+  });
+
+  item.addEventListener("mouseleave", function () {
+    // Проверяем, если ширина окна больше 1180px
+    if (window.innerWidth > 1180) {
+      const inner = item.querySelector(".log_in_item--inner");
+      inner.classList.remove("start-rotation");
+      inner.classList.add("leave-rotation");
+    }
+  });
+});

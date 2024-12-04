@@ -2287,16 +2287,13 @@ body
   backdrop-filter: blur(100px);
   -webkit-backdrop-filter: blur(100px);
 
-  padding: 30px 100px;
+  padding: 54px 100px;
   color: white;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
   text-align: center;
   position: relative;
   transform: scale(1.03);
   animation: modal-zoom-in 0.4s forwards;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 @keyframes modal-zoom-out {
@@ -2381,6 +2378,7 @@ body
   display: flex;
   justify-content: flex-end;
   margin-top: 15px;
+  margin-bottom: 110px;
 }
 
 .register {
@@ -2388,7 +2386,6 @@ body
   font-size: 18px;
   line-height: 120%;
   color: #37779d;
-  margin-bottom: 113px;
 }
 
 .register:hover {
@@ -2436,7 +2433,6 @@ body
 .socials {
   display: flex;
   justify-content: center;
-  margin-bottom: 110px;
 }
 
 .socialCard {
@@ -2554,6 +2550,7 @@ body
 }
 
 .terms {
+  margin-top: 50px;
   font-weight: 500;
   font-size: 16px;
   line-height: 120%;
