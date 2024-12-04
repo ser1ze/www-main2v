@@ -114,6 +114,7 @@ document.addEventListener("click", (event) => {
 });
 
 // ----------------------------------------------------------MICROPHONE--------------------------------------------------------//
+
 const slider = document.querySelector(".price-slider");
 const microphone = document.querySelector(".microphone");
 const totalPrice = document.querySelector(".totalPrice");
@@ -129,26 +130,35 @@ const activePriceCounterPercent = document.querySelector(
 );
 const calculatorInput = document.querySelector(".calculator-value input");
 
-const styles = `
-.microphone, .microphone-glow {
-    transition: none;
-}
+console.log("slider:", slider);
+console.log("microphone:", microphone);
+console.log("totalPrice:", totalPrice);
+console.log("priceCounters:", priceCounters);
+console.log("priceCountersPercent:", priceCountersPercent);
+console.log("activePriceCounter:", activePriceCounter);
+console.log("activePriceCounterPercent:", activePriceCounterPercent);
+console.log("calculatorInput:", calculatorInput);
 
-.microphone.smooth-transition, .microphone-glow.smooth-transition {
-    transition: left 0.2s ease-out, top 0.2s ease-out;
-}
-.price-counter, .price-counter-percent {
-    transition: transform 0.2s ease-out;
-}
+const styles = `
+  .microphone, .microphone-glow {
+      transition: none;
+  }
+  
+  .microphone.smooth-transition, .microphone-glow.smooth-transition {
+      transition: left 0.2s ease-out, top 0.2s ease-out;
+  }
+  .price-counter, .price-counter-percent {
+      transition: transform 0.2s ease-out;
+  }
 `;
 const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = styles;
 document.head.appendChild(styleSheet);
 
-let SLIDER_WIDTH = 1125; // Default width, will be updated based on window size
-let SLIDER_HEIGHT = 0; // Will be used for the rotated slider
-let isRotated = false; // Flag to check if the slider is rotated
+let SLIDER_WIDTH = 1125;
+let SLIDER_HEIGHT = 0;
+let isRotated = false;
 
 const PRICE_RANGES = [
   { max: 999, price: 5, widthPercentage: 23.8, discount: 0 },
@@ -210,47 +220,20 @@ function calculateMinutes(position) {
   return 100000;
 }
 
-function calculatePrice(minutes) {
+function calculatePosition(minutes) {
+  let accumulatedWidth = 0;
   for (let range of PRICE_RANGES) {
     if (minutes <= range.max) {
-      return range.price;
+      const prevMax =
+        accumulatedWidth > 0
+          ? PRICE_RANGES[PRICE_RANGES.indexOf(range) - 1].max
+          : 0;
+      const rangePercentage = (minutes - prevMax) / (range.max - prevMax);
+      return accumulatedWidth + rangePercentage * range.width;
     }
+    accumulatedWidth += range.width;
   }
-  return PRICE_RANGES[PRICE_RANGES.length - 1].price;
-}
-
-function calculateDiscount(minutes) {
-  for (let range of PRICE_RANGES) {
-    if (minutes <= range.max) {
-      return range.discount;
-    }
-  }
-  return PRICE_RANGES[PRICE_RANGES.length - 1].discount;
-}
-
-let lastActiveIndex = -1;
-let activatedIndices = [];
-
-function calculateTotalPrice(minutes) {
-  let total = 0;
-  let remainingMinutes = minutes;
-
-  for (let i = 0; i < PRICE_RANGES.length; i++) {
-    const range = PRICE_RANGES[i];
-    const prevMax = i > 0 ? PRICE_RANGES[i - 1].max : 0;
-    const rangeMinutes = range.max - prevMax;
-
-    if (remainingMinutes > rangeMinutes) {
-      total += rangeMinutes * range.price;
-      remainingMinutes -= rangeMinutes;
-    } else {
-      total += remainingMinutes * range.price;
-      remainingMinutes = 0;
-      break;
-    }
-  }
-
-  return total;
+  return SLIDER_WIDTH;
 }
 
 function updateDisplay(minutes, smooth = false) {
@@ -258,14 +241,11 @@ function updateDisplay(minutes, smooth = false) {
 
   const formattedMinutes =
     minutes === 0
-      ? "0 Минут"
+      ? "минуты"
       : minutes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
   if (calculatorInput) {
     calculatorInput.value = formattedMinutes;
-    if (typeof resizeInput === 'function') {
-      resizeInput.call(calculatorInput);
-    }
   }
 
   const currentRange =
@@ -275,16 +255,14 @@ function updateDisplay(minutes, smooth = false) {
   const discount = currentRange.discount;
 
   if (totalPrice) {
-    const totalPriceValue = calculateTotalPrice(minutes);
+    const totalPriceValue = price * minutes;
     const formattedPrice =
       totalPriceValue === 0
         ? "0 Рублей"
-        : totalPriceValue
-            .toFixed(0)
-            .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-
+        : totalPriceValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     totalPrice.textContent = formattedPrice;
   }
+
   const position = calculatePosition(minutes);
   updatePositions(position, smooth);
 
@@ -310,22 +288,6 @@ function moveMicrophone(e, smooth = false) {
 
   const minutes = calculateMinutes(position);
   updateDisplay(minutes, smooth);
-}
-
-function calculatePosition(minutes) {
-  let accumulatedWidth = 0;
-  for (let range of PRICE_RANGES) {
-    if (minutes <= range.max) {
-      const prevMax =
-        accumulatedWidth > 0
-          ? PRICE_RANGES[PRICE_RANGES.indexOf(range) - 1].max
-          : 0;
-      const rangePercentage = (minutes - prevMax) / (range.max - prevMax);
-      return accumulatedWidth + rangePercentage * range.width;
-    }
-    accumulatedWidth += range.width;
-  }
-  return SLIDER_WIDTH;
 }
 
 if (microphone) {
@@ -367,88 +329,54 @@ function updateCalculatorValue(amount) {
   updateDisplay(currentMinutes);
 }
 
-let timeoutId = null;
+let autoUpdateIntervalId = null;
+let autoUpdateHoldTimeoutId = null;
+const updateInterval = 100;
+const holdDelay = 500;
+const quadrupleSpeedDelay = 3000;
 
-function startUpdating(amount) {
-  updateCalculatorValue(amount);
-  timeoutId = setTimeout(() => {
-    startUpdating(amount);
-  }, 100);
-}
-
-function stopUpdating() {
-  clearTimeout(timeoutId);
-}
-
-const leftArrow = document.querySelector(".change-price-left");
-const rightArrow = document.querySelector(".change-price-right");
-const doubleLeftArrow = document.querySelector(".change-price-left-double");
-const doubleRightArrow = document.querySelector(".change-price-right-double");
-
-const changeTotalPriceLeft = document.querySelector(".change-total-price-left");
-const changeTotalPriceRight = document.querySelector(".change-total-price-right");
-
-let intervalId = null;
-let holdTimeoutId = null;
-let quadrupleSpeedTimeoutId = null;
-
-const updateInterval = 100; 
-const holdDelay = 500; 
-const quadrupleSpeedDelay = 3000; 
-const normalAmount = 1; 
-const quadrupleAmount = 20; 
-
-/**
- * 
- * @param {number} amount 
- * @param {number} multiplier 
- */
 function startUpdatingAuto(amount, multiplier = 1) {
-  if (intervalId !== null) return; 
-  intervalId = setInterval(() => {
+  if (autoUpdateIntervalId !== null) return;
+  autoUpdateIntervalId = setInterval(() => {
     updateCalculatorValue(amount * multiplier);
   }, updateInterval);
 }
 
 function stopUpdatingAuto() {
-  if (intervalId !== null) {
-    clearInterval(intervalId);
-    intervalId = null;
+  if (autoUpdateIntervalId !== null) {
+    clearInterval(autoUpdateIntervalId);
+    autoUpdateIntervalId = null;
   }
-  if (holdTimeoutId !== null) {
-    clearTimeout(holdTimeoutId);
-    holdTimeoutId = null;
-  }
-  if (quadrupleSpeedTimeoutId !== null) {
-    clearTimeout(quadrupleSpeedTimeoutId);
-    quadrupleSpeedTimeoutId = null;
+  if (autoUpdateHoldTimeoutId !== null) {
+    clearTimeout(autoUpdateHoldTimeoutId);
+    autoUpdateHoldTimeoutId = null;
   }
 }
 
-/**
- * 
- * @param {number} amount 
- */
 function handleArrowMouseDown(amount) {
-  
+  console.log(`handleArrowMouseDown: amount = ${amount}`);
   updateCalculatorValue(amount);
 
- 
-  holdTimeoutId = setTimeout(() => {
+  autoUpdateHoldTimeoutId = setTimeout(() => {
     startUpdatingAuto(amount);
 
-   
-    quadrupleSpeedTimeoutId = setTimeout(() => {
-      stopUpdatingAuto(); 
-      startUpdatingAuto(amount, quadrupleAmount); 
+    setTimeout(() => {
+      stopUpdatingAuto();
+      startUpdatingAuto(amount, 20);
     }, quadrupleSpeedDelay);
   }, holdDelay);
 }
 
-
 function handleArrowMouseUp() {
   stopUpdatingAuto();
 }
+
+const leftArrow = document.querySelector(".change-total-price-left");
+const rightArrow = document.querySelector(".change-total-price-right");
+const doubleLeftArrow = document.querySelector(".change-price-left-double");
+const doubleRightArrow = document.querySelector(".change-price-right-double");
+const priceLeftArrow = document.querySelector(".change-price-left");
+const priceRightArrow = document.querySelector(".change-price-right");
 
 if (leftArrow) {
   leftArrow.addEventListener("mousedown", () => handleArrowMouseDown(-1));
@@ -463,21 +391,37 @@ if (rightArrow) {
 }
 
 if (doubleLeftArrow) {
-  doubleLeftArrow.addEventListener("click", () => updateCalculatorValue(-10));
-}
-if (doubleRightArrow) {
-  doubleRightArrow.addEventListener("click", () => updateCalculatorValue(10));
+  doubleLeftArrow.addEventListener("click", () => {
+    console.log("Double left arrow clicked");
+    updateCalculatorValue(-10);
+  });
 }
 
-if (leftArrow && rightArrow) {
+if (doubleRightArrow) {
+  doubleRightArrow.addEventListener("click", () => {
+    console.log("Double right arrow clicked");
+    updateCalculatorValue(10);
+  });
+}
+
+if (priceLeftArrow) {
+  priceLeftArrow.addEventListener("mousedown", () => handleArrowMouseDown(-1));
+  priceLeftArrow.addEventListener("mouseup", handleArrowMouseUp);
+  priceLeftArrow.addEventListener("mouseleave", handleArrowMouseUp);
+}
+if (priceRightArrow) {
+  priceRightArrow.addEventListener("mousedown", () => handleArrowMouseDown(1));
+  priceRightArrow.addEventListener("mouseup", handleArrowMouseUp);
+  priceRightArrow.addEventListener("mouseleave", handleArrowMouseUp);
+}
+
+if (leftArrow && rightArrow && priceLeftArrow && priceRightArrow) {
   leftArrow.addEventListener("selectstart", (e) => e.preventDefault());
   rightArrow.addEventListener("selectstart", (e) => e.preventDefault());
+  priceLeftArrow.addEventListener("selectstart", (e) => e.preventDefault());
+  priceRightArrow.addEventListener("selectstart", (e) => e.preventDefault());
 }
 
-/**
- * 
- * @param {Event} e 
- */
 function handleInputChange(e) {
   let value = e.target.value.replace(/\D/g, "");
   if (value === "") {
@@ -491,18 +435,18 @@ function handleInputChange(e) {
 
 if (calculatorInput) {
   calculatorInput.addEventListener("input", function (e) {
-    if (this.value === "0 Минут") this.value = "";
+    if (this.value === "минуты") this.value = "";
     handleInputChange(e);
   });
 
   calculatorInput.addEventListener("focus", function () {
-    if (this.value === "0 Минут") this.value = "";
+    if (this.value === "минуты") this.value = "";
   });
 
   calculatorInput.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
     if (value === "") {
-      this.value = "0 Минут";
+      this.value = "минуты";
       updateDisplay(0);
     } else {
       let minutes = Math.max(0, Math.min(parseInt(value, 10), 100000));
@@ -510,183 +454,6 @@ if (calculatorInput) {
       updateDisplay(minutes);
     }
   });
-}
-
-/**
- * 
- * @param {number} amount
- */
-function adjustTotalPrice(amount) {
-    let currentTotalPrice = parseInt(totalPrice.textContent.replace(/\D/g, ''), 10);
-
-    if (isNaN(currentTotalPrice)) {
-        currentTotalPrice = 0;
-    }
-
-    let newTotalPrice = currentTotalPrice + amount;
-
-  
-    newTotalPrice = Math.max(0, Math.min(newTotalPrice, calculateTotalPrice(100000))); 
-
-    let newMinutes = calculateMinutesFromTotalPrice(newTotalPrice);
-
-    
-    newMinutes = Math.max(0, Math.min(newMinutes, 100000));
-
-    updateDisplay(newMinutes);
-}
-
-function calculateMinutesFromTotalPrice(desiredTotalPrice) {
-    let remainingPrice = desiredTotalPrice;
-    let calculatedMinutes = 0;
-
-    for (let i = 0; i < PRICE_RANGES.length; i++) {
-        const range = PRICE_RANGES[i];
-        const prevMax = i > 0 ? PRICE_RANGES[i - 1].max : 0;
-        const rangeMinutes = range.max - prevMax;
-        const rangePrice = range.price;
-        const rangeTotalPrice = rangeMinutes * rangePrice;
-
-        if (remainingPrice >= rangeTotalPrice) {
-            calculatedMinutes += rangeMinutes;
-            remainingPrice -= rangeTotalPrice;
-        } else {
-            calculatedMinutes += Math.floor(remainingPrice / rangePrice);
-            remainingPrice = 0;
-            break;
-        }
-    }
-
-    return Math.round(calculatedMinutes);
-}
-
-if (changeTotalPriceLeft) {
-    changeTotalPriceLeft.addEventListener("click", () => adjustTotalPrice(-10)); 
-
-    let totalPriceIntervalId = null;
-    let totalPriceHoldTimeoutId = null;
-    let totalPriceQuadrupleSpeedTimeoutId = null;
-
-    const totalPriceUpdateInterval = 100; 
-    const totalPriceHoldDelay = 500; 
-    const totalPriceQuadrupleSpeedDelay = 3000; 
-    const totalPriceNormalAmount = -10; 
-    const totalPriceQuadrupleAmount = -50;
-
-    function startTotalPriceUpdatingAuto(amount, multiplier = 1) {
-      if (totalPriceIntervalId !== null) return; 
-      totalPriceIntervalId = setInterval(() => {
-          adjustTotalPrice(amount * multiplier);
-      }, totalPriceUpdateInterval);
-    }
-
-    function stopTotalPriceUpdatingAuto() {
-      if (totalPriceIntervalId !== null) {
-          clearInterval(totalPriceIntervalId);
-          totalPriceIntervalId = null;
-      }
-      if (totalPriceHoldTimeoutId !== null) {
-          clearTimeout(totalPriceHoldTimeoutId);
-          totalPriceHoldTimeoutId = null;
-      }
-      if (totalPriceQuadrupleSpeedTimeoutId !== null) {
-          clearTimeout(totalPriceQuadrupleSpeedTimeoutId);
-          totalPriceQuadrupleSpeedTimeoutId = null;
-      }
-    }
-
-    changeTotalPriceLeft.addEventListener("mousedown", () => {
-        adjustTotalPrice(totalPriceNormalAmount);
-        totalPriceHoldTimeoutId = setTimeout(() => {
-            startTotalPriceUpdatingAuto(totalPriceNormalAmount);
-
-            totalPriceQuadrupleSpeedTimeoutId = setTimeout(() => {
-                stopTotalPriceUpdatingAuto(); 
-                startTotalPriceUpdatingAuto(totalPriceQuadrupleAmount); 
-            }, totalPriceQuadrupleSpeedDelay);
-        }, totalPriceHoldDelay);
-    });
-
-    changeTotalPriceLeft.addEventListener("mouseup", stopTotalPriceUpdatingAuto);
-    changeTotalPriceLeft.addEventListener("mouseleave", stopTotalPriceUpdatingAuto);
-}
-
-if (changeTotalPriceRight) {
-    changeTotalPriceRight.addEventListener("click", () => adjustTotalPrice(10)); 
-
-    let totalPriceIntervalIdRight = null;
-    let totalPriceHoldTimeoutIdRight = null;
-    let totalPriceQuadrupleSpeedTimeoutIdRight = null;
-
-    const totalPriceUpdateIntervalRight = 100; 
-    const totalPriceHoldDelayRight = 500; 
-    const totalPriceQuadrupleSpeedDelayRight = 3000; 
-    const totalPriceNormalAmountRight = 10; 
-    const totalPriceQuadrupleAmountRight = 50;
-
-    function startTotalPriceUpdatingAutoRight(amount, multiplier = 1) {
-      if (totalPriceIntervalIdRight !== null) return; 
-      totalPriceIntervalIdRight = setInterval(() => {
-          adjustTotalPrice(amount * multiplier);
-      }, totalPriceUpdateIntervalRight);
-    }
-
-    function stopTotalPriceUpdatingAutoRight() {
-      if (totalPriceIntervalIdRight !== null) {
-          clearInterval(totalPriceIntervalIdRight);
-          totalPriceIntervalIdRight = null;
-      }
-      if (totalPriceHoldTimeoutIdRight !== null) {
-          clearTimeout(totalPriceHoldTimeoutIdRight);
-          totalPriceHoldTimeoutIdRight = null;
-      }
-      if (totalPriceQuadrupleSpeedTimeoutIdRight !== null) {
-          clearTimeout(totalPriceQuadrupleSpeedTimeoutIdRight);
-          totalPriceQuadrupleSpeedTimeoutIdRight = null;
-      }
-    }
-
-    changeTotalPriceRight.addEventListener("mousedown", () => {
-        adjustTotalPrice(totalPriceNormalAmountRight);
-        totalPriceHoldTimeoutIdRight = setTimeout(() => {
-            startTotalPriceUpdatingAutoRight(totalPriceNormalAmountRight);
-
-            totalPriceQuadrupleSpeedTimeoutIdRight = setTimeout(() => {
-                stopTotalPriceUpdatingAutoRight(); 
-                startTotalPriceUpdatingAutoRight(totalPriceQuadrupleAmountRight); 
-            }, totalPriceQuadrupleSpeedDelayRight);
-        }, totalPriceHoldDelayRight);
-    });
-
-    changeTotalPriceRight.addEventListener("mouseup", stopTotalPriceUpdatingAutoRight);
-    changeTotalPriceRight.addEventListener("mouseleave", stopTotalPriceUpdatingAutoRight);
-}
-
-/**
- * 
- * @param {number} minutes 
- * @returns {number} totalPrice
- */
-function calculateTotalPrice(minutes) {
-  let total = 0;
-  let remainingMinutes = minutes;
-
-  for (let i = 0; i < PRICE_RANGES.length; i++) {
-    const range = PRICE_RANGES[i];
-    const prevMax = i > 0 ? PRICE_RANGES[i - 1].max : 0;
-    const rangeMinutes = range.max - prevMax;
-
-    if (remainingMinutes > rangeMinutes) {
-      total += rangeMinutes * range.price;
-      remainingMinutes -= rangeMinutes;
-    } else {
-      total += remainingMinutes * range.price;
-      remainingMinutes = 0;
-      break;
-    }
-  }
-
-  return total;
 }
 
 updateSliderDimensions();
@@ -697,7 +464,7 @@ function animateDisplay() {
   const totalDuration = phases.reduce((sum, phase) => sum + phase.duration, 0);
   let startTime;
 
-  function update(timestamp) {
+  function updateAnimation(timestamp) {
     if (!startTime) startTime = timestamp;
     const elapsedTime = timestamp - startTime;
 
@@ -720,10 +487,10 @@ function animateDisplay() {
       currentTime += phase.duration;
     }
 
-    requestAnimationFrame(update);
+    requestAnimationFrame(updateAnimation);
   }
 
-  requestAnimationFrame(update);
+  requestAnimationFrame(updateAnimation);
 }
 
 animateDisplay();
@@ -734,7 +501,6 @@ window.addEventListener("resize", () => {
   const minutes = calculateMinutes(currentPosition);
   updateDisplay(minutes);
 });
-
 
 //-------------------------------------------------------TEXT ANIMATION--------------------------------------------------//
 const phrases = [
@@ -797,45 +563,46 @@ setInterval(blinkCursor, 530);
 typePhrase();
 
 //------------------------------------------------------POP-UP----------------------------------------------//\
-const loginBtn = document.querySelector('.login');
-const modalOverlay = document.getElementById('modal-overlay');
-const closeModal = document.getElementById('close-modal');
-const togglePassword = document.getElementById('toggle-password');
-const passwordInput = document.getElementById('password');
-const modal = document.querySelector('.modal');
+const loginBtn = document.querySelector(".login");
+const modalOverlay = document.getElementById("modal-overlay");
+const closeModal = document.getElementById("close-modal");
+const togglePassword = document.getElementById("toggle-password");
+const passwordInput = document.getElementById("password");
+const modal = document.querySelector(".modal");
 
-loginBtn.addEventListener('click', function() {
-    modalOverlay.style.display = 'flex';
+loginBtn.addEventListener("click", function () {
+  modalOverlay.style.display = "flex"; // Show the overlay
+  modalOverlay.classList.remove("blur-out"); // Make sure blur is applied when the modal opens
 });
 
-closeModal.addEventListener('click', function() {
-    modal.classList.add('modal-closing'); 
-    setTimeout(function() {
-        modalOverlay.style.display = 'none'; 
-        modal.classList.remove('modal-closing');
-    }, 400); 
+closeModal.addEventListener("click", function () {
+  modal.classList.add("modal-closing");
+  modalOverlay.classList.add("blur-out");
+  setTimeout(function () {
+    modalOverlay.style.display = "none";
+    modal.classList.remove("modal-closing");
+  }, 400);
 });
 
-modalOverlay.addEventListener('click', function(e) {
-    if (e.target === modalOverlay) { 
-        closeModal.click(); 
-    }
+modalOverlay.addEventListener("click", function (e) {
+  if (e.target === modalOverlay) {
+    closeModal.click();
+  }
 });
 
-togglePassword.addEventListener('click', function() {
-    const password = passwordInput.value;
+togglePassword.addEventListener("click", function () {
+  const password = passwordInput.value;
 
-    if (passwordInput.type === 'password') {
-        passwordInput.setAttribute('type', 'text');
-        passwordInput.value = password;
-        togglePassword.textContent = '🙈';
-    } else {
-        passwordInput.setAttribute('type', 'password');
-        passwordInput.value = password;
-        togglePassword.textContent = '👁️';
-    }
+  if (passwordInput.type === "password") {
+    passwordInput.setAttribute("type", "text");
+    togglePassword.querySelector("img").src = "/img/hidePassword.svg";
+  } else {
+    passwordInput.setAttribute("type", "password");
+    togglePassword.querySelector("img").src = "/img/showPassword.svg";
+  }
+
+  passwordInput.value = password;
 });
-
 
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 
@@ -1065,6 +832,9 @@ const priceRight = document.querySelector(".change-price-right");
 const currencyBtn = document.querySelector(".currency-lang-nav");
 const homeBtn = document.querySelector(".home-btn");
 const nextArrow = document.querySelector(".next-arrow");
+const loginPlatforms = document
+  .querySelectorAll(".socialCard__face--back")
+  .forEach((platform) => makeButtonClickable(platform));
 
 if (anotherButton) {
   makeButtonClickable(anotherButton);
@@ -1149,3 +919,14 @@ document.querySelectorAll(".card-wrap").forEach((card) => {
     cardElement.style.transform = "rotateX(0deg) rotateY(0deg) translateZ(0px)";
   });
 });
+
+const loginForm = document.querySelector(".modal");
+// Form checker
+if (loginForm) {
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    console.log("Отправка данных:", { email, password });
+  });
+}

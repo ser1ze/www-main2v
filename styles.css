@@ -563,7 +563,7 @@ html {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
   align-items: center;
   height: 770px;
   width: 1160px;
@@ -583,7 +583,7 @@ html {
 }
 
 .middle {
-  margin-top: 60px;
+  margin-top: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1252,7 +1252,7 @@ body
   > div.price-slider-block
   > div.price-top
   > p:nth-child(2) {
-  margin-left: -46px;
+  margin-left: -47px;
 }
 
 .microphone > p:nth-child(1) {
@@ -1780,7 +1780,7 @@ input[type="number"] {
 
 .card {
   position: relative;
-width: 300px;
+  width: 300px;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1845,7 +1845,19 @@ width: 300px;
   transform: scale(0.97);
   transition: all 0.2s ease;
 }
+.card-content .submitBtn.fast-click {
+  transform: scale(0.97);
+  transition: all 0.2s ease;
+}
 
+.card:active .submitBtn.fast-click {
+  transform: scale(0.97);
+  transition: all 0.2s ease;
+}
+.card:active .submitBtn {
+  transform: scale(0.97);
+  transition: all 0.2s ease;
+}
 .card::before {
   background: radial-gradient(
     250px circle at var(--mouse-x) var(--mouse-y),
@@ -1914,12 +1926,36 @@ width: 300px;
   transform: translateZ(0);
   will-change: transform;
 }
+.card-content .submitBtn {
+  font-family: "ST-SimpleSquare" !important;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 110%;
+  letter-spacing: 0.06em;
+  text-align: center;
+  background: linear-gradient(
+    140deg,
+    #727272 0%,
+    #b1b1b1 19%,
+    #e8e8e8 50%,
+    #a4a4a4 76%,
+    #424242 100%
+  );
+  background-clip: text;
+  will-change: transform;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  backface-visibility: hidden;
+
+  transition: none;
+  transform: translateZ(0);
+  will-change: transform;
+}
 
 .registration {
   padding-right: 50px;
   padding-top: 8px;
 }
-
 
 @keyframes modal-zoom-in {
   0% {
@@ -1931,7 +1967,6 @@ width: 300px;
     opacity: 1;
   }
 }
-
 
 #cursor {
   font-family: sans-serif;
@@ -2215,81 +2250,78 @@ body
   }
 }
 
-
 .modal-overlay {
-  display: none; 
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   z-index: 100;
   justify-content: center;
   align-items: center;
+  transition: backdrop-filter, background 0.2s ease;
+}
+.modal-overlay.blur-out {
+  backdrop-filter: blur(0);
+  background: none;
 }
 .modal input[type="email"],
 .modal input[type="password"],
 .modal input[type="text"] {
   background: rgba(72, 72, 72, 0.36);
   border-radius: 5px;
-width: 360px;
-height: 50px;
+  width: 360px;
+  height: 50px;
 }
 
 .modal {
- 
   width: 560px;
-height: 675px;
-background-color: rgba(0, 0, 0, 0.5); 
-border-radius: 4px;                   
-backdrop-filter: blur(100px);         
--webkit-backdrop-filter: blur(100px);  
+  height: 675px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: blur(100px);
 
-padding: 30px 100px;
-color: white;  
+  padding: 30px 100px;
+  color: white;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
   text-align: center;
   position: relative;
   transform: scale(1.03);
-  animation: modal-zoom-in 0.4s forwards; 
+  animation: modal-zoom-in 0.4s forwards;
   display: flex;
   flex-direction: column;
   justify-content: center;
-
 }
-
 
 @keyframes modal-zoom-out {
   0% {
-      transform: scale(1);
-      opacity: 1;
+    transform: scale(1);
+    opacity: 1;
   }
   100% {
-      transform: scale(1.03);
-      opacity: 0;
+    transform: scale(1.03);
+    opacity: 0;
   }
 }
 .modal-closing {
-  animation: modal-zoom-out 0.4s forwards; 
-} 
+  animation: modal-zoom-out 0.4s forwards;
+}
 .modal h2 {
   margin-bottom: 20px;
 }
 .input-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 30px; 
- 
+  gap: 30px;
 }
 
 .input-group {
-  
   position: relative;
 }
-
-
 
 .input-group input::placeholder {
   color: #aaa;
@@ -2307,7 +2339,7 @@ color: white;
   position: absolute;
   top: 10px;
   right: 10px;
-  
+
   cursor: pointer;
 }
 
@@ -2326,8 +2358,6 @@ color: white;
   cursor: pointer;
 }
 
-
-
 .forgot-password-container {
   display: flex;
   justify-content: flex-end;
@@ -2336,9 +2366,9 @@ color: white;
 
 .forgot-password {
   font-weight: 500;
-font-size: 18px;
-line-height: 120%;
-color: rgba(204, 204, 204, 0.5);
+  font-size: 18px;
+  line-height: 120%;
+  color: rgba(204, 204, 204, 0.5);
 }
 
 .forgot-password:hover {
@@ -2356,71 +2386,128 @@ color: rgba(204, 204, 204, 0.5);
   font-size: 18px;
   line-height: 120%;
   color: #37779d;
-  padding-bottom: 113px;
+  margin-bottom: 113px;
 }
 
 .register:hover {
   text-decoration: underline;
 }
-
 .social-login {
   display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  perspective: 1000px;
-  padding-bottom: 110px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
-.social-login button {
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  width: 80px;
-  height: 40px;
+.login-with {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
   position: relative;
+  gap: 6px;
+  text-wrap: nowrap;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 120%;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.login-with::before,
+.login-with::after {
+  content: "";
+  display: flex;
+  width: 110px !important;
+  height: 1px;
+  background-size: contain;
+}
+
+.login-with::before {
+  background-image: url("img/line.svg");
+}
+
+.login-with::after {
+  background-image: url("img/line.svg");
+  transform: rotate(180deg);
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 110px;
+}
+
+.socialCard {
+  position: relative;
+  width: 90px;
+  height: 50px;
+  border-left: 1px solid #131518;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: center;
   transition: transform 0.6s ease-in-out;
 }
 
-.google {
-  background-color: #db4437;
-  color: white;
+.socialCard__face {
+  position: absolute;
+  width: 90px;
+  cursor: pointer;
+  height: 50px;
+  border-left: 1px solid #131518;
+  backface-visibility: hidden;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 120%;
+  text-align: center;
+  color: #ccc;
+  text-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.9), -2px 0 8px 0 #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.socialCard:hover {
+  transform: rotateY(-180deg);
 }
 
-.vk {
-  background-color: #4c75a3;
-  color: white;
+.socialCard__face--front {
+  background: rgba(72, 72, 72, 0.36);
+  cursor: pointer;
+  border-left: 1px solid #131518;
 }
 
-.yandex {
-  background-color: #ffcd00;
-  color: white;
-}
-
-.apple {
-  background-color: #000000;
-  color: white;
-}
-
-.social-login button:hover {
+.socialCard__face--back {
+  background: rgba(72, 72, 72, 0.36);
   transform: rotateY(180deg);
+  cursor: pointer;
+  border-left: 1px solid #131518;
+  transition: 0.3s;
+  will-change: box-shadow, background;
+}
+.socialCard__face--back:active {
+  box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2),
+    inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
+  background: rgba(34, 36, 39, 0.5);
 }
 
-.social-login button:hover::before {
-
+.socialCard__face--back.fast-click {
+  box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2),
+    inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
+  background: rgba(34, 36, 39, 0.5);
 }
 
-.social-login button:hover {
-  background-color: #444;
+.socialCard__face--back p.fast-click {
+  transform: scale(0.97);
 }
 
-.social-login button:active {
-  background-color: #333;
-}
-
-.social-login button:hover, .social-login button:active {
-  opacity: 0.9;
+.socialCard__face--back p {
+  font-weight: 600;
+  font-size: 15px;
+  will-change: transform;
+  transition: 0.3s;
+  line-height: 120%;
+  cursor: pointer;
+  text-align: center;
+  color: #ccc;
 }
 
 .input-group input::placeholder {
@@ -2430,8 +2517,7 @@ color: rgba(204, 204, 204, 0.5);
   color: rgba(204, 204, 204, 0.3);
 }
 
-
-.input-group input::-webkit-input-placeholder { 
+.input-group input::-webkit-input-placeholder {
   font-weight: 500;
   font-size: 20px;
   line-height: 120%;
@@ -2445,14 +2531,14 @@ color: rgba(204, 204, 204, 0.5);
   color: rgba(204, 204, 204, 0.3);
 }
 
-.input-group input:-ms-input-placeholder { 
+.input-group input:-ms-input-placeholder {
   font-weight: 500;
   font-size: 20px;
   line-height: 120%;
   color: rgba(204, 204, 204, 0.3);
 }
 
-.input-group input::-ms-input-placeholder { 
+.input-group input::-ms-input-placeholder {
   font-weight: 500;
   font-size: 20px;
   line-height: 120%;
@@ -2461,24 +2547,21 @@ color: rgba(204, 204, 204, 0.5);
 
 .input-group input {
   padding: 18px 10px;
-  border-radius: 4px;    
-  font-size: 16px;       
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .terms {
   font-weight: 500;
-font-size: 16px;
-line-height: 120%;
-text-align: center;
-color: #fff;
-
+  font-size: 16px;
+  line-height: 120%;
+  text-align: center;
+  color: #fff;
 }
 
 .enter-wrap {
-
 }
 .enter-content {
-
 }
 .btn-container .card {
   max-width: 360px !important;
@@ -2488,7 +2571,6 @@ color: #fff;
   color: #37779d;
   text-decoration: none;
   opacity: 1 !important;
-  
 }
 
 .opacity {
