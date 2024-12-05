@@ -824,7 +824,7 @@ const currencyBtn = document.querySelector(".currency-lang-nav");
 const homeBtn = document.querySelector(".home-btn");
 const nextArrow = document.querySelector(".next-arrow");
 const loginPlatforms = document
-  .querySelectorAll(".socialCard__face--back")
+  .querySelectorAll(".log_in_with.flip_item-back")
   .forEach((platform) => makeButtonClickable(platform));
 
 if (anotherButton) {
@@ -921,25 +921,21 @@ if (loginForm) {
     console.log("Отправка данных:", { email, password });
   });
 }
-const logInItems = document.querySelectorAll(".log_in_item");
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.log_in_item').forEach(function(item) {
+      item.addEventListener('mouseenter', function() {
+          if (window.innerWidth > 1180) {
+              var inner = item.querySelector('.log_in_item--inner');
+              inner.classList.add('start-rotation');
+          }
+      });
 
-// Проходим по каждому элементу
-logInItems.forEach(function (item) {
-  item.addEventListener("mouseenter", function () {
-    // Проверяем, если ширина окна больше 1180px
-    if (window.innerWidth > 1180) {
-      const inner = item.querySelector(".log_in_item--inner");
-      inner.classList.remove("leave-rotation");
-      inner.classList.add("start-rotation");
-    }
-  });
-
-  item.addEventListener("mouseleave", function () {
-    // Проверяем, если ширина окна больше 1180px
-    if (window.innerWidth > 1180) {
-      const inner = item.querySelector(".log_in_item--inner");
-      inner.classList.remove("start-rotation");
-      inner.classList.add("leave-rotation");
-    }
+      item.addEventListener('mouseleave', function() {
+          if (window.innerWidth > 1180) {
+              var inner = item.querySelector('.log_in_item--inner');
+              inner.classList.remove('start-rotation');
+          }
+      });
   });
 });
+
