@@ -2471,8 +2471,17 @@ body
   border-radius: 0 4px 4px 0;
 }
 
+.flip_item-back-text {
+  transition: 0.3s;
+  will-change: transform;
+}
 
-
+.flip_item-back-text.fast-click {
+  transform: scale(0.97)
+}
+.flip_item-back-text:active {
+  transform: scale(0.97)
+}
 .log_in_with .log_in_item--inner {
   position: relative;
   width: 100%;
