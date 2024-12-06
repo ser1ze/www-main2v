@@ -322,6 +322,9 @@ function updateCalculatorValue(amount) {
 
 let autoUpdateIntervalId = null;
 let autoUpdateHoldTimeoutId = null;
+let quadrupleSpeedTimeoutId = null;
+let isMouseUp = false;
+
 const updateInterval = 100;
 const holdDelay = 500;
 const quadrupleSpeedDelay = 3000;
@@ -342,16 +345,22 @@ function stopUpdatingAuto() {
     clearTimeout(autoUpdateHoldTimeoutId);
     autoUpdateHoldTimeoutId = null;
   }
+  if (quadrupleSpeedTimeoutId !== null) {
+    clearTimeout(quadrupleSpeedTimeoutId);
+    quadrupleSpeedTimeoutId = null;
+  }
 }
 
 function handleArrowMouseDown(amount) {
-  console.log(`handleArrowMouseDown: amount = ${amount}`);
   updateCalculatorValue(amount);
+  isMouseUp = false;
 
   autoUpdateHoldTimeoutId = setTimeout(() => {
     startUpdatingAuto(amount);
 
-    setTimeout(() => {
+    quadrupleSpeedTimeoutId = setTimeout(() => {
+      if (isMouseUp) return;
+
       stopUpdatingAuto();
       startUpdatingAuto(amount, 20);
     }, quadrupleSpeedDelay);
@@ -359,13 +368,12 @@ function handleArrowMouseDown(amount) {
 }
 
 function handleArrowMouseUp() {
+  isMouseUp = true;
   stopUpdatingAuto();
 }
 
 const leftArrow = document.querySelector(".change-total-price-left");
 const rightArrow = document.querySelector(".change-total-price-right");
-const doubleLeftArrow = document.querySelector(".change-price-left-double");
-const doubleRightArrow = document.querySelector(".change-price-right-double");
 const priceLeftArrow = document.querySelector(".change-price-left");
 const priceRightArrow = document.querySelector(".change-price-right");
 
@@ -381,25 +389,12 @@ if (rightArrow) {
   rightArrow.addEventListener("mouseleave", handleArrowMouseUp);
 }
 
-if (doubleLeftArrow) {
-  doubleLeftArrow.addEventListener("click", () => {
-    console.log("Double left arrow clicked");
-    updateCalculatorValue(-10);
-  });
-}
-
-if (doubleRightArrow) {
-  doubleRightArrow.addEventListener("click", () => {
-    console.log("Double right arrow clicked");
-    updateCalculatorValue(10);
-  });
-}
-
 if (priceLeftArrow) {
   priceLeftArrow.addEventListener("mousedown", () => handleArrowMouseDown(-1));
   priceLeftArrow.addEventListener("mouseup", handleArrowMouseUp);
   priceLeftArrow.addEventListener("mouseleave", handleArrowMouseUp);
 }
+
 if (priceRightArrow) {
   priceRightArrow.addEventListener("mousedown", () => handleArrowMouseDown(1));
   priceRightArrow.addEventListener("mouseup", handleArrowMouseUp);
@@ -554,46 +549,121 @@ setInterval(blinkCursor, 530);
 typePhrase();
 
 //------------------------------------------------------POP-UP----------------------------------------------//\
+
 const loginBtn = document.querySelector(".login");
 const modalOverlay = document.getElementById("modal-overlay");
-const closeModal = document.getElementById("close-modal");
-const togglePassword = document.getElementById("toggle-password");
-const passwordInput = document.getElementById("password");
-const modal = document.querySelector(".modal");
+const closeLoginModalBtn = document.getElementById("close-login-modal");
+const closeRegisterModalBtn = document.getElementById("close-register-modal");
 
-loginBtn.addEventListener("click", function () {
-  modalOverlay.style.display = "flex"; // Show the overlay
-  modalOverlay.classList.remove("blur-out"); // Make sure blur is applied when the modal opens
+const togglePasswordBtn = document.getElementById("toggle-password");
+const passwordInput = document.getElementById("password");
+
+const toggleRegisterPasswordBtn = document.getElementById(
+  "toggle-register-password"
+);
+const registerPasswordInput = document.getElementById("register-password");
+
+const openRegisterBtn = document.getElementById("open-register");
+const openLoginBtn = document.getElementById("open-login");
+
+const loginModal = document.getElementById("login-modal");
+const registerModal = document.getElementById("register-modal");
+
+function openModal(modal) {
+  modalOverlay.style.display = "flex";
+  modalOverlay.classList.remove("blur-out");
+  modal.style.display = "block";
+}
+
+function closeModal() {
+  loginModal.classList.add("modal-closing");
+  registerModal.classList.add("modal-closing");
+  modalOverlay.classList.add("blur-out");
+
+  setTimeout(() => {
+    modalOverlay.style.display = "none";
+    loginModal.style.display = "none";
+    registerModal.style.display = "none";
+
+    loginModal.classList.remove("modal-closing");
+    registerModal.classList.remove("modal-closing");
+  }, 400);
+}
+
+loginBtn.addEventListener("click", () => {
+  openModal(loginModal);
 });
 
-closeModal.addEventListener("click", function () {
-  modal.classList.add("modal-closing");
-  modalOverlay.classList.add("blur-out");
-  setTimeout(function () {
-    modalOverlay.style.display = "none";
-    modal.classList.remove("modal-closing");
+closeLoginModalBtn.addEventListener("click", () => {
+  closeModal();
+});
+
+closeRegisterModalBtn.addEventListener("click", () => {
+  closeModal();
+});
+
+modalOverlay.addEventListener("click", (e) => {
+  if (e.target === modalOverlay) {
+    closeModal();
+  }
+});
+
+togglePasswordBtn.addEventListener("click", () => {
+  togglePasswordVisibility(passwordInput, togglePasswordBtn);
+});
+
+toggleRegisterPasswordBtn.addEventListener("click", () => {
+  togglePasswordVisibility(registerPasswordInput, toggleRegisterPasswordBtn);
+});
+
+function togglePasswordVisibility(passwordField, toggleBtn) {
+  const type = passwordField.type === "password" ? "text" : "password";
+  passwordField.type = type;
+
+  const img = toggleBtn.querySelector("img");
+  if (type === "text") {
+    img.src = "/img/hidePassword.svg";
+  } else {
+    img.src = "/img/showPassword.svg";
+  }
+}
+
+openRegisterBtn.addEventListener("click", () => {
+  loginModal.classList.add("modal-closing");
+  setTimeout(() => {
+    loginModal.style.display = "none";
+    loginModal.classList.remove("modal-closing");
+
+    openModal(registerModal);
   }, 400);
 });
 
-modalOverlay.addEventListener("click", function (e) {
-  if (e.target === modalOverlay) {
-    closeModal.click();
-  }
+openLoginBtn.addEventListener("click", () => {
+  registerModal.classList.add("modal-closing");
+  setTimeout(() => {
+    registerModal.style.display = "none";
+    registerModal.classList.remove("modal-closing");
+
+    openModal(loginModal);
+  }, 400);
 });
+const dobDaySelect = document.getElementById("dob-day");
+const dobYearSelect = document.getElementById("dob-year");
 
-togglePassword.addEventListener("click", function () {
-  const password = passwordInput.value;
+for (let i = 1; i <= 31; i++) {
+  const option = document.createElement("option");
+  option.value = i;
+  option.textContent = i;
+  dobDaySelect.appendChild(option);
+}
 
-  if (passwordInput.type === "password") {
-    passwordInput.setAttribute("type", "text");
-    togglePassword.querySelector("img").src = "/img/hidePassword.svg";
-  } else {
-    passwordInput.setAttribute("type", "password");
-    togglePassword.querySelector("img").src = "/img/showPassword.svg";
-  }
-
-  passwordInput.value = password;
-});
+const currentYear = new Date().getFullYear();
+for (let i = currentYear; i >= 1900; i--) {
+  const option = document.createElement("option");
+  option.value = i;
+  option.textContent = i;
+  dobYearSelect.appendChild(option);
+}
 
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 
@@ -895,14 +965,19 @@ document.querySelectorAll(".card-wrap").forEach((card) => {
   const cardElement = card.querySelector(".card");
 
   card.addEventListener("mousemove", (e) => {
+    const isModalOpen =
+      document.querySelector(".modal-overlay").style.display !== "none";
+    const isInModal =
+      card.closest("#login-modal") || card.closest("#register-modal");
+
     const rect = cardElement.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
     const rotateX = (mouseY / rect.height) * 30 - 15;
-    const rotateY = (mouseX / rect.width) * -30 + 15;
-
-    cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`; // Add translateZ for depth
+    const rotateY =
+      isModalOpen || isInModal ? 0 : (mouseX / rect.width) * -30 + 15;
+    cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
   });
 
   card.addEventListener("mouseleave", () => {
@@ -921,21 +996,25 @@ if (loginForm) {
     console.log("Отправка данных:", { email, password });
   });
 }
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.log_in_item').forEach(function(item) {
-      item.addEventListener('mouseenter', function() {
-          if (window.innerWidth > 1180) {
-              var inner = item.querySelector('.log_in_item--inner');
-              inner.classList.add('start-rotation');
-          }
-      });
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".log_in_item").forEach(function (item) {
+    item.addEventListener("mouseenter", function () {
+      if (window.innerWidth > 1180) {
+        var inner = item.querySelector(".log_in_item--inner");
+        inner.classList.add("start-rotation");
+      }
+    });
 
-      item.addEventListener('mouseleave', function() {
-          if (window.innerWidth > 1180) {
-              var inner = item.querySelector('.log_in_item--inner');
-              inner.classList.remove('start-rotation');
-          }
-      });
+    item.addEventListener("mouseleave", function () {
+      if (window.innerWidth > 1180) {
+        var inner = item.querySelector(".log_in_item--inner");
+        inner.classList.remove("start-rotation");
+      }
+    });
   });
 });
 
+// Nice-Select
+$(document).ready(function () {
+  $("select").niceSelect();
+});
