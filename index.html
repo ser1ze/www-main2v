@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Centered Block Layout with Header and Footer</title>
+    <title>Audiosector</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="styles.media.css" />
     <link rel="stylesheet" href="/css/nice-select.css" />
@@ -217,20 +217,27 @@
               />
             </div>
             <div class="input-group">
-              <input
-                type="password"
-                id="register-password"
-                placeholder="Пароль"
-                autocomplete="new-password"
-                required
-              />
-              <span class="toggle-password" id="toggle-register-password">
-                <img
-                  src="./img/showPassword.svg"
-                  alt="Показать/Скрыть пароль"
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="register-password"
+                  placeholder="Пароль"
+                  required
                 />
-              </span>
+                <span class="toggle-password" id="toggle-register-password">
+                  <img
+                    src="./img/showPassword.svg"
+                    alt="Показать/Скрыть пароль"
+                  />
+                </span>
+              </div>
+              <div id="password-strength" class="password-strength">
+                <div id="strength-indicator" class="strength-indicator"></div>
+                <span id="strength-text" class="strength-text"></span>
+              </div>
             </div>
+            
+            
             <div class="input-group">
               <input
                 type="text"
@@ -1700,109 +1707,7 @@
       <div class="circle"></div>
       <div class="circle"></div>
     </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const giftButton = document.getElementById("gift");
-        const calculatorBox = document.querySelector(".calculator-box");
-        const typingBlock = document.querySelector(".typing-block");
-        const giftDescription = document.querySelector(".gift-description");
-        const microphone = document.querySelector(".microphone");
-        const minutesInput = document.querySelector(".calculator-value input");
-        const paymentNavigationButtons = document.querySelectorAll(
-          ".payment-navigation-btn"
-        );
-
-        let isGiftModeActive = false;
-        let resetTimer;
-
-        const toggleGiftMode = () => {
-          if (isGiftModeActive) {
-            calculatorBox.style.display = "none";
-            typingBlock.style.display = "none";
-            giftDescription.style.display = "block";
-          } else {
-            calculatorBox.style.display = "block";
-            typingBlock.style.display = "flex";
-            giftDescription.style.display = "none";
-          }
-        };
-
-        const resetBlocksToDefault = () => {
-          isGiftModeActive = false;
-          calculatorBox.style.display = "block";
-          typingBlock.style.display = "flex";
-          giftDescription.style.display = "none";
-
-          toggleGiftMode();
-        };
-
-        const startResetTimer = () => {
-          if (resetTimer) {
-            clearTimeout(resetTimer);
-          }
-
-          resetTimer = setTimeout(() => {
-            resetBlocksToDefault();
-          }, 8000);
-        };
-
-        if (microphone) {
-          const observer = new MutationObserver(() => {
-            startResetTimer();
-          });
-
-          observer.observe(microphone, {
-            attributes: true,
-            attributeFilter: ["style"],
-          });
-        }
-
-        if (minutesInput) {
-          minutesInput.addEventListener("input", () => {
-            resetBlocksToDefault();
-            if (resetTimer) {
-              clearTimeout(resetTimer);
-            }
-          });
-        }
-
-        if (giftButton) {
-          giftButton.addEventListener("click", () => {
-            isGiftModeActive = !isGiftModeActive;
-            toggleGiftMode();
-
-            if (isGiftModeActive) {
-              startResetTimer();
-            } else {
-              clearTimeout(resetTimer);
-            }
-          });
-        }
-
-        const microphonePositionObserver = new MutationObserver(() => {
-          resetBlocksToDefault();
-        });
-
-        microphonePositionObserver.observe(microphone, {
-          attributes: true,
-          attributeFilter: ["style"],
-        });
-
-        if (paymentNavigationButtons.length > 0) {
-          paymentNavigationButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-              if (
-                !button.classList.contains("active") &&
-                giftButton.classList.contains("active")
-              ) {
-                resetBlocksToDefault();
-              }
-            });
-          });
-        }
-      });
-    </script>
-
+  
     <script>
       window.onload = function () {
         const nav = document.getElementById("payment-navigation");

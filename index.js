@@ -665,6 +665,133 @@ for (let i = currentYear; i >= 1900; i--) {
   dobYearSelect.appendChild(option);
 }
 
+const strengthIndicator = document.getElementById("strength-indicator");
+const strengthText = document.getElementById("strength-text");
+
+registerPasswordInput.addEventListener("input", () => {
+  const password = registerPasswordInput.value;
+  const strength = checkPasswordStrength(password);
+
+  updateStrengthIndicator(strength);
+});
+
+function checkPasswordStrength(password) {
+  const weakRegex = /^(?=.*[a-zA-Z]).{1,}$/; 
+  const mediumRegex = /^(?=.*[a-zA-Z])(?=.*[\d!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|-]).{6,}$/; 
+  const strongRegex = /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*<>./]).{8,}$/; 
+
+
+  if (strongRegex.test(password)) {
+    return 'strong';
+  } else if (mediumRegex.test(password)) {
+    return 'medium';
+  } else if (weakRegex.test(password)) {
+    return 'weak';
+  } else {
+    return 'none';
+  }
+}
+
+function updateStrengthIndicator(strength) {
+  strengthIndicator.style.width = '0';
+  strengthIndicator.classList.remove('weak', 'medium', 'strong');
+  
+
+  switch (strength) {
+    case 'strong':
+      strengthIndicator.style.width = '100%';
+      strengthIndicator.classList.add('strong');
+      strengthText.textContent = 'хороший пароль';
+      break;
+    case 'medium':
+      strengthIndicator.style.width = '50%';
+      strengthIndicator.classList.add('medium');
+      strengthText.textContent = 'средний пароль';
+      break;
+    case 'weak':
+      strengthIndicator.style.width = '20%';
+      strengthIndicator.classList.add('weak');
+      strengthText.textContent = 'слабый пароль';
+      break;
+    default:
+      strengthIndicator.style.width = '0';
+      strengthIndicator.classList.add('none');
+      strengthText.textContent = '';
+  }
+  
+}
+
+const daySelect = document.getElementById('dob-day');
+const monthSelect = document.getElementById('dob-month');
+const yearSelect = document.getElementById('dob-year');
+
+const updateCurrentStyles = () => {
+  const dayValue = daySelect.value;
+  const monthValue = monthSelect.value;
+  const yearValue = yearSelect.value;
+
+  const allDefault = (dayValue === 'День') &&
+                     (monthValue === 'Месяц') &&
+                     (yearValue === 'Год');
+
+  const currentSpans = document.querySelectorAll('.current');
+
+  currentSpans.forEach(span => {
+    if (allDefault) {
+      span.classList.add('all-default');
+    } else {
+      span.classList.remove('all-default');
+    }
+  });
+};
+
+// Инициализация при загрузке страницы
+updateCurrentStyles();
+
+// Обработчики событий на изменение селектов
+daySelect.addEventListener('change', updateCurrentStyles);
+monthSelect.addEventListener('change', updateCurrentStyles);
+yearSelect.addEventListener('change', updateCurrentStyles);
+
+// Дополнительно: Обработка пользовательских селектов (если используется плагин)
+const niceSelects = document.querySelectorAll('.nice-select');
+niceSelects.forEach(niceSelect => {
+  niceSelect.addEventListener('click', function() {
+    this.classList.toggle('open');
+  });
+
+  niceSelect.querySelectorAll('.option').forEach(option => {
+    option.addEventListener('click', function() {
+      const parent = this.parentElement.parentElement;
+      const current = parent.querySelector('.current');
+      const selectId = parent.previousElementSibling.id;
+
+      // Обновляем значение оригинального селекта
+      const select = document.getElementById(selectId);
+      select.value = this.getAttribute('data-value');
+
+      // Обновляем отображаемое значение
+      current.textContent = this.textContent;
+
+      // Закрываем список
+      parent.classList.remove('open');
+
+      // Обновляем стили
+      updateCurrentStyles();
+    });
+  });
+});
+
+// Закрываем список при клике вне
+document.addEventListener('click', function(e) {
+  niceSelects.forEach(niceSelect => {
+    if (!niceSelect.contains(e.target)) {
+      niceSelect.classList.remove('open');
+    }
+  });
+});
+
+
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 
 calculatorInput.addEventListener("input", resizeInput);
@@ -693,6 +820,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   show();
 });
+
+
 
 //--------------------------------------------------WHEEL MICROPHONE MOVEMENT----------------------------------//
 
@@ -1018,3 +1147,158 @@ document.addEventListener("DOMContentLoaded", function () {
 $(document).ready(function () {
   $("select").niceSelect();
 });
+
+
+
+const giftButton = document.getElementById("gift");
+const calculatorBox = document.querySelector(".calculator-box");
+const typingBlock = document.querySelector(".typing-block");
+const giftDescription = document.querySelector(".gift-description");
+const minutesInput = document.querySelector(".calculator-value input");
+const paymentNavigationButtons = document.querySelectorAll(".payment-navigation-btn");
+const cardSpans = document.querySelectorAll(".cards .card-content span");
+
+// **Убедитесь, что элемент микрофона корректно определён**
+
+
+// Состояние режима подарка
+let isGiftModeActive = false;
+let resetTimer;
+
+// Функция активации режима подарка
+const activateGiftMode = () => {
+  isGiftModeActive = true;
+  console.log("Режим подарка активирован");
+  calculatorBox.style.display = "none";
+  typingBlock.style.display = "none";
+  giftDescription.style.display = "block";
+  updateCardText();
+};
+
+// Функция деактивации режима подарка
+const deactivateGiftMode = () => {
+  isGiftModeActive = false;
+  console.log("Режим подарка деактивирован");
+  calculatorBox.style.display = "block";
+  typingBlock.style.display = "flex";
+  giftDescription.style.display = "none";
+  updateCardText();
+};
+
+// Функция обновления текста в карточках
+const updateCardText = () => {
+  cardSpans.forEach((cardSpan) => {
+    if (isGiftModeActive) {
+      cardSpan.textContent = "Купить";
+    } else {
+      cardSpan.textContent = "Регистрация";
+    }
+  });
+};
+
+// Функция для сброса блоков к состоянию по умолчанию
+const resetBlocksToDefault = () => {
+  if (isGiftModeActive) {
+    console.log("Сброс блоков: деактивация режима подарка");
+    deactivateGiftMode();
+  }
+  clearTimeout(resetTimer);
+};
+
+// Функция для запуска таймера сброса
+const startResetTimer = () => {
+  if (resetTimer) {
+    clearTimeout(resetTimer);
+  }
+
+  resetTimer = setTimeout(() => {
+    resetBlocksToDefault();
+  }, 8000);
+};
+
+// Наблюдатель за изменениями стиля микрофона
+if (microphone) {
+  const observer = new MutationObserver(() => {
+    if (!isGiftModeActive) { // Только если режим подарка не активен
+      console.log("Микрофон изменён, запуск таймера сброса");
+      startResetTimer();
+    } else {
+      console.log("Микрофон изменён, но режим подарка активен. Сброс не требуется.");
+    }
+  });
+
+  observer.observe(microphone, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
+}
+
+// Обработчик ввода минут
+if (minutesInput) {
+  minutesInput.addEventListener("input", () => {
+    console.log("Ввод минут, сброс режима подарка");
+    resetBlocksToDefault();
+  });
+}
+
+// Обработчик клика по кнопке подарка
+if (giftButton) {
+  giftButton.addEventListener("click", () => {
+    if (!isGiftModeActive) {
+      console.log("Кнопка подарка нажата: активация режима подарка");
+      activateGiftMode();
+      // Если необходимо, можете добавить вызов таймера здесь
+      // startResetTimer();
+    } else {
+      console.log("Кнопка подарка нажата, но режим подарка уже активен");
+      // Дополнительные действия при повторном нажатии (если необходимо)
+    }
+  });
+}
+
+// Наблюдатель за позицией микрофона
+if (microphone) {
+  const microphonePositionObserver = new MutationObserver(() => {
+    if (!isGiftModeActive) { // Только если режим подарка не активен
+      console.log("Позиция микрофона изменена, сброс режима подарка");
+      resetBlocksToDefault();
+    } else {
+      console.log("Позиция микрофона изменена, но режим подарка активен. Сброс не требуется.");
+    }
+  });
+
+  microphonePositionObserver.observe(microphone, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
+}
+
+// Обработчики кликов по навигационным кнопкам
+if (paymentNavigationButtons.length > 0) {
+  paymentNavigationButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Проверяем, что нажата не кнопка с id "gift"
+      if (button.id !== "gift") {
+        console.log("Навигационная кнопка нажата, сброс режима подарка");
+        resetBlocksToDefault();
+      }
+    });
+  });
+}
+
+// Обработчики кликов по карточкам
+if (cardSpans.length > 0) {
+  cardSpans.forEach((cardSpan) => {
+    const cardContent = cardSpan.parentElement;
+    if (cardContent) {
+      cardContent.addEventListener("click", () => {
+        if (!isGiftModeActive) {
+          console.log("Клик по карточке: активация режима подарка");
+          activateGiftMode();
+          // Если необходимо, можете добавить вызов таймера здесь
+          // startResetTimer();
+        }
+      });
+    }
+  });
+}
