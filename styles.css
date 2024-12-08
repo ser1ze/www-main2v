@@ -1001,7 +1001,7 @@ input:-webkit-autofill:active {
 .home-btn {
   opacity: 0;
   visibility: hidden;
-  transform: rotateX(15deg) translateY(0px);
+  transform: rotateX(0deg) translateY(0px);
   animation-name: swingdown;
   animation-duration: 1s;
   animation-timing-function: ease;
@@ -1010,6 +1010,17 @@ input:-webkit-autofill:active {
   transition: all 0.3s ease;
   transform-style: preserve-3d;
 }
+ /*.gift-description {
+  opacity: 0;
+  visibility: hidden;
+  transform: rotateX(0deg) translateY(0px);
+  animation-name: swingdown;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+} */
 
 .rate-btn:nth-child(1) {
   animation-delay: 0s;
@@ -1030,7 +1041,7 @@ input:-webkit-autofill:active {
 @keyframes swingdown {
   0% {
     opacity: 0;
-    transform: rotateX(15deg) translateY(0px);
+    transform: rotateX(0deg) translateY(0px);
   }
   30% {
     opacity: 0.5;
@@ -1450,7 +1461,13 @@ body
   margin-left: -1.8px;
   margin-top: 0.3px;
 }
-
+.gift-postpayment {
+  font-weight: 700;
+font-size: 24px;
+color: #a4a4a4;
+display: none;
+margin-top: 72px;
+}
 .calculator-box {
   margin-top: 13px;
   height: 210px;

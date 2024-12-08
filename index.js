@@ -1150,6 +1150,9 @@ $(document).ready(function () {
 
 
 
+
+// -------------------------------------------------- Gift Mode ------------------------------------------------//
+
 const giftButton = document.getElementById("gift");
 const calculatorBox = document.querySelector(".calculator-box");
 const typingBlock = document.querySelector(".typing-block");
@@ -1157,35 +1160,43 @@ const giftDescription = document.querySelector(".gift-description");
 const minutesInput = document.querySelector(".calculator-value input");
 const paymentNavigationButtons = document.querySelectorAll(".payment-navigation-btn");
 const cardSpans = document.querySelectorAll(".cards .card-content span");
+const giftPostpayment = document.querySelector(".gift-postpayment")
 
-// **Убедитесь, что элемент микрофона корректно определён**
 
 
-// Состояние режима подарка
+if (!microphone) {
+  console.error("Элемент .microphone не найден.");
+}
+
 let isGiftModeActive = false;
 let resetTimer;
 
-// Функция активации режима подарка
+
 const activateGiftMode = () => {
   isGiftModeActive = true;
   console.log("Режим подарка активирован");
-  calculatorBox.style.display = "none";
-  typingBlock.style.display = "none";
-  giftDescription.style.display = "block";
+  
+
+  if (calculatorBox) calculatorBox.style.display = "none";
+  if (typingBlock) typingBlock.style.display = "none";
+  if (giftDescription) giftDescription.style.display = "block";
+  
   updateCardText();
+  
+  startResetTimer();
 };
 
-// Функция деактивации режима подарка
 const deactivateGiftMode = () => {
   isGiftModeActive = false;
   console.log("Режим подарка деактивирован");
-  calculatorBox.style.display = "block";
-  typingBlock.style.display = "flex";
-  giftDescription.style.display = "none";
+  
+  if (calculatorBox) calculatorBox.style.display = "block";
+  if (typingBlock) typingBlock.style.display = "flex";
+  if (giftDescription) giftDescription.style.display = "none";
+  if (giftPostpayment) giftDescription.style.display = "none"
   updateCardText();
 };
 
-// Функция обновления текста в карточках
 const updateCardText = () => {
   cardSpans.forEach((cardSpan) => {
     if (isGiftModeActive) {
@@ -1196,74 +1207,110 @@ const updateCardText = () => {
   });
 };
 
-// Функция для сброса блоков к состоянию по умолчанию
-const resetBlocksToDefault = () => {
+const resetBlocks = () => {
+  console.log("Сброс блоков: скрытие giftDescription и показ calculatorBox и typingBlock");
+  if (giftDescription) giftDescription.style.display = "none";
+  if (calculatorBox) calculatorBox.style.display = "block";
+  if (typingBlock) typingBlock.style.display = "none";
+  if (giftPostpayment) giftPostpayment.style.display = 'block'
+};
+
+const resetGiftMode = () => {
   if (isGiftModeActive) {
-    console.log("Сброс блоков: деактивация режима подарка");
     deactivateGiftMode();
   }
   clearTimeout(resetTimer);
 };
 
-// Функция для запуска таймера сброса
 const startResetTimer = () => {
   if (resetTimer) {
     clearTimeout(resetTimer);
   }
 
   resetTimer = setTimeout(() => {
-    resetBlocksToDefault();
-  }, 8000);
+    resetBlocks();
+  }, 8000); 
 };
 
-// Наблюдатель за изменениями стиля микрофона
-if (microphone) {
-  const observer = new MutationObserver(() => {
-    if (!isGiftModeActive) { // Только если режим подарка не активен
-      console.log("Микрофон изменён, запуск таймера сброса");
-      startResetTimer();
-    } else {
-      console.log("Микрофон изменён, но режим подарка активен. Сброс не требуется.");
-    }
-  });
-
-  observer.observe(microphone, {
-    attributes: true,
-    attributeFilter: ["style"],
-  });
-}
-
-// Обработчик ввода минут
-if (minutesInput) {
-  minutesInput.addEventListener("input", () => {
-    console.log("Ввод минут, сброс режима подарка");
-    resetBlocksToDefault();
-  });
-}
-
-// Обработчик клика по кнопке подарка
 if (giftButton) {
   giftButton.addEventListener("click", () => {
     if (!isGiftModeActive) {
       console.log("Кнопка подарка нажата: активация режима подарка");
       activateGiftMode();
-      // Если необходимо, можете добавить вызов таймера здесь
-      // startResetTimer();
     } else {
       console.log("Кнопка подарка нажата, но режим подарка уже активен");
-      // Дополнительные действия при повторном нажатии (если необходимо)
     }
   });
 }
 
-// Наблюдатель за позицией микрофона
+if (cardSpans.length > 0) {
+  cardSpans.forEach((cardSpan) => {
+    const cardContent = cardSpan.parentElement;
+    if (cardContent) {
+      cardContent.addEventListener("click", () => {
+        if (!isGiftModeActive) {
+          console.log("Клик по карточке: активация режима подарка");
+          activateGiftMode();
+        }
+      });
+    }
+  });
+}
+
+function moveMicrophone(e, smooth = false) {
+  if (!slider) return;
+  const rect = slider.getBoundingClientRect();
+  let position;
+  if (isRotated) {
+    position = e.clientY - rect.top;
+    position = Math.max(0, Math.min(position, SLIDER_HEIGHT));
+  } else {
+    position = e.clientX - rect.left;
+    position = Math.max(0, Math.min(position, SLIDER_WIDTH));
+  }
+
+  const minutes = calculateMinutes(position);
+  updateDisplay(minutes, smooth);
+
+  if (isGiftModeActive) {
+    console.log("Микрофон перемещён, сброс блоков");
+    resetBlocks();
+  }
+}
+
+function updatePositions(position, smooth = false) {
+  if (microphone) {
+    microphone.classList.toggle("smooth-transition", smooth);
+    microphone.style.left = `${position}px`;
+   
+  }
+}
+
+if (minutesInput) {
+  minutesInput.addEventListener("input", () => {
+    console.log("Изменение значений минут, сброс режима подарка");
+    resetGiftMode();
+  });
+}
+
+if (paymentNavigationButtons.length > 0) {
+  paymentNavigationButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+
+      if (button.id !== "gift") {
+        console.log("Кнопка payment-navigation-btn нажата, сброс режима подарка");
+        resetGiftMode();
+      }
+    });
+  });
+}
+
+
 if (microphone) {
   const microphonePositionObserver = new MutationObserver(() => {
-    if (!isGiftModeActive) { // Только если режим подарка не активен
-      console.log("Позиция микрофона изменена, сброс режима подарка");
-      resetBlocksToDefault();
-    } else {
-      console.log("Позиция микрофона изменена, но режим подарка активен. Сброс не требуется.");
+    if (isGiftModeActive) { 
+      console.log("Позиция микрофона изменена, сброс блоков");
+      resetBlocks();
     }
   });
 
@@ -1273,32 +1320,3 @@ if (microphone) {
   });
 }
 
-// Обработчики кликов по навигационным кнопкам
-if (paymentNavigationButtons.length > 0) {
-  paymentNavigationButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      // Проверяем, что нажата не кнопка с id "gift"
-      if (button.id !== "gift") {
-        console.log("Навигационная кнопка нажата, сброс режима подарка");
-        resetBlocksToDefault();
-      }
-    });
-  });
-}
-
-// Обработчики кликов по карточкам
-if (cardSpans.length > 0) {
-  cardSpans.forEach((cardSpan) => {
-    const cardContent = cardSpan.parentElement;
-    if (cardContent) {
-      cardContent.addEventListener("click", () => {
-        if (!isGiftModeActive) {
-          console.log("Клик по карточке: активация режима подарка");
-          activateGiftMode();
-          // Если необходимо, можете добавить вызов таймера здесь
-          // startResetTimer();
-        }
-      });
-    }
-  });
-}
