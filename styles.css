@@ -1918,8 +1918,9 @@ input[type="number"] {
   margin-top: 15px;
 }
 #register-modal .card-wrap {
-  margin-top: 40px;
+  margin-top: 24px;
 }
+
 .nice-select .list {
   background: #20272a !important;
   border-radius: 5px !important;
@@ -2581,6 +2582,7 @@ body
 }
 #register-modal .terms {
   margin: 0;
+  margin-top: 26px;
 }
 
 .register {
@@ -2804,6 +2806,7 @@ body
   will-change: transform;
   transform: rotate(-90deg);
   transform-origin: center;
+
   font-weight: 400;
   font-size: 16px;
   line-height: 120%;
