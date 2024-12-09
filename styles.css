@@ -2143,6 +2143,7 @@ input[type="number"] {
   }
 }
 
+
 #cursor {
   font-family: sans-serif;
   font-weight: lighter;
@@ -2391,6 +2392,7 @@ body
   
   background-size: cover; 
 }
+
 
 
 @keyframes modal-zoom-out {

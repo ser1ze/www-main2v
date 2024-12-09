@@ -677,8 +677,8 @@ registerPasswordInput.addEventListener("input", () => {
 
 function checkPasswordStrength(password) {
   const weakRegex = /^(?=.*[a-zA-Z]).{1,}$/; 
-  const mediumRegex = /^(?=.*[a-zA-Z])(?=.*[\d!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|-]).{6,}$/; 
-  const strongRegex = /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*<>./]).{8,}$/; 
+  const mediumRegex = /^(?=.*[a-zA-Z])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/; 
+  const strongRegex = /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#+=_$%^&*<>./]).{8,}$/; 
 
 
   if (strongRegex.test(password)) {
