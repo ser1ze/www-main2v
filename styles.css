@@ -2689,10 +2689,14 @@ body
   border-left: 1px solid #131518;
   overflow: hidden;
   cursor: pointer;
-  will-change: transform, mix-blend-mode;
-  transition: transform 0.3s;
+  filter: grayscale(100%) contrast(100%) brightness(100%);
+  -webkit-transition: filter 0.3s ease-in-out;
+  -moz-transition: filter 0.3s ease-in-out;
+  -o-transition: filter 0.3s ease-in-out;
+  transition: filter 0.3s ease-in-out;
+  will-change: transform, mix-blend-mode, filter;
+  transition: all 0.3 ease;
   background: #252324;
-  mix-blend-mode: luminosity;
 }
 
 .log_in_with .log_in_item:first-child {
@@ -2745,7 +2749,11 @@ body
 }
 .log_in_with .log_in_item:hover,
 .log_in_with .log_in_item:focus {
-  mix-blend-mode: normal;
+  filter: grayscale(0%) contrast(100%) brightness(100%);
+  -webkit-transition: filter 0.3s ease-in-out;
+  -moz-transition: filter 0.3s ease-in-out;
+  -o-transition: filter 0.3s ease-in-out;
+  transition: filter 0.3s ease-in-out;
 }
 
 .toggle-password-btn {
