@@ -2700,7 +2700,7 @@ body
 .socials .log_in_with .row {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 8px;
 }
 
 .log_in_with .log_in_item {
