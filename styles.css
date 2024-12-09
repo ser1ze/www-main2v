@@ -2386,7 +2386,7 @@ body
   transform: scale(1.03);
   animation: modal-zoom-in 0.4s forwards;
   will-change: transform;
-  background-image: url("/img/ellipse.png");
+  background-image: url("./img/ellipse.png");
   background-position: top left;
   background-repeat: no-repeat;
 
@@ -2398,6 +2398,9 @@ body
   width: 360px;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.8);
   margin-bottom: 30px;
+}
+#login-modal .switch-modals {
+  margin-bottom: 56px;
 }
 .switch-modals__btn.active {
   font-weight: 700;
@@ -2775,7 +2778,6 @@ body
 }
 
 .toggle-password-btn {
-  background: blue;
   width: 50px;
   background: rgba(72, 72, 72, 0.36);
   border-radius: 0 4px 4px 0;
