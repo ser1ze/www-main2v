@@ -2414,8 +2414,19 @@ body
 .switch-modals__btn.active:active {
   color: #4a738c;
 }
+.modal-btn-text {
+  transition: all 0.3s;
+}
+.modal-btn-text:active {
+  transform: scale(0.97);
+}
 .modal-btn-text.fast-click {
   transform: scale(0.97);
+}
+
+.switch-modals__btn:active .modal-btn-text {
+  transform: scale(0.95);
+  color: #4a738c;
 }
 
 .switch-modals__btn {
