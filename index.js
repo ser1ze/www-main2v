@@ -622,9 +622,9 @@ function togglePasswordVisibility(passwordField, toggleBtn) {
 
   const img = toggleBtn.querySelector("img");
   if (type === "text") {
-    img.src = "/img/hidePassword.svg";
+    img.src = "./img/hidePassword.svg";
   } else {
-    img.src = "/img/showPassword.svg";
+    img.src = "./img/showPassword.svg";
   }
 }
 
