@@ -550,6 +550,7 @@ typePhrase();
 
 //------------------------------------------------------POP-UP----------------------------------------------//\
 
+// Select buttons and modals
 const loginBtn = document.querySelector(".login");
 const modalOverlay = document.getElementById("modal-overlay");
 const closeLoginModalBtn = document.getElementById("close-login-modal");
@@ -566,15 +567,24 @@ const registerPasswordInput = document.getElementById("register-password");
 const openRegisterBtn = document.getElementById("open-register");
 const openLoginBtn = document.getElementById("open-login");
 
+const openLoginFromRegisterBtn = document.getElementById(
+  "open-login-from-register"
+);
+const openRegisterFromRegisterBtn = document.getElementById(
+  "open-register-from-register"
+);
+
 const loginModal = document.getElementById("login-modal");
 const registerModal = document.getElementById("register-modal");
 
+// Function to open a modal
 function openModal(modal) {
   modalOverlay.style.display = "flex";
   modalOverlay.classList.remove("blur-out");
   modal.style.display = "block";
 }
 
+// Function to close all modals
 function closeModal() {
   loginModal.classList.add("modal-closing");
   registerModal.classList.add("modal-closing");
@@ -587,9 +597,21 @@ function closeModal() {
 
     loginModal.classList.remove("modal-closing");
     registerModal.classList.remove("modal-closing");
-  }, 400);
+  }, 400); // Ensure this timeout matches your CSS animation duration
 }
 
+// Helper function to switch between modals
+function switchModal(currentModal, targetModal) {
+  currentModal.classList.add("modal-closing");
+  setTimeout(() => {
+    currentModal.style.display = "none";
+    currentModal.classList.remove("modal-closing");
+
+    openModal(targetModal);
+  }, 400); // Ensure this timeout matches your CSS animation duration
+}
+
+// Event listeners for opening and closing modals
 loginBtn.addEventListener("click", () => {
   openModal(loginModal);
 });
@@ -608,6 +630,7 @@ modalOverlay.addEventListener("click", (e) => {
   }
 });
 
+// Event listeners for toggling password visibility
 togglePasswordBtn.addEventListener("click", () => {
   togglePasswordVisibility(passwordInput, togglePasswordBtn);
 });
@@ -616,6 +639,7 @@ toggleRegisterPasswordBtn.addEventListener("click", () => {
   togglePasswordVisibility(registerPasswordInput, toggleRegisterPasswordBtn);
 });
 
+// Function to toggle password visibility
 function togglePasswordVisibility(passwordField, toggleBtn) {
   const type = passwordField.type === "password" ? "text" : "password";
   passwordField.type = type;
@@ -628,25 +652,29 @@ function togglePasswordVisibility(passwordField, toggleBtn) {
   }
 }
 
+// Event listeners for switching modals
 openRegisterBtn.addEventListener("click", () => {
-  loginModal.classList.add("modal-closing");
-  setTimeout(() => {
-    loginModal.style.display = "none";
-    loginModal.classList.remove("modal-closing");
-
-    openModal(registerModal);
-  }, 400);
+  switchModal(loginModal, registerModal);
 });
 
 openLoginBtn.addEventListener("click", () => {
-  registerModal.classList.add("modal-closing");
-  setTimeout(() => {
-    registerModal.style.display = "none";
-    registerModal.classList.remove("modal-closing");
-
-    openModal(loginModal);
-  }, 400);
+  switchModal(registerModal, loginModal);
 });
+
+// New event listeners for additional buttons
+openLoginFromRegisterBtn.addEventListener("click", () => {
+  switchModal(registerModal, loginModal);
+});
+
+openRegisterFromRegisterBtn.addEventListener("click", () => {
+  // Optional: If you want to refresh the Register modal or perform another action
+  // For now, we'll just ensure it's displayed
+  if (registerModal.style.display !== "block") {
+    openModal(registerModal);
+  }
+});
+
+// Populate DOB selectors (unchanged)
 const dobDaySelect = document.getElementById("dob-day");
 const dobYearSelect = document.getElementById("dob-year");
 
@@ -665,6 +693,7 @@ for (let i = currentYear; i >= 1900; i--) {
   dobYearSelect.appendChild(option);
 }
 
+// Password strength indicator (unchanged)
 const strengthIndicator = document.getElementById("strength-indicator");
 const strengthText = document.getElementById("strength-text");
 
@@ -715,79 +744,10 @@ function updateStrengthIndicator(strength) {
       break;
     default:
       strengthIndicator.style.width = "0";
-      strengthIndicator.classList.add("none");
+      strengthIndicator.classList.remove("weak", "medium", "strong");
       strengthText.textContent = "";
   }
 }
-
-const daySelect = document.getElementById("dob-day");
-const monthSelect = document.getElementById("dob-month");
-const yearSelect = document.getElementById("dob-year");
-
-const updateCurrentStyles = () => {
-  const dayValue = daySelect.value;
-  const monthValue = monthSelect.value;
-  const yearValue = yearSelect.value;
-
-  const allDefault =
-    dayValue === "День" && monthValue === "Месяц" && yearValue === "Год";
-
-  const currentSpans = document.querySelectorAll(".current");
-
-  currentSpans.forEach((span) => {
-    if (allDefault) {
-      span.classList.add("all-default");
-    } else {
-      span.classList.remove("all-default");
-    }
-  });
-};
-
-// Инициализация при загрузке страницы
-updateCurrentStyles();
-
-// Обработчики событий на изменение селектов
-daySelect.addEventListener("change", updateCurrentStyles);
-monthSelect.addEventListener("change", updateCurrentStyles);
-yearSelect.addEventListener("change", updateCurrentStyles);
-
-// Дополнительно: Обработка пользовательских селектов (если используется плагин)
-const niceSelects = document.querySelectorAll(".nice-select");
-niceSelects.forEach((niceSelect) => {
-  niceSelect.addEventListener("click", function () {
-    this.classList.toggle("open");
-  });
-
-  niceSelect.querySelectorAll(".option").forEach((option) => {
-    option.addEventListener("click", function () {
-      const parent = this.parentElement.parentElement;
-      const current = parent.querySelector(".current");
-      const selectId = parent.previousElementSibling.id;
-
-      // Обновляем значение оригинального селекта
-      const select = document.getElementById(selectId);
-      select.value = this.getAttribute("data-value");
-
-      // Обновляем отображаемое значение
-      current.textContent = this.textContent;
-
-      // Закрываем список
-      parent.classList.remove("open");
-
-      // Обновляем стили
-      updateCurrentStyles();
-    });
-  });
-});
-
-// Закрываем список при клике вне
-document.addEventListener("click", function (e) {
-  niceSelects.forEach((niceSelect) => {
-    if (!niceSelect.contains(e.target)) {
-      niceSelect.classList.remove("open");
-    }
-  });
-});
 
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 
@@ -1065,6 +1025,8 @@ window.addEventListener("load", function () {
     modalContent.classList.remove("onload-animation");
   });
 });
+const togglePassword = document.querySelector(".toggle-password-btn");
+makeButtonClickable(togglePassword);
 
 document.addEventListener("DOMContentLoaded", function () {
   function activateButtonGroup(buttonSelector, textSelector) {
@@ -1120,23 +1082,6 @@ if (loginForm) {
     console.log("Отправка данных:", { email, password });
   });
 }
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll(".log_in_item").forEach(function (item) {
-    item.addEventListener("mouseenter", function () {
-      if (window.innerWidth > 1180) {
-        var inner = item.querySelector(".log_in_item--inner");
-        inner.classList.add("start-rotation");
-      }
-    });
-
-    item.addEventListener("mouseleave", function () {
-      if (window.innerWidth > 1180) {
-        var inner = item.querySelector(".log_in_item--inner");
-        inner.classList.remove("start-rotation");
-      }
-    });
-  });
-});
 
 // Nice-Select
 $(document).ready(function () {
