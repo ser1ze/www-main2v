@@ -1027,6 +1027,8 @@ window.addEventListener("load", function () {
 });
 const togglePassword = document.querySelector(".toggle-password-btn");
 makeButtonClickable(togglePassword);
+const switchModalsBtns = document.querySelectorAll("switch-modals__btn");
+switchModalsBtns.forEach((btn) => makeButtonClickable(btn));
 
 document.addEventListener("DOMContentLoaded", function () {
   function activateButtonGroup(buttonSelector, textSelector) {
@@ -1129,7 +1131,7 @@ const deactivateGiftMode = () => {
   if (calculatorBox) calculatorBox.style.display = "block";
   if (typingBlock) typingBlock.style.display = "flex";
   if (giftDescription) giftDescription.style.display = "none";
-  if (giftPostpayment) giftDescription.style.display = "none";
+  if (giftPostpayment) giftPostpayment.style.display = "none";
   updateCardText();
 };
 
