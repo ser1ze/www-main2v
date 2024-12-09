@@ -676,71 +676,69 @@ registerPasswordInput.addEventListener("input", () => {
 });
 
 function checkPasswordStrength(password) {
-  const weakRegex = /^(?=.*[a-zA-Z]).{1,}$/; 
-  const mediumRegex = /^(?=.*[a-zA-Z])(?=.*[\d!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|-]).{6,}$/; 
-  const strongRegex = /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*<>./]).{8,}$/; 
-
+  const weakRegex = /^(?=.*[a-zA-Z]).{1,}$/;
+  const mediumRegex =
+    /^(?=.*[a-zA-Z])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/;
+  const strongRegex =
+    /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#+=_$%^&*<>./]).{8,}$/;
 
   if (strongRegex.test(password)) {
-    return 'strong';
+    return "strong";
   } else if (mediumRegex.test(password)) {
-    return 'medium';
+    return "medium";
   } else if (weakRegex.test(password)) {
-    return 'weak';
+    return "weak";
   } else {
-    return 'none';
+    return "none";
   }
 }
 
 function updateStrengthIndicator(strength) {
-  strengthIndicator.style.width = '0';
-  strengthIndicator.classList.remove('weak', 'medium', 'strong');
-  
+  strengthIndicator.style.width = "0";
+  strengthIndicator.classList.remove("weak", "medium", "strong");
 
   switch (strength) {
-    case 'strong':
-      strengthIndicator.style.width = '100%';
-      strengthIndicator.classList.add('strong');
-      strengthText.textContent = 'хороший пароль';
+    case "strong":
+      strengthIndicator.style.width = "100%";
+      strengthIndicator.classList.add("strong");
+      strengthText.textContent = "хороший пароль";
       break;
-    case 'medium':
-      strengthIndicator.style.width = '50%';
-      strengthIndicator.classList.add('medium');
-      strengthText.textContent = 'средний пароль';
+    case "medium":
+      strengthIndicator.style.width = "50%";
+      strengthIndicator.classList.add("medium");
+      strengthText.textContent = "средний пароль";
       break;
-    case 'weak':
-      strengthIndicator.style.width = '20%';
-      strengthIndicator.classList.add('weak');
-      strengthText.textContent = 'слабый пароль';
+    case "weak":
+      strengthIndicator.style.width = "20%";
+      strengthIndicator.classList.add("weak");
+      strengthText.textContent = "слабый пароль";
       break;
     default:
-      strengthIndicator.style.width = '0';
-      strengthIndicator.classList.add('none');
-      strengthText.textContent = '';
+      strengthIndicator.style.width = "0";
+      strengthIndicator.classList.add("none");
+      strengthText.textContent = "";
   }
-  
 }
 
-const daySelect = document.getElementById('dob-day');
-const monthSelect = document.getElementById('dob-month');
-const yearSelect = document.getElementById('dob-year');
+const daySelect = document.getElementById("dob-day");
+const monthSelect = document.getElementById("dob-month");
+const yearSelect = document.getElementById("dob-year");
 
 const updateCurrentStyles = () => {
   const dayValue = daySelect.value;
   const monthValue = monthSelect.value;
   const yearValue = yearSelect.value;
 
-  const allDefault = (dayValue === 'День') &&
-                     (monthValue === 'Месяц') &&
-                     (yearValue === 'Год');
+  const allDefault =
+    dayValue === "День" && monthValue === "Месяц" && yearValue === "Год";
 
-  const currentSpans = document.querySelectorAll('.current');
+  const currentSpans = document.querySelectorAll(".current");
 
-  currentSpans.forEach(span => {
+  currentSpans.forEach((span) => {
     if (allDefault) {
-      span.classList.add('all-default');
+      span.classList.add("all-default");
     } else {
-      span.classList.remove('all-default');
+      span.classList.remove("all-default");
     }
   });
 };
@@ -749,32 +747,32 @@ const updateCurrentStyles = () => {
 updateCurrentStyles();
 
 // Обработчики событий на изменение селектов
-daySelect.addEventListener('change', updateCurrentStyles);
-monthSelect.addEventListener('change', updateCurrentStyles);
-yearSelect.addEventListener('change', updateCurrentStyles);
+daySelect.addEventListener("change", updateCurrentStyles);
+monthSelect.addEventListener("change", updateCurrentStyles);
+yearSelect.addEventListener("change", updateCurrentStyles);
 
 // Дополнительно: Обработка пользовательских селектов (если используется плагин)
-const niceSelects = document.querySelectorAll('.nice-select');
-niceSelects.forEach(niceSelect => {
-  niceSelect.addEventListener('click', function() {
-    this.classList.toggle('open');
+const niceSelects = document.querySelectorAll(".nice-select");
+niceSelects.forEach((niceSelect) => {
+  niceSelect.addEventListener("click", function () {
+    this.classList.toggle("open");
   });
 
-  niceSelect.querySelectorAll('.option').forEach(option => {
-    option.addEventListener('click', function() {
+  niceSelect.querySelectorAll(".option").forEach((option) => {
+    option.addEventListener("click", function () {
       const parent = this.parentElement.parentElement;
-      const current = parent.querySelector('.current');
+      const current = parent.querySelector(".current");
       const selectId = parent.previousElementSibling.id;
 
       // Обновляем значение оригинального селекта
       const select = document.getElementById(selectId);
-      select.value = this.getAttribute('data-value');
+      select.value = this.getAttribute("data-value");
 
       // Обновляем отображаемое значение
       current.textContent = this.textContent;
 
       // Закрываем список
-      parent.classList.remove('open');
+      parent.classList.remove("open");
 
       // Обновляем стили
       updateCurrentStyles();
@@ -783,14 +781,13 @@ niceSelects.forEach(niceSelect => {
 });
 
 // Закрываем список при клике вне
-document.addEventListener('click', function(e) {
-  niceSelects.forEach(niceSelect => {
+document.addEventListener("click", function (e) {
+  niceSelects.forEach((niceSelect) => {
     if (!niceSelect.contains(e.target)) {
-      niceSelect.classList.remove('open');
+      niceSelect.classList.remove("open");
     }
   });
 });
-
 
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 
@@ -820,8 +817,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   show();
 });
-
-
 
 //--------------------------------------------------WHEEL MICROPHONE MOVEMENT----------------------------------//
 
@@ -1148,9 +1143,6 @@ $(document).ready(function () {
   $("select").niceSelect();
 });
 
-
-
-
 // -------------------------------------------------- Gift Mode ------------------------------------------------//
 
 const giftButton = document.getElementById("gift");
@@ -1158,11 +1150,11 @@ const calculatorBox = document.querySelector(".calculator-box");
 const typingBlock = document.querySelector(".typing-block");
 const giftDescription = document.querySelector(".gift-description");
 const minutesInput = document.querySelector(".calculator-value input");
-const paymentNavigationButtons = document.querySelectorAll(".payment-navigation-btn");
+const paymentNavigationButtons = document.querySelectorAll(
+  ".payment-navigation-btn"
+);
 const cardSpans = document.querySelectorAll(".cards .card-content span");
-const giftPostpayment = document.querySelector(".gift-postpayment")
-
-
+const giftPostpayment = document.querySelector(".gift-postpayment");
 
 if (!microphone) {
   console.error("Элемент .microphone не найден.");
@@ -1171,29 +1163,28 @@ if (!microphone) {
 let isGiftModeActive = false;
 let resetTimer;
 
-
 const activateGiftMode = () => {
   isGiftModeActive = true;
   console.log("Режим подарка активирован");
-  
 
   if (calculatorBox) calculatorBox.style.display = "none";
   if (typingBlock) typingBlock.style.display = "none";
   if (giftDescription) giftDescription.style.display = "block";
-  
+  if (giftPostpayment) giftPostpayment.style.display = "none";
+
   updateCardText();
-  
+
   startResetTimer();
 };
 
 const deactivateGiftMode = () => {
   isGiftModeActive = false;
   console.log("Режим подарка деактивирован");
-  
+
   if (calculatorBox) calculatorBox.style.display = "block";
   if (typingBlock) typingBlock.style.display = "flex";
   if (giftDescription) giftDescription.style.display = "none";
-  if (giftPostpayment) giftDescription.style.display = "none"
+  if (giftPostpayment) giftDescription.style.display = "none";
   updateCardText();
 };
 
@@ -1208,11 +1199,13 @@ const updateCardText = () => {
 };
 
 const resetBlocks = () => {
-  console.log("Сброс блоков: скрытие giftDescription и показ calculatorBox и typingBlock");
+  console.log(
+    "Сброс блоков: скрытие giftDescription и показ calculatorBox и typingBlock"
+  );
   if (giftDescription) giftDescription.style.display = "none";
   if (calculatorBox) calculatorBox.style.display = "block";
   if (typingBlock) typingBlock.style.display = "none";
-  if (giftPostpayment) giftPostpayment.style.display = 'block'
+  if (giftPostpayment) giftPostpayment.style.display = "block";
 };
 
 const resetGiftMode = () => {
@@ -1229,7 +1222,7 @@ const startResetTimer = () => {
 
   resetTimer = setTimeout(() => {
     resetBlocks();
-  }, 8000); 
+  }, 8000);
 };
 
 if (giftButton) {
@@ -1282,7 +1275,6 @@ function updatePositions(position, smooth = false) {
   if (microphone) {
     microphone.classList.toggle("smooth-transition", smooth);
     microphone.style.left = `${position}px`;
-   
   }
 }
 
@@ -1296,19 +1288,19 @@ if (minutesInput) {
 if (paymentNavigationButtons.length > 0) {
   paymentNavigationButtons.forEach((button) => {
     button.addEventListener("click", () => {
-
       if (button.id !== "gift") {
-        console.log("Кнопка payment-navigation-btn нажата, сброс режима подарка");
+        console.log(
+          "Кнопка payment-navigation-btn нажата, сброс режима подарка"
+        );
         resetGiftMode();
       }
     });
   });
 }
 
-
 if (microphone) {
   const microphonePositionObserver = new MutationObserver(() => {
-    if (isGiftModeActive) { 
+    if (isGiftModeActive) {
       console.log("Позиция микрофона изменена, сброс блоков");
       resetBlocks();
     }
@@ -1319,4 +1311,3 @@ if (microphone) {
     attributeFilter: ["style"],
   });
 }
-
