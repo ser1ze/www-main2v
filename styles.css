@@ -2489,6 +2489,9 @@ body
 }
 .input-group {
   display: flex;
+  flex-direction: row;
+}
+#register-modal .input-group {
   flex-direction: column;
 }
 
@@ -2781,7 +2784,7 @@ body
   width: 50px;
   background: rgba(72, 72, 72, 0.36);
   border-radius: 0 4px 4px 0;
-
+  height: 50px;
   cursor: pointer;
 
   transition: all 0.3s;
