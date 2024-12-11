@@ -928,6 +928,7 @@ function makeButtonClickable(button) {
       descendants.forEach((descendant) =>
         descendant.classList.add("fast-click")
       );
+      console.log("кнопка нажата");
       lastClickTime = currentTime;
     }
   }
@@ -1014,6 +1015,10 @@ document
   .forEach((i) => makeButtonClickable(i));
 document
   .querySelectorAll(".modal-present")
+  .forEach((i) => makeButtonClickable(i));
+
+document
+  .querySelectorAll(".log_in_item")
   .forEach((i) => makeButtonClickable(i));
 
 window.addEventListener("load", function () {
