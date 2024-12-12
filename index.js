@@ -425,9 +425,6 @@ if (calculatorInput) {
     handleInputChange(e);
   });
 
-  calculatorInput.addEventListener("focus", function () {
-    if (this.value === "0 Минут") this.value = "";
-  });
 
   calculatorInput.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
@@ -693,7 +690,6 @@ for (let i = currentYear; i >= 1900; i--) {
   dobYearSelect.appendChild(option);
 }
 
-// Password strength indicator (unchanged)
 const strengthIndicator = document.getElementById("strength-indicator");
 const strengthText = document.getElementById("strength-text");
 
@@ -705,11 +701,14 @@ registerPasswordInput.addEventListener("input", () => {
 });
 
 function checkPasswordStrength(password) {
-  const weakRegex = /^(?=.*[a-zA-Z]).{1,}$/;
+  const weakRegex = /^(?=.*[a-zA-Zа-яА-Я]).{1,}$/; 
   const mediumRegex =
-    /^(?=.*[a-zA-Z])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/;
+    /^(?=.*[a-zA-Zа-яА-Я])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/; 
   const strongRegex =
-    /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#+=_$%^&*<>./]).{8,}$/;
+/^(?=.*[a-zA-Zа-яА-ЯёЁ])(?=.*[A-ZА-ЯЁ])(?=.*\d)(?=.*[!@#+=_\$%^&*<>./-]).{8,}$/
+
+
+
 
   if (strongRegex.test(password)) {
     return "strong";
@@ -721,6 +720,7 @@ function checkPasswordStrength(password) {
     return "none";
   }
 }
+
 
 function updateStrengthIndicator(strength) {
   strengthIndicator.style.width = "0";
@@ -1098,6 +1098,7 @@ $(document).ready(function () {
 // -------------------------------------------------- Gift Mode ------------------------------------------------//
 
 const giftButton = document.getElementById("gift");
+const timer = document.querySelector(".container")
 const calculatorBox = document.querySelector(".calculator-box");
 const typingBlock = document.querySelector(".typing-block");
 const giftDescription = document.querySelector(".gift-description");
@@ -1123,6 +1124,7 @@ const activateGiftMode = () => {
   if (typingBlock) typingBlock.style.display = "none";
   if (giftDescription) giftDescription.style.display = "block";
   if (giftPostpayment) giftPostpayment.style.display = "none";
+   if (timer) timer.style.display = "block"
 
   updateCardText();
 
@@ -1137,6 +1139,7 @@ const deactivateGiftMode = () => {
   if (typingBlock) typingBlock.style.display = "flex";
   if (giftDescription) giftDescription.style.display = "none";
   if (giftPostpayment) giftPostpayment.style.display = "none";
+  if (timer) timer.style.display = "none"
   updateCardText();
 };
 
@@ -1158,6 +1161,8 @@ const resetBlocks = () => {
   if (calculatorBox) calculatorBox.style.display = "block";
   if (typingBlock) typingBlock.style.display = "none";
   if (giftPostpayment) giftPostpayment.style.display = "block";
+   if (timer) timer.style.display = "none"
+ 
 };
 
 const resetGiftMode = () => {
@@ -1262,4 +1267,123 @@ if (microphone) {
     attributes: true,
     attributeFilter: ["style"],
   });
+}
+
+$(function() {
+  $( ".draggable" ).draggable({
+    cancel: "input,textarea,button,select,option, a, .btn-container"
+  });
+  });
+
+  var width = 200,
+  height = 200,
+  timePassed = 0
+  timeLimit = 9;
+
+var fields = [{
+  value: timeLimit,
+  size: timeLimit,
+  update: function() {
+    return timePassed = timePassed + 1;
+  }
+}];
+
+var nilArc = d3.svg.arc()
+  .innerRadius(width / 2- 133)
+  .outerRadius(width / 2 - 133)
+  .startAngle(0)
+  .endAngle(2 * Math.PI);
+
+var arc = d3.svg.arc()
+  .innerRadius(width / 2 - 55)
+  .outerRadius(width / 2 - 50)
+  .startAngle(0)
+  .endAngle(function(d) {
+    return ((d.value / d.size) * 2 * Math.PI);
+  });
+
+var svg = d3.select(".container").append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+var field = svg.selectAll(".field")
+  .data(fields)
+  .enter().append("g")
+  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+  .attr("class", "field");
+
+var back = field.append("path")
+  .attr("class", "path path--background")
+  .attr("d", arc);
+
+var path = field.append("path")
+  .attr("class", "path path--foreground");
+
+var label = field.append("text")
+  .attr("class", "label")
+  .attr("dy", ".35em");
+
+(function update() {
+
+  field
+    .each(function(d) {
+      d.previous = d.value, d.value = d.update(timePassed);
+    });
+
+  path.transition()
+    .ease("linear")
+    .duration(500)
+    .attrTween("d", arcTween);
+
+
+ 
+    label
+    .text(function(d) {
+      return d.size - d.value;
+    });
+
+  if (timePassed <= timeLimit)
+    setTimeout(update, 1000 - (timePassed % 1000));
+  else if (timeLimit <= 0) {destroyTimer}
+
+   
+
+})();
+
+
+
+function destroyTimer() {
+  label.transition()
+    .ease("back")
+    .duration(700)
+    .style("opacity", "0")
+ 
+   
+    .each("end", function() {
+      field.selectAll("text").remove()
+      field.selectAll("path").remove()
+    
+    });
+
+  path.transition()
+    .ease("backs")
+    .duration(700)
+    .style("opacity", "0")
+  
+
+  back.transition()
+    .ease("backs")
+    .duration(700)
+    .style("opacity", "0")
+    
+  
+}
+
+function arcTween(b) {
+  var i = d3.interpolate({
+    value: b.previous
+  }, b);
+  return function(t) {
+    return arc(i(t));
+  };
 }

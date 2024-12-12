@@ -1000,17 +1000,12 @@ input:-webkit-autofill:active {
   transition: all 0.3s ease;
   transform-style: preserve-3d;
 }
-/*.gift-description {
-  opacity: 0;
-  visibility: hidden;
-  transform: rotateX(0deg) translateY(0px);
-  animation-name: swingdown;
-  animation-duration: 1s;
-  animation-timing-function: ease;
-  animation-fill-mode: forwards;
-  transition: all 0.3s ease;
-  transform-style: preserve-3d;
-} */
+.gift-description {
+
+  position: relative;
+}
+
+
 
 .rate-btn:nth-child(1) {
   animation-delay: 0s;
@@ -2341,12 +2336,12 @@ body
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
+  
+ 
   z-index: 100;
   justify-content: center;
   align-items: center;
-  transition: backdrop-filter, background 0.2s ease;
+ 
 }
 .modal-overlay.blur-out {
   backdrop-filter: blur(0);
@@ -2365,30 +2360,27 @@ body
   max-width: 520px;
   width: 100%;
   height: 718px;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 4px;
-  backdrop-filter: blur(100px);
-  -webkit-backdrop-filter: blur(100px);
+  border-radius: 8px;
+  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(20px);
   padding: 40px 80px;
   color: white;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+ 
   text-align: center;
-  position: relative;
+  position: absolute;
+  transform: translate(-50%,-50%);
   transform: scale(1.03);
   animation: modal-zoom-in 0.4s forwards;
   will-change: transform;
-  background-image: url("./img/ellipse.png");
-  background-position: top left;
-  background-repeat: no-repeat;
 
-  background-size: cover;
 }
 .switch-modals {
   display: flex;
+gap: 8px;
 
-  width: 360px;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.8);
-  margin-bottom: 30px;
+ 
+
 }
 #login-modal .switch-modals {
   margin-bottom: 56px;
@@ -2413,6 +2405,10 @@ body
 }
 .modal-btn-text {
   transition: all 0.3s;
+  font-weight: 400;
+font-size: 20px;
+line-height: 120%;
+text-align: center;
 }
 .modal-btn-text:active {
   transform: scale(0.97);
@@ -2428,28 +2424,14 @@ body
 
 .switch-modals__btn {
   background: #2a2a2a;
-  padding: 5px 10px;
+  border-radius: 4px;
 
-  width: 180px;
-  font-size: 20px;
-  font-weight: 500;
-  text-align: center;
-  color: #b1b1b1;
+width: 176px;
+height: 40px;
+  
   transition: 0.3s ease;
 }
-#open-register {
-  border-left: 1px solid #202020;
-  border-radius: 0 4px 4px 0;
-}
-#open-login {
-  border-radius: 4px 0 0 4px;
-}
-#open-login-from-register {
-  border-radius: 4px 0 0 4px;
-}
-#open-register-from-register {
-  border-radius: 0 4px 4px 0;
-}
+
 @keyframes modal-zoom-out {
   0% {
     transform: scale(1);
@@ -2564,7 +2546,7 @@ body
 .btn {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  
   color: white;
   border: none;
   border-radius: 5px;
@@ -2584,10 +2566,12 @@ body
   font-size: 18px;
   line-height: 120%;
   color: rgba(204, 204, 204, 0.5);
+  transition: all 0.3s;
+  cursor: pointer;
 }
 
 .forgot-password:hover {
-  text-decoration: underline;
+  color: #37779D
 }
 
 .register-container {
@@ -2710,14 +2694,14 @@ body
   display: flex;
   justify-content: center;
   align-items: center;
-  border-left: 1px solid #131518;
+
   overflow: hidden;
   cursor: pointer;
   filter: grayscale(100%) contrast(100%) brightness(100%);
 
   will-change: transform, mix-blend-mode, filter, box-shadow, background;
   transition: all 0.3s ease-in-out;
-  background: #252324;
+  background: #25232485;
 }
 
 .log_in_with .log_in_item--inner {
@@ -2725,6 +2709,7 @@ body
   width: 100%;
   height: 100%;
   text-align: center;
+
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
 }
@@ -2742,7 +2727,7 @@ body
   justify-content: center;
   align-items: center;
   backface-visibility: hidden;
-  transition: transform 0.6s ease, opacity 0.6s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   transform: translateY(0);
 }
 
@@ -2850,7 +2835,7 @@ body
   font-weight: 500;
   font-size: 20px;
   position: relative;
-  top: 2px;
+  top: 1px;
   line-height: 120%;
   color: rgba(204, 204, 204, 0.3);
 }
@@ -2965,10 +2950,10 @@ textarea:not(:focus):valid {
 }
 
 input::placeholder {
-  opacity: 1; /* Плейсхолдер видим в начале */
+  opacity: 1; 
 }
 
-/* Лейблы */
+
 .form-label {
   position: absolute;
   top: 12px;
@@ -2990,4 +2975,37 @@ input:not(:placeholder-shown) + .form-label {
   line-height: 120%;
   color: #ccc;
   opacity: 1;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+
+.container {
+  margin: auto;
+  width: 400px;
+  position: absolute;
+  right: -150px;
+display: none;
+  bottom: 20px;
+  
+}
+
+.path--background {
+  
+  
+}
+
+
+
+.path--foreground {
+  fill:  #37779D;
+ 
+  
+}
+
+.label {
+  font: "Mulish" !important;
+  font-weight: 900;
+  text-anchor: middle;
+  fill: #a4a4a4;
+  font-size: 50px;
 }
