@@ -38,6 +38,9 @@
               <span class="modal-btn-text">Регистрация</span>
             </button>
           </div>
+          <div class="modal-content">
+            
+          </div>
           <div class="input-wrapper">
             <div class="input-group">
               <input
@@ -57,14 +60,14 @@
                 name="password"
                 title=""
                 placeholder="Пароль"
-                autocomplete="current-password"
+            
                 required
               />
               <label for="password" class="form-label">Пароль</label>
 
               <button type="button" class="toggle-password-btn">
                 <span class="toggle-password" id="toggle-password">
-                  <img
+                  <img class="toggle-password-icon"
                     src="./img/showPassword.svg"
                     alt="Показать/Скрыть пароль"
                   />
@@ -423,6 +426,7 @@
                 <button type="button" class="toggle-password-btn">
                   <span class="toggle-password" id="toggle-register-password">
                     <img
+                    class="toggle-password-icon"
                       src="./img/showPassword.svg"
                       alt="Показать/Скрыть пароль"
                     />
@@ -505,7 +509,25 @@
       </div>
 
       <div class="main-block main-block-solid">
-        <div class="container"></div>
+        <svg id="timer" viewBox="0 0 150 150">
+  
+          <defs>
+              <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color: #08466b; stop-opacity: 1" />
+                  <stop offset="19%" style="stop-color: #37779d; stop-opacity: 1" />
+                  <stop offset="43.18%" style="stop-color: #71bdeb; stop-opacity: 1" />
+                  <stop offset="76%" style="stop-color: #37779d; stop-opacity: 1" />
+                  <stop offset="100%" style="stop-color: #08466b; stop-opacity: 1" />
+              </linearGradient>
+          </defs>
+          
+     
+          <circle cx="75" cy="75" r="65" stroke="#ccc" stroke-width="3" fill="none"/>
+          
+     
+          <circle id="progress" cx="75" cy="75" r="65" stroke="url(#blueGradient)" stroke-width="3" fill="none" stroke-dasharray="408.41" stroke-dashoffset="0" transform="rotate(-90 75 75)"/>
+          <text id="time-text" x="75" y="75">8</text>
+      </svg>
         <header class="header">
           <a href="#" class="logo">
             <img
@@ -1755,7 +1777,7 @@
               для накопительной системы скидок. <br />
               Перевод минут без выполненного входа — бонусная система <br />
               передается получателю. <br />
-           \
+           
               
             </div>
           
@@ -1922,18 +1944,22 @@
       window.onload = function () {
         const nav = document.getElementById("payment-navigation");
         if (nav) {
-          const addMouseEffect = (buttons) => {
-            for (const button of buttons) {
-              button.onmousemove = (e) => {
-                const rect = button.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+          const addMouseEffect = (elements) => {
+            
+  const elementsArray = Array.from(elements); 
 
-                button.style.setProperty("--mouse-x", `${x}px`);
-                button.style.setProperty("--mouse-y", `${y}px`);
-              };
-            }
-          };
+  elementsArray.forEach((element) => {
+    element.onmousemove = (e) => {
+      const rect = element.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      element.style.setProperty("--mouse-x", `${x}px`);
+      element.style.setProperty("--mouse-y", `${y}px`);
+    };
+  });
+};
+
 
           const paymentButtons = document.getElementsByClassName(
             "payment-navigation-btn"
@@ -1943,6 +1969,11 @@
           const homeBtn = document.getElementsByClassName("home-btn");
           addMouseEffect(rateBtns);
           addMouseEffect(homeBtn);
+        
+const switchModalsBtn = document.getElementsByClassName("switch-modals__btn")
+addMouseEffect(switchModalsBtn)
+const inputs = document.querySelectorAll(".input-group input");
+inputs.forEach((input) => addMouseEffect(input))
 
           const buyButtons = document.getElementsByClassName("card");
           addMouseEffect(buyButtons);
@@ -1952,14 +1983,10 @@
       };
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="index.js"></script>
+    <script   src="index.js"></script>
     <script src="./js/jquery.nice-select.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js'></script>
-    <script type="module">
 
 
-      
-      </script>
   </body>
 </html>

@@ -1030,9 +1030,11 @@ window.addEventListener("load", function () {
     modalContent.classList.remove("onload-animation");
   });
 });
+const forgotPassword = document.querySelector(".forgot-password")
+makeButtonClickable(forgotPassword)
 const togglePassword = document.querySelector(".toggle-password-btn");
 makeButtonClickable(togglePassword);
-const switchModalsBtns = document.querySelectorAll("switch-modals__btn");
+const switchModalsBtns = document.querySelectorAll(".switch-modals__btn");
 switchModalsBtns.forEach((btn) => makeButtonClickable(btn));
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1098,7 +1100,7 @@ $(document).ready(function () {
 // -------------------------------------------------- Gift Mode ------------------------------------------------//
 
 const giftButton = document.getElementById("gift");
-const timer = document.querySelector(".container")
+const timer = document.querySelector("#timer");
 const calculatorBox = document.querySelector(".calculator-box");
 const typingBlock = document.querySelector(".typing-block");
 const giftDescription = document.querySelector(".gift-description");
@@ -1115,8 +1117,12 @@ if (!microphone) {
 
 let isGiftModeActive = false;
 let resetTimer;
+let startTime;
+let timerRunning = false;
 
 const activateGiftMode = () => {
+  if (isGiftModeActive) return; 
+
   isGiftModeActive = true;
   console.log("Режим подарка активирован");
 
@@ -1124,23 +1130,30 @@ const activateGiftMode = () => {
   if (typingBlock) typingBlock.style.display = "none";
   if (giftDescription) giftDescription.style.display = "block";
   if (giftPostpayment) giftPostpayment.style.display = "none";
-   if (timer) timer.style.display = "block"
+  if (timer) timer.style.display = "block";
 
   updateCardText();
 
+  resetTimerState();
   startResetTimer();
+  startTimer();
 };
 
 const deactivateGiftMode = () => {
+  if (!isGiftModeActive) return; 
+
   isGiftModeActive = false;
   console.log("Режим подарка деактивирован");
+
 
   if (calculatorBox) calculatorBox.style.display = "block";
   if (typingBlock) typingBlock.style.display = "flex";
   if (giftDescription) giftDescription.style.display = "none";
   if (giftPostpayment) giftPostpayment.style.display = "none";
-  if (timer) timer.style.display = "none"
+  if (timer) timer.style.display = "none";
+
   updateCardText();
+  resetTimerState();
 };
 
 const updateCardText = () => {
@@ -1154,25 +1167,62 @@ const updateCardText = () => {
 };
 
 const resetBlocks = () => {
-  console.log(
-    "Сброс блоков: скрытие giftDescription и показ calculatorBox и typingBlock"
-  );
-  if (giftDescription) giftDescription.style.display = "none";
-  if (calculatorBox) calculatorBox.style.display = "block";
-  if (typingBlock) typingBlock.style.display = "none";
-  if (giftPostpayment) giftPostpayment.style.display = "block";
-   if (timer) timer.style.display = "none"
- 
+  if (isGiftModeActive) {
+    if (giftDescription) giftDescription.style.display = "none";
+    if (calculatorBox) calculatorBox.style.display = "block";
+    if (typingBlock) typingBlock.style.display = "none";
+    if (giftPostpayment) giftPostpayment.style.display = "block";
+    if (timer) timer.style.display = "none";
+  }
 };
 
 const resetGiftMode = () => {
-  if (isGiftModeActive) {
-    deactivateGiftMode();
-  }
+  console.log("Сброс режима подарка");
+  deactivateGiftMode();
   clearTimeout(resetTimer);
+  resetTimerState();
 };
 
-const startResetTimer = () => {
+const svg = document.getElementById("timer");
+const circle = document.getElementById("progress");
+const timeText = document.getElementById("time-text");
+const radius = 65;
+const circumference = 2 * Math.PI * radius;
+const duration = 8000;
+
+function updateTimer() {
+  const elapsedTime = Date.now() - startTime;
+  const remainingTime = Math.max(duration - elapsedTime, 0);
+  const progress = remainingTime / duration;
+  const offset = circumference * (1 - progress);
+  circle.style.strokeDashoffset = offset;
+  const seconds = Math.ceil(remainingTime / 1000);
+  timeText.textContent = seconds;
+
+  if (remainingTime <= 1000) {
+    const opacity = progress;
+    svg.style.opacity = opacity;
+  }
+
+  if (remainingTime <= 0) {
+    console.log("Таймер истек, сбрасываем блоки, но не деактивируем режим подарка");
+    resetBlocks();
+  } else {
+    requestAnimationFrame(updateTimer);
+  }
+}
+
+function startTimer() {
+  if (!timerRunning) {
+    svg.style.opacity = 1;
+    startTime = Date.now();
+    timerRunning = true;
+    requestAnimationFrame(updateTimer);
+    console.log("Таймер запущен");
+  }
+}
+
+function startResetTimer() {
   if (resetTimer) {
     clearTimeout(resetTimer);
   }
@@ -1180,7 +1230,12 @@ const startResetTimer = () => {
   resetTimer = setTimeout(() => {
     resetBlocks();
   }, 8000);
-};
+}
+
+function resetTimerState() {
+  timerRunning = false;
+  clearTimeout(resetTimer);
+}
 
 if (giftButton) {
   giftButton.addEventListener("click", () => {
@@ -1188,7 +1243,7 @@ if (giftButton) {
       console.log("Кнопка подарка нажата: активация режима подарка");
       activateGiftMode();
     } else {
-      console.log("Кнопка подарка нажата, но режим подарка уже активен");
+      console.log("Режим подарка уже активен, ничего не делаем.");
     }
   });
 }
@@ -1207,34 +1262,6 @@ if (cardSpans.length > 0) {
   });
 }
 
-function moveMicrophone(e, smooth = false) {
-  if (!slider) return;
-  const rect = slider.getBoundingClientRect();
-  let position;
-  if (isRotated) {
-    position = e.clientY - rect.top;
-    position = Math.max(0, Math.min(position, SLIDER_HEIGHT));
-  } else {
-    position = e.clientX - rect.left;
-    position = Math.max(0, Math.min(position, SLIDER_WIDTH));
-  }
-
-  const minutes = calculateMinutes(position);
-  updateDisplay(minutes, smooth);
-
-  if (isGiftModeActive) {
-    console.log("Микрофон перемещён, сброс блоков");
-    resetBlocks();
-  }
-}
-
-function updatePositions(position, smooth = false) {
-  if (microphone) {
-    microphone.classList.toggle("smooth-transition", smooth);
-    microphone.style.left = `${position}px`;
-  }
-}
-
 if (minutesInput) {
   minutesInput.addEventListener("input", () => {
     console.log("Изменение значений минут, сброс режима подарка");
@@ -1246,10 +1273,10 @@ if (paymentNavigationButtons.length > 0) {
   paymentNavigationButtons.forEach((button) => {
     button.addEventListener("click", () => {
       if (button.id !== "gift") {
-        console.log(
-          "Кнопка payment-navigation-btn нажата, сброс режима подарка"
-        );
-        resetGiftMode();
+        console.log("Кнопка payment-navigation-btn нажата, сброс режима подарка");
+        if (isGiftModeActive) {
+          resetGiftMode();
+        }
       }
     });
   });
@@ -1269,121 +1296,13 @@ if (microphone) {
   });
 }
 
+
+
+
 $(function() {
-  $( ".draggable" ).draggable({
-    cancel: "input,textarea,button,select,option, a, .btn-container"
+  $(".draggable").draggable({
+    cancel: "input,textarea,button,select,option,a,.btn-container",
+     
+    scroll: false  
   });
-  });
-
-  var width = 200,
-  height = 200,
-  timePassed = 0
-  timeLimit = 9;
-
-var fields = [{
-  value: timeLimit,
-  size: timeLimit,
-  update: function() {
-    return timePassed = timePassed + 1;
-  }
-}];
-
-var nilArc = d3.svg.arc()
-  .innerRadius(width / 2- 133)
-  .outerRadius(width / 2 - 133)
-  .startAngle(0)
-  .endAngle(2 * Math.PI);
-
-var arc = d3.svg.arc()
-  .innerRadius(width / 2 - 55)
-  .outerRadius(width / 2 - 50)
-  .startAngle(0)
-  .endAngle(function(d) {
-    return ((d.value / d.size) * 2 * Math.PI);
-  });
-
-var svg = d3.select(".container").append("svg")
-  .attr("width", width)
-  .attr("height", height);
-
-var field = svg.selectAll(".field")
-  .data(fields)
-  .enter().append("g")
-  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-  .attr("class", "field");
-
-var back = field.append("path")
-  .attr("class", "path path--background")
-  .attr("d", arc);
-
-var path = field.append("path")
-  .attr("class", "path path--foreground");
-
-var label = field.append("text")
-  .attr("class", "label")
-  .attr("dy", ".35em");
-
-(function update() {
-
-  field
-    .each(function(d) {
-      d.previous = d.value, d.value = d.update(timePassed);
-    });
-
-  path.transition()
-    .ease("linear")
-    .duration(500)
-    .attrTween("d", arcTween);
-
-
- 
-    label
-    .text(function(d) {
-      return d.size - d.value;
-    });
-
-  if (timePassed <= timeLimit)
-    setTimeout(update, 1000 - (timePassed % 1000));
-  else if (timeLimit <= 0) {destroyTimer}
-
-   
-
-})();
-
-
-
-function destroyTimer() {
-  label.transition()
-    .ease("back")
-    .duration(700)
-    .style("opacity", "0")
- 
-   
-    .each("end", function() {
-      field.selectAll("text").remove()
-      field.selectAll("path").remove()
-    
-    });
-
-  path.transition()
-    .ease("backs")
-    .duration(700)
-    .style("opacity", "0")
-  
-
-  back.transition()
-    .ease("backs")
-    .duration(700)
-    .style("opacity", "0")
-    
-  
-}
-
-function arcTween(b) {
-  var i = d3.interpolate({
-    value: b.previous
-  }, b);
-  return function(t) {
-    return arc(i(t));
-  };
-}
+});
