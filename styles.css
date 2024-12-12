@@ -3128,3 +3128,12 @@ circle {
 
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
 }
+.input-group input:focus::placeholder,
+input:hover::placeholder {
+  opacity: 0;
+}
+
+
+.input-group input::placeholder {
+  transition: opacity 0.3s ease;
+}
