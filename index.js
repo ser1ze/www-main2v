@@ -437,45 +437,103 @@ if (priceRightArrow) {
   priceRightArrow.addEventListener("mouseup", handleArrowMouseUp);
 }
 
-function handleInputChange(e) {
-  let value = e.target.value.replace(/\D/g, "");
-  if (value === "") {
-    updateDisplay(0);
-    return;
-  }
-  let minutes = Math.max(0, Math.min(parseInt(value, 10), 100000));
-  e.target.value = minutes;
-  updateDisplay(minutes);
-}
-if (totalPrice) {
-  totalPrice.addEventListener("input", function (e) {
-    if (this.value === "0 рублей") {
-      this.value = "";
+function calculateMinutesFromPrice(price) {
+  for (let i = PRICE_RANGES.length - 1; i >= 0; i--) {
+    const range = PRICE_RANGES[i];
+    const minMinutes = i > 0 ? PRICE_RANGES[i - 1].max + 1 : 0;
+    const minPrice = minMinutes * range.price;
+    const maxPrice = range.max * range.price;
+
+    if (price >= minPrice && price <= maxPrice) {
+      return Math.floor(price / range.price);
     }
+  }
+
+  return 0;
+}
+
+function updateDisplay(minutes, smooth = false) {
+  minutes = Math.max(0, Math.min(minutes, 100000));
+
+  const formattedMinutes =
+    minutes === 0
+      ? "0 Минут"
+      : minutes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+  if (calculatorInput) {
+    calculatorInput.value = formattedMinutes;
+  }
+
+  const currentRange =
+    PRICE_RANGES.find((range) => minutes <= range.max) ||
+    PRICE_RANGES[PRICE_RANGES.length - 1];
+  const price = currentRange.price;
+  const discount = currentRange.discount;
+
+  if (totalPrice) {
+    const totalPriceValue = price * minutes;
+    const formattedPrice =
+      totalPriceValue === 0
+        ? "0 Рублей"
+        : totalPriceValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+    if (/^\d+$/.test(totalPrice.value)) {
+      totalPrice.value = "";
+    }
+    totalPrice.value = formattedPrice;
+  }
+
+  const position = calculatePosition(minutes);
+  updatePositions(position, smooth);
+
+  if (activePriceCounter) {
+    activePriceCounter.textContent = price + " ₽";
+  }
+  if (activePriceCounterPercent) {
+    activePriceCounterPercent.textContent = discount ? `-${discount}%` : "";
+  }
+}
+
+if (totalPrice) {
+  let timer;
+
+  let firstInput = true;
+
+  totalPrice.addEventListener("focus", function () {
+    if (this.value === "0 рублей" && firstInput) {
+      this.value = "";
+      firstInput = false;
+    }
+  });
+
+  totalPrice.addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value > 200000) {
+      value = "200000";
+    }
+
+    if (value === "0") {
+      e.target.value = "";
+    } else {
+      e.target.value = value;
+    }
+
     clearTimeout(timer);
     timer = setTimeout(function () {
-      let value = e.target.value.replace(/\D/g, "");
       if (value === "") {
         updateDisplay(0);
         return;
       }
 
       let totalValue = parseInt(value, 10);
-      let pricePerMinute =
-        PRICE_RANGES.find((range) => totalValue <= range.max)?.price ||
-        PRICE_RANGES[PRICE_RANGES.length - 1].price;
+      let totalMinutes = calculateMinutesFromPrice(totalValue);
+      updateDisplay(totalMinutes);
 
-      let minutes = Math.floor(totalValue / pricePerMinute);
-      updateDisplay(minutes);
-
-      let adjustedValue = minutes * pricePerMinute;
-
-      let formattedPrice = adjustedValue
+      let formattedPrice = totalValue
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-
       e.target.value = formattedPrice;
-    }, 3000);
+    }, 2000);
   });
 
   totalPrice.addEventListener("blur", function () {
@@ -484,7 +542,7 @@ if (totalPrice) {
       this.value = "0 рублей";
       updateDisplay(0);
     } else {
-      let totalValue = parseInt(value, 10);
+      let totalValue = Math.min(200000, parseInt(value, 10));
       let formattedPrice = totalValue
         .toFixed(0)
         .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -494,9 +552,16 @@ if (totalPrice) {
 }
 
 if (calculatorInput) {
-  calculatorInput.addEventListener("input", function (e) {
-    if (this.value === "0 Минут") this.value = "";
-    handleInputChange(e);
+  calculatorInput.addEventListener("input", function () {
+    let minutes = parseInt(calculatorInput.value.replace(/\D/g, ""), 10);
+
+    if (isNaN(minutes)) {
+      minutes = 0;
+    }
+
+    minutes = Math.max(0, Math.min(minutes, 100000));
+
+    updateDisplay(minutes);
   });
 
   calculatorInput.addEventListener("blur", function () {
