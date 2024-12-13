@@ -132,14 +132,14 @@ const calculatorInput = document.querySelector(".calculator-value input");
 
 const styles = `
   .microphone, .microphone-glow {
-      transition: none;
+    transition: none;
   }
-  
+
   .microphone.smooth-transition, .microphone-glow.smooth-transition {
-      transition: left 0.2s ease-out, top 0.2s ease-out;
+    transition: left 0.2s ease-out, top 0.2s ease-out;
   }
   .price-counter, .price-counter-percent {
-      transition: transform 0.2s ease-out;
+    transition: transform 0.2s ease-out;
   }
 `;
 const styleSheet = document.createElement("style");
@@ -251,7 +251,11 @@ function updateDisplay(minutes, smooth = false) {
       totalPriceValue === 0
         ? "0 Рублей"
         : totalPriceValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    totalPrice.textContent = formattedPrice;
+
+    if (/^\d+$/.test(totalPrice.value)) {
+      totalPrice.value = "";
+    }
+    totalPrice.value = formattedPrice;
   }
 
   const position = calculatePosition(minutes);
@@ -264,6 +268,45 @@ function updateDisplay(minutes, smooth = false) {
     activePriceCounterPercent.textContent = discount ? `-${discount}%` : "";
   }
 }
+
+function animateDisplay() {
+  const phases = [{ start: 1000, end: 0, duration: 1500 }];
+
+  const totalDuration = phases.reduce((sum, phase) => sum + phase.duration, 0);
+  let startTime;
+
+  function updateAnimation(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsedTime = timestamp - startTime;
+
+    if (elapsedTime >= totalDuration) {
+      updateDisplay(phases[phases.length - 1].end);
+      return;
+    }
+
+    let currentTime = 0;
+    for (let i = 0; i < phases.length; i++) {
+      const phase = phases[i];
+      if (elapsedTime < currentTime + phase.duration) {
+        const phaseProgress = (elapsedTime - currentTime) / phase.duration;
+        const currentValue = Math.round(
+          phase.start + (phase.end - phase.start) * phaseProgress
+        );
+        updateDisplay(currentValue);
+        break;
+      }
+      currentTime += phase.duration;
+    }
+
+    requestAnimationFrame(updateAnimation);
+  }
+
+  requestAnimationFrame(updateAnimation);
+}
+
+// Вызов анимации при первой загрузке
+updateSliderDimensions();
+animateDisplay();
 
 function moveMicrophone(e, smooth = false) {
   if (!slider) return;
@@ -380,32 +423,18 @@ const priceRightArrow = document.querySelector(".change-price-right");
 if (leftArrow) {
   leftArrow.addEventListener("mousedown", () => handleArrowMouseDown(-1));
   leftArrow.addEventListener("mouseup", handleArrowMouseUp);
-  leftArrow.addEventListener("mouseleave", handleArrowMouseUp);
 }
-
 if (rightArrow) {
   rightArrow.addEventListener("mousedown", () => handleArrowMouseDown(1));
   rightArrow.addEventListener("mouseup", handleArrowMouseUp);
-  rightArrow.addEventListener("mouseleave", handleArrowMouseUp);
 }
-
 if (priceLeftArrow) {
   priceLeftArrow.addEventListener("mousedown", () => handleArrowMouseDown(-1));
   priceLeftArrow.addEventListener("mouseup", handleArrowMouseUp);
-  priceLeftArrow.addEventListener("mouseleave", handleArrowMouseUp);
 }
-
 if (priceRightArrow) {
   priceRightArrow.addEventListener("mousedown", () => handleArrowMouseDown(1));
   priceRightArrow.addEventListener("mouseup", handleArrowMouseUp);
-  priceRightArrow.addEventListener("mouseleave", handleArrowMouseUp);
-}
-
-if (leftArrow && rightArrow && priceLeftArrow && priceRightArrow) {
-  leftArrow.addEventListener("selectstart", (e) => e.preventDefault());
-  rightArrow.addEventListener("selectstart", (e) => e.preventDefault());
-  priceLeftArrow.addEventListener("selectstart", (e) => e.preventDefault());
-  priceRightArrow.addEventListener("selectstart", (e) => e.preventDefault());
 }
 
 function handleInputChange(e) {
@@ -418,13 +447,57 @@ function handleInputChange(e) {
   e.target.value = minutes;
   updateDisplay(minutes);
 }
+if (totalPrice) {
+  totalPrice.addEventListener("input", function (e) {
+    if (this.value === "0 рублей") {
+      this.value = "";
+    }
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      let value = e.target.value.replace(/\D/g, "");
+      if (value === "") {
+        updateDisplay(0);
+        return;
+      }
+
+      let totalValue = parseInt(value, 10);
+      let pricePerMinute =
+        PRICE_RANGES.find((range) => totalValue <= range.max)?.price ||
+        PRICE_RANGES[PRICE_RANGES.length - 1].price;
+
+      let minutes = Math.floor(totalValue / pricePerMinute);
+      updateDisplay(minutes);
+
+      let adjustedValue = minutes * pricePerMinute;
+
+      let formattedPrice = adjustedValue
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+      e.target.value = formattedPrice;
+    }, 3000);
+  });
+
+  totalPrice.addEventListener("blur", function () {
+    let value = this.value.replace(/\D/g, "");
+    if (value === "") {
+      this.value = "0 рублей";
+      updateDisplay(0);
+    } else {
+      let totalValue = parseInt(value, 10);
+      let formattedPrice = totalValue
+        .toFixed(0)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      this.value = formattedPrice;
+    }
+  });
+}
 
 if (calculatorInput) {
   calculatorInput.addEventListener("input", function (e) {
     if (this.value === "0 Минут") this.value = "";
     handleInputChange(e);
   });
-
 
   calculatorInput.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
@@ -440,50 +513,8 @@ if (calculatorInput) {
 }
 
 updateSliderDimensions();
-
-function animateDisplay() {
-  const phases = [{ start: 1000, end: 0, duration: 1500 }];
-
-  const totalDuration = phases.reduce((sum, phase) => sum + phase.duration, 0);
-  let startTime;
-
-  function updateAnimation(timestamp) {
-    if (!startTime) startTime = timestamp;
-    const elapsedTime = timestamp - startTime;
-
-    if (elapsedTime >= totalDuration) {
-      updateDisplay(phases[phases.length - 1].end);
-      return;
-    }
-
-    let currentTime = 0;
-    for (let i = 0; i < phases.length; i++) {
-      const phase = phases[i];
-      if (elapsedTime < currentTime + phase.duration) {
-        const phaseProgress = (elapsedTime - currentTime) / phase.duration;
-        const currentValue = Math.round(
-          phase.start + (phase.end - phase.start) * phaseProgress
-        );
-        updateDisplay(currentValue);
-        break;
-      }
-      currentTime += phase.duration;
-    }
-
-    requestAnimationFrame(updateAnimation);
-  }
-
-  requestAnimationFrame(updateAnimation);
-}
-
-animateDisplay();
-
-window.addEventListener("resize", () => {
-  updateSliderDimensions();
-  const currentPosition = parseFloat(microphone.style.left) || 0;
-  const minutes = calculateMinutes(currentPosition);
-  updateDisplay(minutes);
-});
+window.addEventListener("resize", updateSliderDimensions);
+updateDisplay(0);
 
 //-------------------------------------------------------TEXT ANIMATION--------------------------------------------------//
 const phrases = [
@@ -701,14 +732,11 @@ registerPasswordInput.addEventListener("input", () => {
 });
 
 function checkPasswordStrength(password) {
-  const weakRegex = /^(?=.*[a-zA-Zа-яА-Я]).{1,}$/; 
+  const weakRegex = /^(?=.*[a-zA-Zа-яА-Я]).{1,}$/;
   const mediumRegex =
-    /^(?=.*[a-zA-Zа-яА-Я])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/; 
+    /^(?=.*[a-zA-Zа-яА-Я])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/;
   const strongRegex =
-/^(?=.*[a-zA-Zа-яА-ЯёЁ])(?=.*[A-ZА-ЯЁ])(?=.*\d)(?=.*[!@#+=_\$%^&*<>./-]).{8,}$/
-
-
-
+    /^(?=.*[a-zA-Zа-яА-ЯёЁ])(?=.*[A-ZА-ЯЁ])(?=.*\d)(?=.*[!@#+=_\$%^&*<>./-]).{8,}$/;
 
   if (strongRegex.test(password)) {
     return "strong";
@@ -720,7 +748,6 @@ function checkPasswordStrength(password) {
     return "none";
   }
 }
-
 
 function updateStrengthIndicator(strength) {
   strengthIndicator.style.width = "0";
@@ -1030,8 +1057,8 @@ window.addEventListener("load", function () {
     modalContent.classList.remove("onload-animation");
   });
 });
-const forgotPassword = document.querySelector(".forgot-password")
-makeButtonClickable(forgotPassword)
+const forgotPassword = document.querySelector(".forgot-password");
+makeButtonClickable(forgotPassword);
 const togglePassword = document.querySelector(".toggle-password-btn");
 makeButtonClickable(togglePassword);
 const switchModalsBtns = document.querySelectorAll(".switch-modals__btn");
@@ -1121,7 +1148,7 @@ let startTime;
 let timerRunning = false;
 
 const activateGiftMode = () => {
-  if (isGiftModeActive) return; 
+  if (isGiftModeActive) return;
 
   isGiftModeActive = true;
   console.log("Режим подарка активирован");
@@ -1140,11 +1167,10 @@ const activateGiftMode = () => {
 };
 
 const deactivateGiftMode = () => {
-  if (!isGiftModeActive) return; 
+  if (!isGiftModeActive) return;
 
   isGiftModeActive = false;
   console.log("Режим подарка деактивирован");
-
 
   if (calculatorBox) calculatorBox.style.display = "block";
   if (typingBlock) typingBlock.style.display = "flex";
@@ -1205,7 +1231,9 @@ function updateTimer() {
   }
 
   if (remainingTime <= 0) {
-    console.log("Таймер истек, сбрасываем блоки, но не деактивируем режим подарка");
+    console.log(
+      "Таймер истек, сбрасываем блоки, но не деактивируем режим подарка"
+    );
     resetBlocks();
   } else {
     requestAnimationFrame(updateTimer);
@@ -1273,7 +1301,9 @@ if (paymentNavigationButtons.length > 0) {
   paymentNavigationButtons.forEach((button) => {
     button.addEventListener("click", () => {
       if (button.id !== "gift") {
-        console.log("Кнопка payment-navigation-btn нажата, сброс режима подарка");
+        console.log(
+          "Кнопка payment-navigation-btn нажата, сброс режима подарка"
+        );
         if (isGiftModeActive) {
           resetGiftMode();
         }
@@ -1296,13 +1326,10 @@ if (microphone) {
   });
 }
 
-
-
-
-$(function() {
+$(function () {
   $(".draggable").draggable({
     cancel: "input,textarea,button,select,option,a,.btn-container",
-     
-    scroll: false  
+
+    scroll: false,
   });
 });

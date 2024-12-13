@@ -13,7 +13,6 @@
   </head>
   <body>
     <div class="layout-container">
-   
       <div class="modal-overlay" id="modal-overlay" style="display: none">
         <form class="modal draggable" id="login-modal">
           <button type="button" class="close" id="close-login-modal">
@@ -38,9 +37,7 @@
               <span class="modal-btn-text">Регистрация</span>
             </button>
           </div>
-          <div class="modal-content">
-            
-          </div>
+          <div class="modal-content"></div>
           <div class="input-wrapper">
             <div class="input-group">
               <input
@@ -60,14 +57,14 @@
                 name="password"
                 title=""
                 placeholder="Пароль"
-            
                 required
               />
               <label for="password" class="form-label">Пароль</label>
 
               <button type="button" class="toggle-password-btn">
                 <span class="toggle-password" id="toggle-password">
-                  <img class="toggle-password-icon"
+                  <img
+                    class="toggle-password-icon"
                     src="./img/showPassword.svg"
                     alt="Показать/Скрыть пароль"
                   />
@@ -426,7 +423,7 @@
                 <button type="button" class="toggle-password-btn">
                   <span class="toggle-password" id="toggle-register-password">
                     <img
-                    class="toggle-password-icon"
+                      class="toggle-password-icon"
                       src="./img/showPassword.svg"
                       alt="Показать/Скрыть пароль"
                     />
@@ -462,7 +459,7 @@
             </div>
             <div class="input-group">
               <div class="dob-selectors">
-                <select id="dob-day" required  title="">
+                <select id="dob-day" required title="">
                   <option selected="selected">День</option>
                 </select>
                 <select id="dob-month" required>
@@ -510,24 +507,51 @@
 
       <div class="main-block main-block-solid">
         <svg id="timer" viewBox="0 0 150 150">
-  
           <defs>
-              <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color: #08466b; stop-opacity: 1" />
-                  <stop offset="19%" style="stop-color: #37779d; stop-opacity: 1" />
-                  <stop offset="43.18%" style="stop-color: #71bdeb; stop-opacity: 1" />
-                  <stop offset="76%" style="stop-color: #37779d; stop-opacity: 1" />
-                  <stop offset="100%" style="stop-color: #08466b; stop-opacity: 1" />
-              </linearGradient>
+            <linearGradient
+              id="blueGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" style="stop-color: #08466b; stop-opacity: 1" />
+              <stop offset="19%" style="stop-color: #37779d; stop-opacity: 1" />
+              <stop
+                offset="43.18%"
+                style="stop-color: #71bdeb; stop-opacity: 1"
+              />
+              <stop offset="76%" style="stop-color: #37779d; stop-opacity: 1" />
+              <stop
+                offset="100%"
+                style="stop-color: #08466b; stop-opacity: 1"
+              />
+            </linearGradient>
           </defs>
-          
-     
-          <circle cx="75" cy="75" r="65" stroke="#ccc" stroke-width="3" fill="none"/>
-          
-     
-          <circle id="progress" cx="75" cy="75" r="65" stroke="url(#blueGradient)" stroke-width="3" fill="none" stroke-dasharray="408.41" stroke-dashoffset="0" transform="rotate(-90 75 75)"/>
+
+          <circle
+            cx="75"
+            cy="75"
+            r="65"
+            stroke="#ccc"
+            stroke-width="3"
+            fill="none"
+          />
+
+          <circle
+            id="progress"
+            cx="75"
+            cy="75"
+            r="65"
+            stroke="url(#blueGradient)"
+            stroke-width="3"
+            fill="none"
+            stroke-dasharray="408.41"
+            stroke-dashoffset="0"
+            transform="rotate(-90 75 75)"
+          />
           <text id="time-text" x="75" y="75">8</text>
-      </svg>
+        </svg>
         <header class="header">
           <a href="#" class="logo">
             <img
@@ -1638,7 +1662,7 @@
                       </svg>
                     </span>
                   </button>
-                  <h1 class="totalPrice">3</h1>
+                  <input type="text" class="totalPrice" value="0 Рублей" />
                   <button class="change-total-price-right">
                     <span class="image-container-price">
                       <svg
@@ -1735,7 +1759,7 @@
                   </button>
                 </div>
               </div>
-             
+
               <button
                 style="display: none !important"
                 class="payment-navigation-btn"
@@ -1777,10 +1801,8 @@
               для накопительной системы скидок. <br />
               Перевод минут без выполненного входа — бонусная система <br />
               передается получателю. <br />
-           
-              
             </div>
-          
+
             <p class="preDescList">
               Зарегистрированные пользователи видят информацию:
             </p>
@@ -1794,7 +1816,7 @@
               </li>
             </ul>
           </div>
-        
+
           <div class="typing-block">
             <h2 class="typing-block-1" data-text="СКОЛЬКО МИНУТ">
               СКОЛЬКО МИНУТ
@@ -1945,21 +1967,19 @@
         const nav = document.getElementById("payment-navigation");
         if (nav) {
           const addMouseEffect = (elements) => {
-            
-  const elementsArray = Array.from(elements); 
+            const elementsArray = Array.from(elements);
 
-  elementsArray.forEach((element) => {
-    element.onmousemove = (e) => {
-      const rect = element.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+            elementsArray.forEach((element) => {
+              element.onmousemove = (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-      element.style.setProperty("--mouse-x", `${x}px`);
-      element.style.setProperty("--mouse-y", `${y}px`);
-    };
-  });
-};
-
+                element.style.setProperty("--mouse-x", `${x}px`);
+                element.style.setProperty("--mouse-y", `${y}px`);
+              };
+            });
+          };
 
           const paymentButtons = document.getElementsByClassName(
             "payment-navigation-btn"
@@ -1969,11 +1989,12 @@
           const homeBtn = document.getElementsByClassName("home-btn");
           addMouseEffect(rateBtns);
           addMouseEffect(homeBtn);
-        
-const switchModalsBtn = document.getElementsByClassName("switch-modals__btn")
-addMouseEffect(switchModalsBtn)
-const inputs = document.querySelectorAll(".input-group input");
-inputs.forEach((input) => addMouseEffect(input))
+
+          const switchModalsBtn =
+            document.getElementsByClassName("switch-modals__btn");
+          addMouseEffect(switchModalsBtn);
+          const inputs = document.querySelectorAll(".input-group input");
+          inputs.forEach((input) => addMouseEffect(input));
 
           const buyButtons = document.getElementsByClassName("card");
           addMouseEffect(buyButtons);
@@ -1983,10 +2004,8 @@ inputs.forEach((input) => addMouseEffect(input))
       };
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script   src="index.js"></script>
+    <script src="index.js"></script>
     <script src="./js/jquery.nice-select.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-
   </body>
 </html>
