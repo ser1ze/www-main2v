@@ -497,21 +497,20 @@ function updateDisplay(minutes, smooth = false) {
 if (totalPrice) {
   let timer;
 
-  let firstInput = true;
-
-  totalPrice.addEventListener("focus", function () {
-    if (this.value === "0 рублей" && firstInput) {
-      this.value = "";
-      firstInput = false;
+  totalPrice.addEventListener("click", () => {
+    if (totalPrice.value === "0 Рублей") {
+      totalPrice.value = "";
     }
   });
 
+  // Обработчик события input для totalPrice
   totalPrice.addEventListener("input", function (e) {
     let value = e.target.value.replace(/\D/g, "");
     if (value > 200000) {
-      value = "200000";
+      value = "200000"; // Ограничение на максимальное значение
     }
 
+    // Если значение равно 0, очищаем поле
     if (value === "0") {
       e.target.value = "";
     } else {
@@ -521,7 +520,7 @@ if (totalPrice) {
     clearTimeout(timer);
     timer = setTimeout(function () {
       if (value === "") {
-        updateDisplay(0);
+        updateDisplay(0); // Обновляем цену, если поле пустое
         return;
       }
 
@@ -529,6 +528,7 @@ if (totalPrice) {
       let totalMinutes = calculateMinutesFromPrice(totalValue);
       updateDisplay(totalMinutes);
 
+      // Форматируем цену с пробелами
       let formattedPrice = totalValue
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -536,11 +536,12 @@ if (totalPrice) {
     }, 2000);
   });
 
+  // Обработчик события blur для totalPrice
   totalPrice.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
     if (value === "") {
-      this.value = "0 рублей";
-      updateDisplay(0);
+      this.value = "0 рублей"; // Возвращаем текст по умолчанию, если поле пустое
+      updateDisplay(0); // Обновляем цену при потере фокуса
     } else {
       let totalValue = Math.min(200000, parseInt(value, 10));
       let formattedPrice = totalValue
@@ -552,6 +553,7 @@ if (totalPrice) {
 }
 
 if (calculatorInput) {
+  // Обработчик события input для calculatorInput
   calculatorInput.addEventListener("input", function () {
     let minutes = parseInt(calculatorInput.value.replace(/\D/g, ""), 10);
 
@@ -564,11 +566,12 @@ if (calculatorInput) {
     updateDisplay(minutes);
   });
 
+  // Обработчик события blur для calculatorInput
   calculatorInput.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
     if (value === "") {
-      this.value = "0 Минут";
-      updateDisplay(0);
+      this.value = "0 Минут"; // Возвращаем текст по умолчанию, если поле пустое
+      updateDisplay(0); // Обновляем цену при потере фокуса
     } else {
       let minutes = Math.max(0, Math.min(parseInt(value, 10), 100000));
       this.value = minutes;
