@@ -57,7 +57,7 @@
   width: 2px;
   height: 20px;
   transform-origin: bottom center;
-  background: #373737;
+  background: #555454;
   transition: all ease-out 280ms;
 }
 
@@ -2598,6 +2598,8 @@ body
   height: 2px;
   background: rgba(72, 72, 72, 0.36);
   border-radius: 5px;
+  position: absolute;
+  top: 50px;
 }
 
 .strength-indicator {
@@ -2612,6 +2614,9 @@ body
   font-size: 10px;
   line-height: 120%;
   text-align: right;
+  position: absolute;
+  right: -80px;
+  bottom: -4.4px;
   color: #434343;
 }
 
@@ -2947,6 +2952,7 @@ text {
 .input-group input::placeholder {
   font-weight: 500;
   font-size: 20px;
+  will-change: opacity;
   position: relative;
   top: 1px;
   line-height: 120%;
