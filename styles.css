@@ -2400,28 +2400,6 @@ body
   position: relative;
 }
 
-.input-group input::before {
-  background: radial-gradient(
-    250px circle at var(--mouse-x) var(--mouse-y),
-    #c7c7c714,
-    transparent 30%
-  );
-  border-radius: inherit;
-  content: "";
-  height: 100%;
-  left: 0px;
-  position: absolute;
-  top: 0px;
-  width: 100%;
-  opacity: 0;
-  transition: opacity 300ms ease;
-  z-index: 5;
-}
-
-.input-group input:hover::before {
-  opacity: 1;
-}
-
 .switch-modals__btn {
   background: none;
   border: none;
@@ -2592,13 +2570,14 @@ body
 }
 
 .password-strength {
-  margin-top: 8px;
+  margin-top: 5px;
   margin-left: 11px;
   width: 254px;
   height: 2px;
   background: rgba(72, 72, 72, 0.36);
   border-radius: 5px;
   position: absolute;
+
   top: 50px;
 }
 
@@ -2630,6 +2609,13 @@ body
 
 .strength-indicator.strong {
   background-color: #3e8741;
+}
+.password-wrapper
+  input:focus
+  + .form-label
+  + .toggle-password-btn
+  + #password-strength {
+  display: block;
 }
 
 .current {
@@ -2990,7 +2976,7 @@ text {
 .modal-overlay input:focus,
 select:focus,
 textarea:focus {
-  outline: 1px solid #4a738c;
+  outline: 1px solid #737373;
   box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5),
     inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
   background: #20272a;
@@ -3077,7 +3063,9 @@ input::placeholder {
   color: rgba(204, 204, 204, 0.5);
   pointer-events: none;
   transition: all 0.3s ease;
-  opacity: 0;
+  will-change: position;
+  opacity: 1;
+  z-index: -2;
 }
 
 input:focus + .form-label,
@@ -3087,7 +3075,6 @@ input:not(:placeholder-shown) + .form-label {
   font-size: 20px;
   line-height: 120%;
   color: rgba(204, 204, 204, 0.5);
-  opacity: 1;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);

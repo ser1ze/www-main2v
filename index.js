@@ -646,7 +646,6 @@ typePhrase();
 
 //------------------------------------------------------POP-UP----------------------------------------------//\
 
-// Select buttons and modals
 const loginBtn = document.querySelector(".login");
 const modalOverlay = document.getElementById("modal-overlay");
 const closeLoginModalBtn = document.getElementById("close-login-modal");
@@ -673,14 +672,12 @@ const openRegisterFromRegisterBtn = document.getElementById(
 const loginModal = document.getElementById("login-modal");
 const registerModal = document.getElementById("register-modal");
 
-// Function to open a modal
 function openModal(modal) {
   modalOverlay.style.display = "flex";
   modalOverlay.classList.remove("blur-out");
   modal.style.display = "block";
 }
 
-// Function to close all modals
 function closeModal() {
   loginModal.classList.add("modal-closing");
   registerModal.classList.add("modal-closing");
@@ -693,10 +690,9 @@ function closeModal() {
 
     loginModal.classList.remove("modal-closing");
     registerModal.classList.remove("modal-closing");
-  }, 400); // Ensure this timeout matches your CSS animation duration
+  }, 400);
 }
 
-// Helper function to switch between modals
 function switchModal(currentModal, targetModal) {
   currentModal.classList.add("modal-closing");
   setTimeout(() => {
@@ -704,10 +700,9 @@ function switchModal(currentModal, targetModal) {
     currentModal.classList.remove("modal-closing");
 
     openModal(targetModal);
-  }, 400); // Ensure this timeout matches your CSS animation duration
+  }, 400);
 }
 
-// Event listeners for opening and closing modals
 loginBtn.addEventListener("click", () => {
   openModal(loginModal);
 });
@@ -726,7 +721,6 @@ modalOverlay.addEventListener("click", (e) => {
   }
 });
 
-// Event listeners for toggling password visibility
 togglePasswordBtn.addEventListener("click", () => {
   togglePasswordVisibility(passwordInput, togglePasswordBtn);
 });
@@ -735,7 +729,6 @@ toggleRegisterPasswordBtn.addEventListener("click", () => {
   togglePasswordVisibility(registerPasswordInput, toggleRegisterPasswordBtn);
 });
 
-// Function to toggle password visibility
 function togglePasswordVisibility(passwordField, toggleBtn) {
   const type = passwordField.type === "password" ? "text" : "password";
   passwordField.type = type;
@@ -748,7 +741,6 @@ function togglePasswordVisibility(passwordField, toggleBtn) {
   }
 }
 
-// Event listeners for switching modals
 openRegisterBtn.addEventListener("click", () => {
   switchModal(loginModal, registerModal);
 });
@@ -757,20 +749,16 @@ openLoginBtn.addEventListener("click", () => {
   switchModal(registerModal, loginModal);
 });
 
-// New event listeners for additional buttons
 openLoginFromRegisterBtn.addEventListener("click", () => {
   switchModal(registerModal, loginModal);
 });
 
 openRegisterFromRegisterBtn.addEventListener("click", () => {
-  // Optional: If you want to refresh the Register modal or perform another action
-  // For now, we'll just ensure it's displayed
   if (registerModal.style.display !== "block") {
     openModal(registerModal);
   }
 });
 
-// Populate DOB selectors (unchanged)
 const dobDaySelect = document.getElementById("dob-day");
 const dobYearSelect = document.getElementById("dob-year");
 
@@ -789,11 +777,20 @@ for (let i = currentYear; i >= 1900; i--) {
   dobYearSelect.appendChild(option);
 }
 
+const passwordStrength = document.getElementById("password-strength");
 const strengthIndicator = document.getElementById("strength-indicator");
 const strengthText = document.getElementById("strength-text");
 
-registerPasswordInput.addEventListener("input", () => {
-  const password = registerPasswordInput.value;
+passwordInput.addEventListener("focus", () => {
+  passwordStrength.style.display = "block";
+});
+
+passwordInput.addEventListener("blur", () => {
+  passwordStrength.style.display = "none";
+});
+
+passwordInput.addEventListener("input", () => {
+  const password = passwordInput.value;
   const strength = checkPasswordStrength(password);
 
   updateStrengthIndicator(strength);
@@ -844,6 +841,15 @@ function updateStrengthIndicator(strength) {
   }
 }
 
+document
+  .querySelector(".toggle-password-btn")
+  .addEventListener("mousedown", function (event) {
+    const passwordField = document.getElementById("password");
+    const passwordIcon = document.querySelector(".toggle-password-icon");
+
+    event.preventDefault();
+  });
+
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 
 calculatorInput.addEventListener("input", resizeInput);
@@ -881,15 +887,14 @@ function createSliderOverlay() {
   const overlay = document.createElement("div");
   overlay.className = "slider-overlay";
 
-  // Style the overlay
   overlay.style.position = "absolute";
   overlay.style.top = "-20%";
-  overlay.style.left = "-35px"; // Align with the slider
-  overlay.style.width = "calc(100%)"; // Extend width to match slider
+  overlay.style.left = "-35px";
+  overlay.style.width = "calc(100%)";
   overlay.style.height = "100%";
-  overlay.style.zIndex = "0"; // Ensure it's above other elements
-  overlay.style.cursor = "default"; // Keep the default cursor
-  overlay.style.pointerEvents = "none"; // Disable pointer events by default
+  overlay.style.zIndex = "0";
+  overlay.style.cursor = "default";
+  overlay.style.pointerEvents = "none";
 
   sliderBlock.style.position = "relative";
   sliderBlock.appendChild(overlay);
@@ -898,15 +903,12 @@ function createSliderOverlay() {
   let scrollTimeout;
 
   sliderBlock.addEventListener("mouseenter", () => {
-    overlay.style.pointerEvents = "auto"; // Enable pointer events on hover
+    overlay.style.pointerEvents = "auto";
   });
 
   sliderBlock.addEventListener("mouseleave", () => {
-    overlay.style.pointerEvents = "none"; // Disable pointer events when not hovering
+    overlay.style.pointerEvents = "none";
   });
-
-  /* let SCROLL_SENSITIVITY = 0.0028;
-    const SCROLL_TIMEOUT = 150; */
 
   function handleWheel(e) {
     e.preventDefault();
@@ -922,7 +924,6 @@ function createSliderOverlay() {
   });
 }
 
-// Call this function after your existing initialization code
 createSliderOverlay();
 
 // ===================================================CURSOR-TRAIL--------------------------------------//
@@ -1401,12 +1402,3 @@ $(function () {
     scroll: false,
   });
 });
-
-document
-  .querySelector(".toggle-password-btn")
-  .addEventListener("mousedown", function (event) {
-    const passwordField = document.getElementById("password");
-    const passwordIcon = document.querySelector(".toggle-password-icon");
-
-    event.preventDefault();
-  });
