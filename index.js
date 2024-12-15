@@ -1401,3 +1401,12 @@ $(function () {
     scroll: false,
   });
 });
+
+document
+  .querySelector(".toggle-password-btn")
+  .addEventListener("mousedown", function (event) {
+    const passwordField = document.getElementById("password");
+    const passwordIcon = document.querySelector(".toggle-password-icon");
+
+    event.preventDefault();
+  });
