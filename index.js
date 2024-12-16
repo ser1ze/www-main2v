@@ -650,205 +650,653 @@ const loginBtn = document.querySelector(".login");
 const modalOverlay = document.getElementById("modal-overlay");
 const closeLoginModalBtn = document.getElementById("close-login-modal");
 const closeRegisterModalBtn = document.getElementById("close-register-modal");
+const closeModalButton = document.getElementById("close-modal")
+const openLoginButton = document.getElementById('open-login');
+const openRegisterButton = document.getElementById('open-register');
+const modalContent = document.getElementById('modal-content');
 
-const togglePasswordBtn = document.getElementById("toggle-password");
-const passwordInput = document.getElementById("password");
-
-const toggleRegisterPasswordBtn = document.getElementById(
-  "toggle-register-password"
-);
-const registerPasswordInput = document.getElementById("register-password");
-
-const openRegisterBtn = document.getElementById("open-register");
-const openLoginBtn = document.getElementById("open-login");
-
-const openLoginFromRegisterBtn = document.getElementById(
-  "open-login-from-register"
-);
-const openRegisterFromRegisterBtn = document.getElementById(
-  "open-register-from-register"
-);
-
-const loginModal = document.getElementById("login-modal");
-const registerModal = document.getElementById("register-modal");
-
-function openModal(modal) {
-  modalOverlay.style.display = "flex";
-  modalOverlay.classList.remove("blur-out");
-  modal.style.display = "block";
-}
-
-function closeModal() {
-  loginModal.classList.add("modal-closing");
-  registerModal.classList.add("modal-closing");
-  modalOverlay.classList.add("blur-out");
-
-  setTimeout(() => {
-    modalOverlay.style.display = "none";
-    loginModal.style.display = "none";
-    registerModal.style.display = "none";
-
-    loginModal.classList.remove("modal-closing");
-    registerModal.classList.remove("modal-closing");
-  }, 400);
-}
-
-function switchModal(currentModal, targetModal) {
-  currentModal.classList.add("modal-closing");
-  setTimeout(() => {
-    currentModal.style.display = "none";
-    currentModal.classList.remove("modal-closing");
-
-    openModal(targetModal);
-  }, 400);
-}
 
 loginBtn.addEventListener("click", () => {
-  openModal(loginModal);
+  modalOverlay.style.display = "flex";
+  showLoginForm(); 
 });
 
-closeLoginModalBtn.addEventListener("click", () => {
-  closeModal();
+
+closeModalButton.addEventListener("click", () => {
+  modalOverlay.style.display = "none"; 
 });
 
-closeRegisterModalBtn.addEventListener("click", () => {
-  closeModal();
-});
 
 modalOverlay.addEventListener("click", (e) => {
   if (e.target === modalOverlay) {
-    closeModal();
+    modalOverlay.style.display = "none"; 
   }
 });
 
-togglePasswordBtn.addEventListener("click", () => {
-  togglePasswordVisibility(passwordInput, togglePasswordBtn);
-});
+function showLoginForm() {
+  modalContent.innerHTML = `
+    <form id="login-modal">
+          <div class="input-wrapper">
+            <div class="input-group">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                title=""
+                placeholder="email@email.com"
+                required
+              />
+              <label for="email" class="form-label">E-mail</label>
+            </div>
+            <div class="input-group">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                title=""
+                placeholder="Пароль"
+                required
+                autocomplete="off"
+              />
+              <label for="password" class="form-label">Пароль</label>
+              <button type="button" class="toggle-password-btn">
+                <span class="toggle-password" id="toggle-password">
+                  <img
+                    class="toggle-password-icon"
+                    src="./img/showPassword.svg"
+                    alt="Показать/Скрыть пароль"
+                  />
+                </span>
+              </button>
+            </div>
+          </div>
 
-toggleRegisterPasswordBtn.addEventListener("click", () => {
-  togglePasswordVisibility(registerPasswordInput, toggleRegisterPasswordBtn);
-});
+          <div class="forgot-password-container">
+            <button type="button" class="forgot-password" id="forgot-password">
+              Забыли пароль?
+            </button>
+          </div>
 
-function togglePasswordVisibility(passwordField, toggleBtn) {
-  const type = passwordField.type === "password" ? "text" : "password";
-  passwordField.type = type;
+          <div class="btn-container">
+            <div class="cards">
+              <div class="card-wrap enter-wrap">
+                <div class="card enter">
+                  <div class="card-content enter-content">
+                    <button class="submitBtn" type="submit">Войти</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-  const img = toggleBtn.querySelector("img");
-  if (type === "text") {
-    img.src = "./img/hidePassword.svg";
-  } else {
-    img.src = "./img/showPassword.svg";
-  }
-}
+          <div class="social-login">
+            <h4 class="login-with">вход с помощью</h4>
+            <div class="socials">
+              <div class="log_in_with">
+                <div class="row">
+                  <!-- Google -->
+                  <a
+                    href="#"
+                    class="log_in_item"
+                    aria-label="Войти через Google"
+                  >
+                    <div class="log_in_item--inner">
+                      <div class="flip_item-front">
+                        <svg
+                          width="27"
+                          height="27"
+                          viewBox="0 0 27 27"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clip-path="url(#clip0_732_1069)">
+                            <path
+                              d="M26.2954 10.9444H25.2442V10.8902H13.4992V16.1102H20.8744C19.7985 19.1489 16.9072 21.3302 13.4992 21.3302C9.1751 21.3302 5.66922 17.8243 5.66922 13.5002C5.66922 9.17608 9.1751 5.67019 13.4992 5.67019C15.4952 5.67019 17.3111 6.42318 18.6938 7.65314L22.385 3.96195C20.0542 1.78978 16.9366 0.450195 13.4992 0.450195C6.29236 0.450195 0.449219 6.29333 0.449219 13.5002C0.449219 20.7071 6.29236 26.5502 13.4992 26.5502C20.7061 26.5502 26.5492 20.7071 26.5492 13.5002C26.5492 12.6252 26.4592 11.7711 26.2954 10.9438Z"
+                              fill="#FFC107"
+                            />
+                            <path
+                              d="M1.95508 7.42607L6.24266 10.5705C7.4028 7.69817 10.2125 5.6702 13.5004 5.6702C15.4964 5.6702 17.3123 6.42318 18.695 7.65314L22.3862 3.96195C20.0554 1.78978 16.9378 0.450195 13.5004 0.450195C8.48791 0.450195 4.14095 3.28009 1.95508 7.42607Z"
+                              fill="#FF3D00"
+                            />
+                            <path
+                              d="M13.5006 26.5503C16.8714 26.5503 19.9342 25.2603 22.25 23.1625L18.211 19.7447C16.9008 20.7372 15.2721 21.3303 13.5006 21.3303C10.1063 21.3303 7.22418 19.1659 6.13842 16.1455L1.88281 19.4243C4.04259 23.6506 8.42869 26.5503 13.5006 26.5503Z"
+                              fill="#4CAF50"
+                            />
+                            <path
+                              d="M26.2962 10.9438H25.245V10.8896H13.5V16.1096H20.8752C20.3584 17.5693 19.4195 18.828 18.2084 19.7447L18.2104 19.7434L22.2494 23.1612C21.9636 23.4209 26.55 20.0246 26.55 13.4996C26.55 12.6246 26.46 11.7705 26.2962 10.9438Z"
+                              fill="#1976D2"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_732_1069">
+                              <rect
+                                width="27"
+                                height="27"
+                                rx="5"
+                                fill="white"
+                              />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
+                      <div class="flip_item-back">
+                        <span class="flip_item-back-text">Google</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="#"
+                    class="log_in_item"
+                    aria-label="Войти через Apple"
+                  >
+                    <div class="log_in_item--inner">
+                      <div class="flip_item-front">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="21"
+                          height="25"
+                          viewBox="0 0 21 25"
+                          fill="none"
+                        >
+                          <path
+                            d="M20.3318 8.5225C20.1822 8.635 17.5404 10.0775 17.5404 13.285C17.5404 16.995 20.902 18.3075 21.0026 18.34C20.9871 18.42 20.4686 20.1375 19.2302 21.8875C18.126 23.4275 16.9729 24.965 15.2186 24.965C13.4643 24.965 13.0128 23.9775 10.9876 23.9775C9.01401 23.9775 8.31229 24.9975 6.70762 24.9975C5.10295 24.9975 3.98329 23.5725 2.69595 21.8225C1.20479 19.7675 0 16.575 0 13.545C0 8.685 3.26093 6.1075 6.47027 6.1075C8.17555 6.1075 9.59705 7.1925 10.6677 7.1925C11.6867 7.1925 13.2759 6.0425 15.216 6.0425C15.9512 6.0425 18.593 6.1075 20.3318 8.5225ZM14.295 3.985C15.0973 3.0625 15.6649 1.7825 15.6649 0.5025C15.6649 0.325 15.6494 0.145 15.6158 0C14.3104 0.0475 12.7574 0.8425 11.8209 1.895C11.0856 2.705 10.3994 3.985 10.3994 5.2825C10.3994 5.4775 10.4329 5.6725 10.4484 5.735C10.531 5.75 10.6651 5.7675 10.7993 5.7675C11.9705 5.7675 13.4436 5.0075 14.295 3.985Z"
+                            fill="black"
+                          ></path>
+                        </svg>
+                      </div>
+                      <div class="flip_item-back">
+                        <span class="flip_item-back-text">Apple</span>
+                      </div>
+                    </div>
+                  </a>
 
-openRegisterBtn.addEventListener("click", () => {
-  switchModal(loginModal, registerModal);
-});
+                  <!-- Sberbank -->
+                  <a
+                    href="#"
+                    class="log_in_item"
+                    aria-label="Войти через СБЕР ID"
+                  >
+                    <div class="log_in_item--inner">
+                      <div class="flip_item-front">
+                        <svg
+                          width="27"
+                          height="26"
+                          viewBox="0 0 27 26"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M23.3779 5.05078C23.9872 5.84921 24.5031 6.71663 24.915 7.63563L13.2301 16.3651L8.34668 13.2627V9.53035L13.2301 12.6328L23.3779 5.05078Z"
+                            fill="#21A038"
+                          />
+                          <path
+                            d="M3.36294 12.9998C3.36294 12.8323 3.36697 12.6659 3.37503 12.5005L0.415532 12.3535C0.405459 12.5679 0.399418 12.7843 0.399418 13.0028C0.398158 14.7095 0.729411 16.3997 1.37418 17.9763C2.01895 19.5531 2.96454 20.9852 4.1567 22.1906L6.25595 20.0642C5.33826 19.1379 4.61025 18.0369 4.11377 16.8246C3.61729 15.6122 3.36213 14.3123 3.36294 12.9998Z"
+                            fill="url(#paint0_linear_732_1078)"
+                          />
+                          <path
+                            d="M13.2272 3.00332C13.3923 3.00332 13.5565 3.00945 13.7197 3.01762L13.8678 0.0172752C13.6556 0.0070665 13.442 0.00196277 13.2272 0.00196277C11.5423 -0.000119562 9.87365 0.335107 8.31701 0.988393C6.76035 1.64168 5.34637 2.60016 4.15625 3.8088L6.25549 5.93629C7.16952 5.00595 8.25599 4.26788 9.45244 3.76454C10.6489 3.2612 11.9317 3.0025 13.2272 3.00332Z"
+                            fill="url(#paint1_linear_732_1078)"
+                          />
+                          <path
+                            d="M13.2276 22.9973C13.0624 22.9973 12.8982 22.9973 12.734 22.9841L12.5859 25.9834C12.7988 25.9943 13.0127 25.9998 13.2276 25.9998C14.9118 26.0015 16.5796 25.6661 18.1354 25.0126C19.6912 24.3591 21.1043 23.4005 22.2935 22.1919L20.1983 20.0654C19.2841 20.9953 18.1977 21.7329 17.0015 22.2361C15.8053 22.7392 14.5227 22.998 13.2276 22.9973Z"
+                            fill="url(#paint2_linear_732_1078)"
+                          />
+                          <path
+                            d="M18.7881 4.74707L21.2822 2.88398C19.0026 1.01319 16.157 -0.0051931 13.2236 1.99146e-05V3.0024C15.21 2.99991 17.1502 3.60826 18.7881 4.74707Z"
+                            fill="url(#paint3_linear_732_1078)"
+                          />
+                          <path
+                            d="M26.0549 13.0005C26.0565 12.2195 25.9891 11.4398 25.8534 10.6709L23.0924 12.7331C23.0924 12.8219 23.0924 12.9107 23.0924 13.0005C23.0931 14.3974 22.8042 15.7788 22.2444 17.0552C21.6846 18.3316 20.8663 19.4746 19.8428 20.41L21.8343 22.6407C23.165 21.4231 24.2284 19.9359 24.9554 18.2752C25.6826 16.6144 26.0571 14.8174 26.0549 13.0005Z"
+                            fill="#21A038"
+                          />
+                          <path
+                            d="M13.2279 22.9974C11.8495 22.9979 10.4864 22.705 9.22673 22.1377C7.96715 21.5704 6.83915 20.7413 5.91579 19.7041L3.71582 21.7213C4.917 23.0702 6.38451 24.148 8.02318 24.8851C9.66185 25.6221 11.4351 26.0019 13.2279 25.9998V22.9974Z"
+                            fill="url(#paint4_linear_732_1078)"
+                          />
+                          <path
+                            d="M6.61255 5.58998L4.62209 3.35938C3.29099 4.57664 2.22722 6.06386 1.49977 7.72458C0.772317 9.38529 0.397431 11.1824 0.399422 12.9994H3.36295C3.36233 11.6027 3.6513 10.2213 4.21109 8.94485C4.77089 7.66847 5.58904 6.52548 6.61255 5.58998Z"
+                            fill="url(#paint5_linear_732_1078)"
+                          />
+                          <defs>
+                            <linearGradient
+                              id="paint0_linear_732_1078"
+                              x1="4.75606"
+                              y1="21.816"
+                              x2="1.44042"
+                              y2="12.3584"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop offset="0.14" stop-color="#F1E813" />
+                              <stop offset="0.3" stop-color="#E6E418" />
+                              <stop offset="0.58" stop-color="#C9DA26" />
+                              <stop offset="0.89" stop-color="#A2CC39" />
+                            </linearGradient>
+                            <linearGradient
+                              id="paint1_linear_732_1078"
+                              x1="5.00239"
+                              y1="4.33965"
+                              x2="13.3699"
+                              y2="1.19324"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop offset="0.06" stop-color="#0FA7DF" />
+                              <stop offset="0.54" stop-color="#0098F8" />
+                              <stop offset="0.92" stop-color="#0290EA" />
+                            </linearGradient>
+                            <linearGradient
+                              id="paint2_linear_732_1078"
+                              x1="12.3906"
+                              y1="24.1877"
+                              x2="21.8331"
+                              y2="22.0828"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop offset="0.12" stop-color="#A2CC39" />
+                              <stop offset="0.28" stop-color="#86C239" />
+                              <stop offset="0.87" stop-color="#219F38" />
+                            </linearGradient>
+                            <linearGradient
+                              id="paint3_linear_732_1078"
+                              x1="12.6072"
+                              y1="1.00558"
+                              x2="20.6883"
+                              y2="3.46625"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop offset="0.06" stop-color="#0290EA" />
+                              <stop offset="0.79" stop-color="#0C89CA" />
+                            </linearGradient>
+                            <linearGradient
+                              id="paint4_linear_732_1078"
+                              x1="4.45922"
+                              y1="21.3559"
+                              x2="13.2634"
+                              y2="24.6026"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop offset="0.13" stop-color="#F1E813" />
+                              <stop offset="0.3" stop-color="#EAE616" />
+                              <stop offset="0.53" stop-color="#D8DF1F" />
+                              <stop offset="0.8" stop-color="#BAD52D" />
+                              <stop offset="0.98" stop-color="#A2CC39" />
+                            </linearGradient>
+                            <linearGradient
+                              id="paint5_linear_732_1078"
+                              x1="1.50344"
+                              y1="13.3629"
+                              x2="5.1089"
+                              y2="4.10832"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop offset="0.07" stop-color="#A2CC39" />
+                              <stop offset="0.26" stop-color="#81C45E" />
+                              <stop offset="0.92" stop-color="#0FA7DF" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
+                      <div class="flip_item-back">
+                        <span class="flip_item-back-text">СБЕР ID</span>
+                      </div>
+                    </div>
+                  </a>
 
-openLoginBtn.addEventListener("click", () => {
-  switchModal(registerModal, loginModal);
-});
+                  <!-- VKontakte -->
 
-openLoginFromRegisterBtn.addEventListener("click", () => {
-  switchModal(registerModal, loginModal);
-});
+                  <!-- Yandex -->
+                  <a
+                    href="#"
+                    class="log_in_item"
+                    aria-label="Войти через Яндекс"
+                  >
+                    <div class="log_in_item--inner">
+                      <div class="flip_item-front">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="21"
+                          viewBox="0 0 14 21"
+                          fill="none"
+                        >
+                          <path
+                            d="M10.3343 2.83913H8.69638C5.69359 2.83913 4.11421 4.35592 4.11421 6.59222C4.11421 9.12021 5.20613 10.3047 7.44847 11.8232L9.30084 13.0678L3.97772 21H0L4.77716 13.9039C2.02963 11.9399 0.487465 10.0324 0.487465 6.80613C0.487465 2.76134 3.31476 0 8.67688 0H14V20.9806H10.3343V2.83913Z"
+                            fill="#FC3F1D"
+                          ></path>
+                        </svg>
+                      </div>
+                      <div class="flip_item-back">
+                        <span class="flip_item-back-text">Яндекс</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="#"
+                    class="log_in_item"
+                    aria-label="Войти через ВКонтакте"
+                  >
+                    <div class="log_in_item--inner">
+                      <div class="flip_item-front">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="30"
+                          height="20"
+                          viewBox="0 0 30 20"
+                          fill="none"
+                        >
+                          <path
+                            d="M16.3397 20C6.08985 20 0.243598 12.4925 0 0H5.13429C5.30294 9.16917 9.08798 13.0531 12.0861 13.8539V0H16.9208V7.90791C19.8814 7.56757 22.9916 3.96396 24.0409 0H28.8755C28.0698 4.88488 24.6969 8.48849 22.2984 9.96997C24.6969 11.1712 28.5384 14.3143 30 20H24.6781C23.5351 16.1962 20.6872 13.2533 16.9208 12.8529V20H16.3397Z"
+                            fill="#0077FF"
+                          ></path>
+                        </svg>
+                      </div>
+                      <div class="flip_item-back" style="font-size: 14px">
+                        <span class="flip_item-back-text">ВКонтакте</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
 
-openRegisterFromRegisterBtn.addEventListener("click", () => {
-  if (registerModal.style.display !== "block") {
-    openModal(registerModal);
-  }
-});
+          <div class="terms">
+            <span class="opacity">
+              Используя AUDIO SECTOR, Вы соглашаетесь
+            </span>
+            <a href="/privacy-policy" target="_blank" class="terms-link">
+              <br />с политикой конфиденциальности
+            </a>
+          </div>
+        </form>
+        
+  `;
 
-const dobDaySelect = document.getElementById("dob-day");
-const dobYearSelect = document.getElementById("dob-year");
-
-for (let i = 1; i <= 31; i++) {
-  const option = document.createElement("option");
-  option.value = i;
-  option.textContent = i;
-  dobDaySelect.appendChild(option);
-}
-
-const currentYear = new Date().getFullYear();
-for (let i = currentYear; i >= 1900; i--) {
-  const option = document.createElement("option");
-  option.value = i;
-  option.textContent = i;
-  dobYearSelect.appendChild(option);
-}
-
-const passwordStrength = document.getElementById("password-strength");
-const strengthIndicator = document.getElementById("strength-indicator");
-const strengthText = document.getElementById("strength-text");
-
-passwordInput.addEventListener("focus", () => {
-  passwordStrength.style.display = "block";
-});
-
-passwordInput.addEventListener("blur", () => {
-  passwordStrength.style.display = "none";
-});
-
-passwordInput.addEventListener("input", () => {
-  const password = passwordInput.value;
-  const strength = checkPasswordStrength(password);
-
-  updateStrengthIndicator(strength);
-});
-
-function checkPasswordStrength(password) {
-  const weakRegex = /^(?=.*[a-zA-Zа-яА-Я]).{1,}$/;
-  const mediumRegex =
-    /^(?=.*[a-zA-Zа-яА-Я])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/;
-  const strongRegex =
-    /^(?=.*[a-zA-Zа-яА-ЯёЁ])(?=.*[A-ZА-ЯЁ])(?=.*\d)(?=.*[!@#+=_\$%^&*<>./-]).{8,}$/;
-
-  if (strongRegex.test(password)) {
-    return "strong";
-  } else if (mediumRegex.test(password)) {
-    return "medium";
-  } else if (weakRegex.test(password)) {
-    return "weak";
-  } else {
-    return "none";
-  }
-}
-
-function updateStrengthIndicator(strength) {
-  strengthIndicator.style.width = "0";
-  strengthIndicator.classList.remove("weak", "medium", "strong");
-
-  switch (strength) {
-    case "strong":
-      strengthIndicator.style.width = "100%";
-      strengthIndicator.classList.add("strong");
-      strengthText.textContent = "хороший пароль";
-      break;
-    case "medium":
-      strengthIndicator.style.width = "50%";
-      strengthIndicator.classList.add("medium");
-      strengthText.textContent = "средний пароль";
-      break;
-    case "weak":
-      strengthIndicator.style.width = "20%";
-      strengthIndicator.classList.add("weak");
-      strengthText.textContent = "слабый пароль";
-      break;
-    default:
-      strengthIndicator.style.width = "0";
-      strengthIndicator.classList.remove("weak", "medium", "strong");
-      strengthText.textContent = "";
-  }
-}
-
-document
-  .querySelector(".toggle-password-btn")
-  .addEventListener("mousedown", function (event) {
-    const passwordField = document.getElementById("password");
-    const passwordIcon = document.querySelector(".toggle-password-icon");
-
-    event.preventDefault();
+   const togglePasswordBtn = document.getElementById("toggle-password");
+  const passwordInput = document.getElementById("password");
+  
+  const toggleRegisterPasswordBtn = document.getElementById(
+    "toggle-register-password"
+  );
+  const registerPasswordInput = document.getElementById("register-password");
+  
+  
+  
+  togglePasswordBtn.addEventListener("click", () => {
+    togglePasswordVisibility(passwordInput, togglePasswordBtn);
   });
+  
+  toggleRegisterPasswordBtn.addEventListener("click", () => {
+    togglePasswordVisibility(registerPasswordInput, toggleRegisterPasswordBtn);
+  });
+  
+  function togglePasswordVisibility(passwordField, toggleBtn) {
+    const type = passwordField.type === "password" ? "text" : "password";
+    passwordField.type = type;
+  
+    const img = toggleBtn.querySelector("img");
+    if (type === "text") {
+      img.src = "./img/hidePassword.svg";
+    } else {
+      img.src = "./img/showPassword.svg";
+    }
+  }
+  const togglePassword = document.querySelector(".toggle-password-btn");
+makeButtonClickable(togglePassword);
+}
+
+function showRegisterForm() {
+  modalContent.innerHTML = `
+     <form  id="register-modal">
+        
+          <div class="input-wrapper">
+            <div class="input-group">
+              <input
+                type="email"
+                id="register-email"
+                placeholder="email@email.com"
+                required
+                title=""
+              />
+              <label for="register-email" class="form-label">E-mail</label>
+            </div>
+
+            <div class="input-group">
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="register-password"
+                  placeholder="Пароль"
+                  required
+                  title=""
+                />
+                <label for="password" class="form-label">Пароль</label>
+                <button type="button" class="toggle-password-btn">
+                  <span class="toggle-password" id="toggle-register-password">
+                    <img
+                      class="toggle-password-icon"
+                      src="./img/showPassword.svg"
+                      alt="Показать/Скрыть пароль"
+                    />
+                  </span>
+                </button>
+              </div>
+              <div id="password-strength" class="password-strength">
+                <div id="strength-indicator" class="strength-indicator"></div>
+                <span id="strength-text" class="strength-text"></span>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <input
+                type="text"
+                id="username"
+                placeholder="Отображаемое имя"
+                required
+                title=""
+              />
+              <label for="username" class="form-label">Имя пользователя</label>
+            </div>
+
+            <div class="input-group">
+              <input
+                type="text"
+                id="nickname"
+                placeholder="Ваш никнейм"
+                required
+                title=""
+              />
+              <label for="nickname" class="form-label">Ваш никнейм</label>
+            </div>
+            <div class="input-group">
+              <div class="dob-selectors">
+                <select id="dob-day" required title="">
+                  <option selected="selected">День</option>
+                </select>
+                <select id="dob-month" required>
+                  <option selected="selected">Месяц</option>
+                  <option value="1">Январь</option>
+                  <option value="2">Февраль</option>
+                  <option value="3">Март</option>
+                  <option value="4">Апрель</option>
+                  <option value="5">Май</option>
+                  <option value="6">Июнь</option>
+                  <option value="7">Июль</option>
+                  <option value="8">Август</option>
+                  <option value="9">Сентябрь</option>
+                  <option value="10">Октябрь</option>
+                  <option value="11">Ноябрь</option>
+                  <option value="12">Декабрь</option>
+                </select>
+                <select id="dob-year" required>
+                  <option selected="selected">Год</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="btn-container">
+            <div class="cards">
+              <div class="card-wrap enter-wrap">
+                <div class="card enter">
+                  <div class="card-content enter-content">
+                    <button class="submitBtn" type="submit">Продолжить</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="terms">
+            <span class="opacity">
+              Используя AUDIO SECTOR, Вы соглашаетесь
+            </span>
+            <a href="/privacy-policy" target="_blank" class="terms-link">
+              <br />с политикой конфиденциальности
+            </a>
+          </div>
+        </form>
+  `;
+  const passwordStrength = document.getElementById("password-strength");
+  const strengthIndicator = document.getElementById("strength-indicator");
+  const strengthText = document.getElementById("strength-text");
+  
+  passwordInput.addEventListener("focus", () => {
+    passwordStrength.style.display = "block";
+  });
+  
+  passwordInput.addEventListener("blur", () => {
+    passwordStrength.style.display = "none";
+  });
+  
+  passwordInput.addEventListener("input", () => {
+    const password = passwordInput.value;
+    const strength = checkPasswordStrength(password);
+  
+    updateStrengthIndicator(strength);
+  });
+  
+  function checkPasswordStrength(password) {
+    const weakRegex = /^(?=.*[a-zA-Zа-яА-Я]).{1,}$/;
+    const mediumRegex =
+      /^(?=.*[a-zA-Zа-яА-Я])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/;
+    const strongRegex =
+      /^(?=.*[a-zA-Zа-яА-ЯёЁ])(?=.*[A-ZА-ЯЁ])(?=.*\d)(?=.*[!@#+=_\$%^&*<>./-]).{8,}$/;
+  
+    if (strongRegex.test(password)) {
+      return "strong";
+    } else if (mediumRegex.test(password)) {
+      return "medium";
+    } else if (weakRegex.test(password)) {
+      return "weak";
+    } else {
+      return "none";
+    }
+  }
+  
+  function updateStrengthIndicator(strength) {
+    strengthIndicator.style.width = "0";
+    strengthIndicator.classList.remove("weak", "medium", "strong");
+  
+    switch (strength) {
+      case "strong":
+        strengthIndicator.style.width = "100%";
+        strengthIndicator.classList.add("strong");
+        strengthText.textContent = "хороший пароль";
+        break;
+      case "medium":
+        strengthIndicator.style.width = "50%";
+        strengthIndicator.classList.add("medium");
+        strengthText.textContent = "средний пароль";
+        break;
+      case "weak":
+        strengthIndicator.style.width = "20%";
+        strengthIndicator.classList.add("weak");
+        strengthText.textContent = "слабый пароль";
+        break;
+      default:
+        strengthIndicator.style.width = "0";
+        strengthIndicator.classList.remove("weak", "medium", "strong");
+        strengthText.textContent = "";
+    }
+  }
+  $(document).ready(function () {
+    $("select").niceSelect();
+  });
+  
+  const togglePasswordBtn = document.getElementById("toggle-password");
+  const passwordInput = document.getElementById("password");
+  
+  const toggleRegisterPasswordBtn = document.getElementById(
+    "toggle-register-password"
+  );
+  const registerPasswordInput = document.getElementById("register-password");
+  
+  
+  
+  togglePasswordBtn.addEventListener("click", () => {
+    togglePasswordVisibility(passwordInput, togglePasswordBtn);
+  });
+  
+  toggleRegisterPasswordBtn.addEventListener("click", () => {
+    togglePasswordVisibility(registerPasswordInput, toggleRegisterPasswordBtn);
+  });
+  const togglePassword = document.querySelector(".toggle-password-btn");
+makeButtonClickable(togglePassword);
+  function togglePasswordVisibility(passwordField, toggleBtn) {
+    const type = passwordField.type === "password" ? "text" : "password";
+    passwordField.type = type;
+  
+    const img = toggleBtn.querySelector("img");
+    if (type === "text") {
+      img.src = "./img/hidePassword.svg";
+    } else {
+      img.src = "./img/showPassword.svg";
+    }
+  }
+  
+  
+  
+  const dobDaySelect = document.getElementById("dob-day");
+  const dobYearSelect = document.getElementById("dob-year");
+  
+  for (let i = 1; i <= 31; i++) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = i;
+    dobDaySelect.appendChild(option);
+  }
+  
+  const currentYear = new Date().getFullYear();
+  for (let i = currentYear; i >= 1900; i--) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = i;
+    dobYearSelect.appendChild(option);
+  }
+  
+ 
+  
+  document
+    .querySelector(".toggle-password-btn")
+    .addEventListener("mousedown", function (event) {
+      const passwordField = document.getElementById("password");
+      const passwordIcon = document.querySelector(".toggle-password-icon");
+  
+      event.preventDefault();
+    });
+}
+
+// Обработчики событий для переключения между формами
+openLoginButton.addEventListener('click', () => {
+  openLoginButton.classList.add('active');
+  openRegisterButton.classList.remove('active');
+  showLoginForm();
+});
+
+openRegisterButton.addEventListener('click', () => {
+  openRegisterButton.classList.add('active');
+  openLoginButton.classList.remove('active');
+  showRegisterForm();
+});
+
 
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 
@@ -1128,8 +1576,7 @@ window.addEventListener("load", function () {
 });
 const forgotPassword = document.querySelector(".forgot-password");
 makeButtonClickable(forgotPassword);
-const togglePassword = document.querySelector(".toggle-password-btn");
-makeButtonClickable(togglePassword);
+
 const switchModalsBtns = document.querySelectorAll(".switch-modals__btn");
 switchModalsBtns.forEach((btn) => makeButtonClickable(btn));
 
@@ -1177,21 +1624,10 @@ document.querySelectorAll(".card-wrap").forEach((card) => {
   });
 });
 
-const loginForm = document.querySelector(".modal");
-// Form checker
-if (loginForm) {
-  loginForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    console.log("Отправка данных:", { email, password });
-  });
-}
+
 
 // Nice-Select
-$(document).ready(function () {
-  $("select").niceSelect();
-});
+
 
 // -------------------------------------------------- Gift Mode ------------------------------------------------//
 
