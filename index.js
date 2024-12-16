@@ -1154,6 +1154,9 @@ function showRegisterForm() {
           </div>
         </form>
   `;
+  $(document).ready(function () {
+    $("select").niceSelect();
+  });
   const passwordStrength = document.getElementById("password-strength");
   const strengthIndicator = document.getElementById("strength-indicator");
   const strengthText = document.getElementById("strength-text");
