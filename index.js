@@ -1731,3 +1731,122 @@ $(function () {
     scroll: false,
   });
 });
+
+const buttons = document.querySelectorAll(".rate-btn");
+const prevArrow = document.querySelector(".prev-arrow");
+
+let activeIndex = 0;
+const initialPrices = ["icon", "5 ₽", "4 ₽", "3 ₽"];
+let currentPrices = [...initialPrices];
+
+let prevArrowVisible = false;
+
+function updatePrices() {
+  buttons.forEach((button, index) => {
+    const priceSpan = button.querySelector(".main-price");
+    if (priceSpan) {
+      if (currentPrices[index] === "icon") {
+        priceSpan.innerHTML = "";
+      } else {
+        priceSpan.textContent = currentPrices[index];
+      }
+    }
+  });
+}
+
+function switchPrices() {
+  buttons.forEach((button, index) => {
+    button.classList.remove("active");
+    if (index === activeIndex) {
+      button.classList.add("active");
+    }
+  });
+}
+
+function updateDecreasingPrices() {
+  const newPrices = [];
+  let basePrice = parseFloat(currentPrices[3]);
+
+  if (currentPrices[3] === "3 ₽") {
+    newPrices.push("3 ₽");
+    newPrices.push("2 ₽");
+    newPrices.push("1.9 ₽");
+  } else {
+    for (let i = 0; i < currentPrices.length; i++) {
+      if (basePrice > 1) {
+        newPrices.push(`${basePrice.toFixed(1)} ₽`);
+        basePrice -= 0.1;
+      } else if (basePrice === 1) {
+        newPrices.push("1 ₽");
+        break;
+      }
+    }
+  }
+
+  currentPrices = ["icon", ...newPrices];
+
+  if (currentPrices[3] === "1 ₽") {
+    nextArrow.style.display = "none";
+  }
+}
+
+function updateIncreasingPrices() {
+  const newPrices = [];
+
+  if (currentPrices[1] === "3 ₽") {
+    newPrices.push("4 ₽");
+    newPrices.push("5 ₽");
+  } else if (currentPrices[1] === "4 ₽") {
+    newPrices.push("5 ₽");
+  }
+
+  currentPrices = ["icon", ...newPrices];
+
+  if (currentPrices[1] !== "5 ₽") {
+    nextArrow.style.display = "block";
+  }
+}
+
+function updatePrevArrowVisibility() {
+  if (parseFloat(currentPrices[1]) <= 3 && !prevArrowVisible) {
+    prevArrow.style.display = "block";
+    prevArrowVisible = true;
+  } else if (parseFloat(currentPrices[1]) > 3) {
+    prevArrow.style.display = "none";
+    prevArrowVisible = false;
+  }
+}
+
+nextArrow.addEventListener("click", function () {
+  if (activeIndex === 3) {
+    updateDecreasingPrices();
+    updatePrices();
+  }
+
+  if (activeIndex < buttons.length - 1) {
+    activeIndex++;
+  } else {
+    activeIndex = 0;
+  }
+
+  switchPrices();
+  updatePrevArrowVisibility();
+});
+
+prevArrow.addEventListener("click", function () {
+  if (parseFloat(currentPrices[1]) <= 3) {
+    if (activeIndex > 0) {
+      activeIndex--;
+    } else {
+      activeIndex = buttons.length - 1;
+    }
+
+    switchPrices();
+    updatePrevArrowVisibility();
+  } else {
+    return;
+  }
+});
+
+updatePrices();
+updatePrevArrowVisibility();
