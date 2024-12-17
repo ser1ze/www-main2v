@@ -920,31 +920,6 @@ function showLoginForm() {
       img.src = "./img/showPassword.svg";
     }
   }
-  document.querySelectorAll(".card-wrap").forEach((card) => {
-    const cardElement = card.querySelector(".card");
-
-    card.addEventListener("mousemove", (e) => {
-      const isModalOpen =
-        document.querySelector(".modal-overlay").style.display !== "none";
-      const isInModal =
-        card.closest("#login-modal") || card.closest("#register-modal");
-
-      const rect = cardElement.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      const rotateX = (mouseY / rect.height) * 30 - 15;
-      const rotateY =
-        isModalOpen || isInModal ? 0 : (mouseX / rect.width) * -30 + 15;
-      cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-    });
-
-    card.addEventListener("mouseleave", () => {
-      cardElement.style.transition = "transform 0.5s ease-out";
-      cardElement.style.transform =
-        "rotateX(0deg) rotateY(0deg) translateZ(0px)";
-    });
-  });
 
   const togglePassword = document.querySelector(".toggle-password-btn");
   makeButtonClickable(togglePassword);
@@ -1732,6 +1707,8 @@ $(function () {
   });
 });
 
+// Nav Menu
+
 const buttons = document.querySelectorAll(".rate-btn");
 const prevArrow = document.querySelector(".prev-arrow");
 
@@ -1741,17 +1718,51 @@ let currentPrices = [...initialPrices];
 
 let prevArrowVisible = false;
 
+const priceRanges = {
+  "5 ₽": "0 - 999",
+  "4 ₽": "1 000 - 9 999",
+  "3 ₽": "10 000 - 49 999",
+  "2 ₽": "50 000 - 99 999",
+  "1.9 ₽": "100 000 - 199 999",
+  "1.8 ₽": "200 000 - 299 999",
+  "1.7 ₽": "300 000 - 399 999",
+  "1.6 ₽": "400 000 - 499 999",
+  "1.5 ₽": "500 000 - 599 999",
+  "1.4 ₽": "600 000 - 699 999",
+  "1.3 ₽": "700 000 - 799 999",
+  "1.2 ₽": "800 000 - 899 999",
+  "1.1 ₽": "900 000 - 999 999",
+  "1 ₽": "от 1 000 000",
+};
+
 function updatePrices() {
   buttons.forEach((button, index) => {
     const priceSpan = button.querySelector(".main-price");
+    const rangeSpan = button.querySelector(".price-range");
     if (priceSpan) {
       if (currentPrices[index] === "icon") {
         priceSpan.innerHTML = "";
       } else {
         priceSpan.textContent = currentPrices[index];
+
+        if (rangeSpan) {
+          rangeSpan.textContent = priceRanges[currentPrices[index]] || "";
+        }
       }
     }
   });
+
+  if (currentPrices[1] === "1.1 ₽" && buttons.length > 2) {
+    buttons[buttons.length - 1].remove();
+    buttons[1].style.width = "266px";
+    buttons[2].style.width = "266px";
+    nextArrow.style.display = "none";
+  }
+
+  if (buttons.length > 2) {
+    buttons[1].style.flexGrow = "1";
+    buttons[2].style.flexGrow = "1";
+  }
 }
 
 function switchPrices() {
@@ -1771,6 +1782,7 @@ function updateDecreasingPrices() {
     newPrices.push("3 ₽");
     newPrices.push("2 ₽");
     newPrices.push("1.9 ₽");
+    newPrices.push("1.1 ₽");
   } else {
     for (let i = 0; i < currentPrices.length; i++) {
       if (basePrice > 1) {
@@ -1786,8 +1798,10 @@ function updateDecreasingPrices() {
   currentPrices = ["icon", ...newPrices];
 
   if (currentPrices[3] === "1 ₽") {
-    nextArrow.style.display = "none";
+    nextArrow.style.visibility = "hidden";
   }
+
+  updatePrices();
 }
 
 function updateIncreasingPrices() {
@@ -1803,16 +1817,18 @@ function updateIncreasingPrices() {
   currentPrices = ["icon", ...newPrices];
 
   if (currentPrices[1] !== "5 ₽") {
-    nextArrow.style.display = "block";
+    nextArrow.style.visibility = "visible";
   }
+
+  updatePrices();
 }
 
 function updatePrevArrowVisibility() {
   if (parseFloat(currentPrices[1]) <= 3 && !prevArrowVisible) {
-    prevArrow.style.display = "block";
+    prevArrow.style.visibility = "visible";
     prevArrowVisible = true;
   } else if (parseFloat(currentPrices[1]) > 3) {
-    prevArrow.style.display = "none";
+    prevArrow.style.visibility = "hidden";
     prevArrowVisible = false;
   }
 }
@@ -1820,7 +1836,6 @@ function updatePrevArrowVisibility() {
 nextArrow.addEventListener("click", function () {
   if (activeIndex === 3) {
     updateDecreasingPrices();
-    updatePrices();
   }
 
   if (activeIndex < buttons.length - 1) {
