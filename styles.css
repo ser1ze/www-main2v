@@ -2664,6 +2664,7 @@ body
   color: rgba(204, 204, 204, 0.5);
   transition: all 0.3s;
   cursor: pointer;
+  will-change: transform;
 }
 
 .forgot-password:hover {
@@ -3142,7 +3143,8 @@ input:hover::placeholder {
   width: 100%;
 }
 
-.input-group input[type="password"], .input-group input[type="text"] {
+.input-group input[type="password"],
+.input-group input[type="text"] {
   flex: 1;
 }
 
