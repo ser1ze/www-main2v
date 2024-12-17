@@ -1,4 +1,3 @@
-
 // ----------------------------------------------------------MICROPHONE--------------------------------------------------------//
 
 const slider = document.querySelector(".price-slider");
@@ -536,26 +535,23 @@ const loginBtn = document.querySelector(".login");
 const modalOverlay = document.getElementById("modal-overlay");
 const closeLoginModalBtn = document.getElementById("close-login-modal");
 const closeRegisterModalBtn = document.getElementById("close-register-modal");
-const closeModalButton = document.getElementById("close-modal")
-const openLoginButton = document.getElementById('open-login');
-const openRegisterButton = document.getElementById('open-register');
-const modalContent = document.getElementById('modal-content');
-
+const closeModalButton = document.getElementById("close-modal");
+const openLoginButton = document.getElementById("open-login");
+const openRegisterButton = document.getElementById("open-register");
+const modalContent = document.getElementById("modal-content");
 
 loginBtn.addEventListener("click", () => {
   modalOverlay.style.display = "flex";
-  showLoginForm(); 
+  showLoginForm();
 });
-
 
 closeModalButton.addEventListener("click", () => {
-  modalOverlay.style.display = "none"; 
+  modalOverlay.style.display = "none";
 });
-
 
 modalOverlay.addEventListener("click", (e) => {
   if (e.target === modalOverlay) {
-    modalOverlay.style.display = "none"; 
+    modalOverlay.style.display = "none";
   }
 });
 
@@ -897,28 +893,26 @@ function showLoginForm() {
         
   `;
 
-   const togglePasswordBtn = document.getElementById("toggle-password");
+  const togglePasswordBtn = document.getElementById("toggle-password");
   const passwordInput = document.getElementById("password");
-  
+
   const toggleRegisterPasswordBtn = document.getElementById(
     "toggle-register-password"
   );
   const registerPasswordInput = document.getElementById("register-password");
-  
-  
-  
+
   togglePasswordBtn.addEventListener("click", () => {
     togglePasswordVisibility(passwordInput, togglePasswordBtn);
   });
-  
+
   toggleRegisterPasswordBtn.addEventListener("click", () => {
     togglePasswordVisibility(registerPasswordInput, toggleRegisterPasswordBtn);
   });
-  
+
   function togglePasswordVisibility(passwordField, toggleBtn) {
     const type = passwordField.type === "password" ? "text" : "password";
     passwordField.type = type;
-  
+
     const img = toggleBtn.querySelector("img");
     if (type === "text") {
       img.src = "./img/hidePassword.svg";
@@ -927,13 +921,12 @@ function showLoginForm() {
     }
   }
   const togglePassword = document.querySelector(".toggle-password-btn");
-makeButtonClickable(togglePassword);
+  makeButtonClickable(togglePassword);
 }
 
 function showRegisterForm() {
   modalContent.innerHTML = `
      <form  id="register-modal">
-        
           <div class="input-wrapper">
             <div class="input-group">
               <input
@@ -995,7 +988,7 @@ function showRegisterForm() {
             </div>
             <div class="input-group">
               <div class="dob-selectors">
-                <select id="dob-day" required title="">
+                <select id="dob-day" required title=""/>
                   <option selected="selected">День</option>
                 </select>
                 <select id="dob-month" required>
@@ -1043,32 +1036,34 @@ function showRegisterForm() {
   $(document).ready(function () {
     $("select").niceSelect();
   });
+
   const passwordStrength = document.getElementById("password-strength");
   const strengthIndicator = document.getElementById("strength-indicator");
   const strengthText = document.getElementById("strength-text");
-  
+  const passwordInput = document.getElementById("register-password");
+
   passwordInput.addEventListener("focus", () => {
     passwordStrength.style.display = "block";
   });
-  
+
   passwordInput.addEventListener("blur", () => {
     passwordStrength.style.display = "none";
   });
-  
+
   passwordInput.addEventListener("input", () => {
     const password = passwordInput.value;
     const strength = checkPasswordStrength(password);
-  
+
     updateStrengthIndicator(strength);
   });
-  
+
   function checkPasswordStrength(password) {
     const weakRegex = /^(?=.*[a-zA-Zа-яА-Я]).{1,}$/;
     const mediumRegex =
       /^(?=.*[a-zA-Zа-яА-Я])(?=.*[\d!@#$%^&*()_+=;'{}\[\]:;"'<>,.?/\\|-]).{6,}$/;
     const strongRegex =
       /^(?=.*[a-zA-Zа-яА-ЯёЁ])(?=.*[A-ZА-ЯЁ])(?=.*\d)(?=.*[!@#+=_\$%^&*<>./-]).{8,}$/;
-  
+
     if (strongRegex.test(password)) {
       return "strong";
     } else if (mediumRegex.test(password)) {
@@ -1079,11 +1074,11 @@ function showRegisterForm() {
       return "none";
     }
   }
-  
+
   function updateStrengthIndicator(strength) {
     strengthIndicator.style.width = "0";
     strengthIndicator.classList.remove("weak", "medium", "strong");
-  
+
     switch (strength) {
       case "strong":
         strengthIndicator.style.width = "100%";
@@ -1106,33 +1101,16 @@ function showRegisterForm() {
         strengthText.textContent = "";
     }
   }
-  $(document).ready(function () {
-    $("select").niceSelect();
-  });
-  
-  const togglePasswordBtn = document.getElementById("toggle-password");
-  const passwordInput = document.getElementById("password");
-  
-  const toggleRegisterPasswordBtn = document.getElementById(
-    "toggle-register-password"
-  );
-  const registerPasswordInput = document.getElementById("register-password");
-  
-  
-  
+
+  const togglePasswordBtn = document.getElementById("toggle-register-password");
   togglePasswordBtn.addEventListener("click", () => {
     togglePasswordVisibility(passwordInput, togglePasswordBtn);
   });
-  
-  toggleRegisterPasswordBtn.addEventListener("click", () => {
-    togglePasswordVisibility(registerPasswordInput, toggleRegisterPasswordBtn);
-  });
-  const togglePassword = document.querySelector(".toggle-password-btn");
-makeButtonClickable(togglePassword);
+
   function togglePasswordVisibility(passwordField, toggleBtn) {
     const type = passwordField.type === "password" ? "text" : "password";
     passwordField.type = type;
-  
+
     const img = toggleBtn.querySelector("img");
     if (type === "text") {
       img.src = "./img/hidePassword.svg";
@@ -1140,19 +1118,17 @@ makeButtonClickable(togglePassword);
       img.src = "./img/showPassword.svg";
     }
   }
-  
-  
-  
+
   const dobDaySelect = document.getElementById("dob-day");
   const dobYearSelect = document.getElementById("dob-year");
-  
+
   for (let i = 1; i <= 31; i++) {
     const option = document.createElement("option");
     option.value = i;
     option.textContent = i;
     dobDaySelect.appendChild(option);
   }
-  
+
   const currentYear = new Date().getFullYear();
   for (let i = currentYear; i >= 1900; i--) {
     const option = document.createElement("option");
@@ -1160,32 +1136,19 @@ makeButtonClickable(togglePassword);
     option.textContent = i;
     dobYearSelect.appendChild(option);
   }
-  
- 
-  
-  document
-    .querySelector(".toggle-password-btn")
-    .addEventListener("mousedown", function (event) {
-      const passwordField = document.getElementById("password");
-      const passwordIcon = document.querySelector(".toggle-password-icon");
-  
-      event.preventDefault();
-    });
 }
 
-// Обработчики событий для переключения между формами
-openLoginButton.addEventListener('click', () => {
-  openLoginButton.classList.add('active');
-  openRegisterButton.classList.remove('active');
+openLoginButton.addEventListener("click", () => {
+  openLoginButton.classList.add("active");
+  openRegisterButton.classList.remove("active");
   showLoginForm();
 });
 
-openRegisterButton.addEventListener('click', () => {
-  openRegisterButton.classList.add('active');
-  openLoginButton.classList.remove('active');
+openRegisterButton.addEventListener("click", () => {
+  openRegisterButton.classList.add("active");
+  openLoginButton.classList.remove("active");
   showRegisterForm();
 });
-
 
 // ------------------------------------- RESIZE INPUT------------------------------------------------//
 
@@ -1235,7 +1198,6 @@ function createSliderOverlay() {
 
   sliderBlock.style.position = "relative";
   sliderBlock.appendChild(overlay);
-
 
   sliderBlock.addEventListener("mouseenter", () => {
     overlay.style.pointerEvents = "auto";
@@ -1511,10 +1473,7 @@ document.querySelectorAll(".card-wrap").forEach((card) => {
   });
 });
 
-
-
 // Nice-Select
-
 
 // -------------------------------------------------- Gift Mode ------------------------------------------------//
 
