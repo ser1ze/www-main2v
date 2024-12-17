@@ -1162,7 +1162,6 @@ function resizeInput(totalPrice) {}
 //--------------------------------------------CALCULATOR BOX ANIMATION -----------------------------------//
 document.addEventListener("DOMContentLoaded", function () {
   const calculatorBox = document.querySelector(".calculator-box");
-  const buyButton = document.querySelector(".buy-button");
 
   calculatorBox.style.transition =
     "transform 0.5s ease-in-out, opacity 0.5s ease-in-out";
@@ -1171,9 +1170,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(function () {
       calculatorBox.style.opacity = "1";
       calculatorBox.style.transform = "scale(1)";
-
-      buyButton.style.opacity = "1";
-      buyButton.style.transform = "scale(1)";
     }, 100);
   }
   show();
