@@ -892,6 +892,14 @@ function showLoginForm() {
         </form>
         
   `;
+  document
+    .querySelector(".toggle-password-btn")
+    .addEventListener("mousedown", function (event) {
+      const passwordField = document.getElementById("password");
+      const passwordIcon = document.querySelector(".toggle-password-icon");
+
+      event.preventDefault();
+    });
 
   const togglePasswordBtn = document.getElementById("toggle-password");
   const passwordInput = document.getElementById("password");
@@ -1037,6 +1045,14 @@ function showRegisterForm() {
   $(document).ready(function () {
     $("select").niceSelect();
   });
+  document
+    .querySelector(".toggle-password-btn")
+    .addEventListener("mousedown", function (event) {
+      const passwordField = document.getElementById("password");
+      const passwordIcon = document.querySelector(".toggle-password-icon");
+
+      event.preventDefault();
+    });
 
   const passwordStrength = document.getElementById("password-strength");
   const strengthIndicator = document.getElementById("strength-indicator");
