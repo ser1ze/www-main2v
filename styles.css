@@ -1006,8 +1006,20 @@ input:-webkit-autofill:active {
 .prev-arrow {
 top: 10px;
 left:-50px;
-
+user-select: none;
   position: absolute;
+}
+
+
+.flex-grow {
+  flex-grow: 1;
+  transition: flex-grow 1s ease-in-out;
+}
+
+.flex-grow-disabled {
+  flex-grow: 0;
+  transition: flex-grow 1s ease-in-out
+  
 }
 
 .rate-btn,

@@ -1753,11 +1753,11 @@ $(function () {
 const buttons = document.querySelectorAll(".rate-btn");
 const prevArrow = document.querySelector(".prev-arrow");
 
-
 let activeIndex = 0;
 const initialPrices = ["icon", "5 ₽", "4 ₽", "3 ₽"];
 let currentPrices = [...initialPrices];
 let prevArrowVisible = true;
+
 let priceHistory = [];
 
 const priceRanges = {
@@ -1781,6 +1781,7 @@ function updatePrices() {
   buttons.forEach((button, index) => {
     const priceSpan = button.querySelector(".main-price");
     const rangeSpan = button.querySelector(".price-range");
+
     if (priceSpan) {
       if (currentPrices[index] === "icon") {
         priceSpan.innerHTML = "";
@@ -1791,30 +1792,33 @@ function updatePrices() {
         }
       }
     }
+
+    if ((currentPrices[index] === "1.1 ₽" || currentPrices[index] === "1 ₽") && (index === 1 || index === 2)) {
+      buttons[1].classList.add("flex-grow");
+      buttons[2].classList.add("flex-grow");
+      buttons[1].style.width = "266px";
+      buttons[2].style.width = "266px";
+    } else {
+      if (index !== 3 && currentPrices[index] !== "icon") { 
+        button.classList.add("flex-grow-disabled");
+      }
+      button.style.width = "";
+    }
+    if (index === 3 && currentPrices[index] === "1.1 ₽") {
+      button.style.animationName = "none";
+      button.style.animationDuration = "0s";
+      button.style.opacity = "1"
+      button.style.visibility = "visible"
+    }
   });
 
   if (currentPrices[1] === "1.1 ₽" && buttons.length > 2) {
     buttons[buttons.length - 1].style.display = "none";
-    buttons[1].style.width = "266px";
-    buttons[2].style.width = "266px";
     nextArrow.style.display = "none";
   } else {
     buttons[buttons.length - 1].style.display = "block";
     nextArrow.style.display = "block";
   }
-
-  buttons.forEach(button => {
-    button.style.flexGrow = ""; 
-    button.style.transition = "none"; 
-  });
-}
-
-function restoreButtonStyles() {
-  buttons.forEach(button => {
-    button.style.flexGrow = "";
-    button.style.transition = "none";
-    
-  });
 }
 
 function switchPrices() {
@@ -1851,6 +1855,8 @@ function updateDecreasingPrices() {
 
   if (currentPrices[3] === "1 ₽") {
     nextArrow.style.visibility = "hidden";
+  } else {
+    nextArrow.style.visibility = "visible";
   }
 
   updatePrices();
@@ -1889,31 +1895,55 @@ nextArrow.addEventListener("click", function () {
 });
 
 prevArrow.addEventListener("click", function () {
+  
   if (priceHistory.length > 0) {
    
     const previousState = priceHistory.pop();
-    currentPrices = previousState.prices;
-    activeIndex = previousState.activeIndex;
+    currentPrices = [...previousState.prices];
+
+    
+    activeIndex = (activeIndex > 0) ? activeIndex - 1 : buttons.length - 1;
+
+
+    buttons.forEach((btn) => btn.classList.remove("active"));
+    buttons[activeIndex].classList.add("active");
     buttons[buttons.length - 1].style.display = previousState.lastButtonDisplay;
     nextArrow.style.display = previousState.nextArrowDisplay;
 
-    restoreButtonStyles();
+ 
     updatePrices();
-    switchPrices();
-  } else {
-    console.log("Нет истории для возврата");
-  }
+    updatePrevArrowVisibility();
 
-  updatePrevArrowVisibility();
+    
+  } else {
+   
+    buttons.forEach((btn) => btn.classList.remove("active"));
+    activeIndex = buttons.length - 1;
+    buttons[activeIndex].classList.add("active");
+    
+  }
 });
+
 
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
-    buttons.forEach(btn => btn.classList.remove("active"));
-    this.classList.add("active");
-    activeIndex = Array.from(buttons).indexOf(this);
-    updatePrices();
-    switchPrices();
+    const clickedIndex = Array.from(buttons).indexOf(this);
+
+    if (activeIndex !== clickedIndex) {
+      priceHistory.push({
+        prices: [...currentPrices],
+        activeIndex,
+        lastButtonDisplay: buttons[buttons.length - 1].style.display,
+        nextArrowDisplay: nextArrow.style.display,
+      });
+
+      activeIndex = clickedIndex;
+      buttons.forEach((btn) => btn.classList.remove("active"));
+      this.classList.add("active");
+
+      updatePrices();
+      switchPrices();
+    }
   });
 });
 
