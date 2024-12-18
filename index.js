@@ -900,6 +900,31 @@ function showLoginForm() {
 
       event.preventDefault();
     });
+    document.querySelectorAll(".card-wrap").forEach((card) => {
+      const cardElement = card.querySelector(".card");
+  
+      card.addEventListener("mousemove", (e) => {
+        const isModalOpen =
+          document.querySelector(".modal-overlay").style.display !== "none";
+        const isInModal =
+          card.closest("#login-modal") || card.closest("#register-modal");
+  
+        const rect = cardElement.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+  
+        const rotateX = (mouseY / rect.height) * 30 - 15;
+        const rotateY =
+          isModalOpen || isInModal ? 0 : (mouseX / rect.width) * -30 + 15;
+        cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+      });
+  
+      card.addEventListener("mouseleave", () => {
+        cardElement.style.transition = "transform 0.5s ease-out";
+        cardElement.style.transform =
+          "rotateX(0deg) rotateY(0deg) translateZ(0px)";
+      });
+    });
 
   const togglePasswordBtn = document.getElementById("toggle-password");
   const passwordInput = document.getElementById("password");
