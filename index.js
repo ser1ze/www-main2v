@@ -1484,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   activateButtonGroup(".payment-navigation-btn", ".btn-text");
-  activateButtonGroup(".rate-btn", ".main-price");
+ 
 });
 document.querySelectorAll(".card-wrap").forEach((card) => {
   const cardElement = card.querySelector(".card");
@@ -1728,11 +1728,12 @@ $(function () {
 const buttons = document.querySelectorAll(".rate-btn");
 const prevArrow = document.querySelector(".prev-arrow");
 
+
 let activeIndex = 0;
 const initialPrices = ["icon", "5 ₽", "4 ₽", "3 ₽"];
 let currentPrices = [...initialPrices];
-
-let prevArrowVisible = false;
+let prevArrowVisible = true;
+let priceHistory = [];
 
 const priceRanges = {
   "5 ₽": "0 - 999",
@@ -1760,7 +1761,6 @@ function updatePrices() {
         priceSpan.innerHTML = "";
       } else {
         priceSpan.textContent = currentPrices[index];
-
         if (rangeSpan) {
           rangeSpan.textContent = priceRanges[currentPrices[index]] || "";
         }
@@ -1769,16 +1769,27 @@ function updatePrices() {
   });
 
   if (currentPrices[1] === "1.1 ₽" && buttons.length > 2) {
-    buttons[buttons.length - 1].remove();
+    buttons[buttons.length - 1].style.display = "none";
     buttons[1].style.width = "266px";
     buttons[2].style.width = "266px";
     nextArrow.style.display = "none";
+  } else {
+    buttons[buttons.length - 1].style.display = "block";
+    nextArrow.style.display = "block";
   }
 
-  if (buttons.length > 2) {
-    buttons[1].style.flexGrow = "1";
-    buttons[2].style.flexGrow = "1";
-  }
+  buttons.forEach(button => {
+    button.style.flexGrow = ""; 
+    button.style.transition = "none"; 
+  });
+}
+
+function restoreButtonStyles() {
+  buttons.forEach(button => {
+    button.style.flexGrow = "";
+    button.style.transition = "none";
+    button.style.width = "auto"; 
+  });
 }
 
 function switchPrices() {
@@ -1820,36 +1831,24 @@ function updateDecreasingPrices() {
   updatePrices();
 }
 
-function updateIncreasingPrices() {
-  const newPrices = [];
-
-  if (currentPrices[1] === "3 ₽") {
-    newPrices.push("4 ₽");
-    newPrices.push("5 ₽");
-  } else if (currentPrices[1] === "4 ₽") {
-    newPrices.push("5 ₽");
-  }
-
-  currentPrices = ["icon", ...newPrices];
-
-  if (currentPrices[1] !== "5 ₽") {
-    nextArrow.style.visibility = "visible";
-  }
-
-  updatePrices();
-}
-
 function updatePrevArrowVisibility() {
   if (parseFloat(currentPrices[1]) <= 3 && !prevArrowVisible) {
-    prevArrow.style.visibility = "visible";
+    prevArrow.style.display = "block";
     prevArrowVisible = true;
   } else if (parseFloat(currentPrices[1]) > 3) {
-    prevArrow.style.visibility = "hidden";
+    prevArrow.style.display = "none";
     prevArrowVisible = false;
   }
 }
 
 nextArrow.addEventListener("click", function () {
+  priceHistory.push({
+    prices: [...currentPrices],
+    activeIndex,
+    lastButtonDisplay: buttons[buttons.length - 1].style.display,
+    nextArrowDisplay: nextArrow.style.display,
+  });
+
   if (activeIndex === 3) {
     updateDecreasingPrices();
   }
@@ -1865,18 +1864,32 @@ nextArrow.addEventListener("click", function () {
 });
 
 prevArrow.addEventListener("click", function () {
-  if (parseFloat(currentPrices[1]) <= 3) {
-    if (activeIndex > 0) {
-      activeIndex--;
-    } else {
-      activeIndex = buttons.length - 1;
-    }
+  if (priceHistory.length > 0) {
+   
+    const previousState = priceHistory.pop();
+    currentPrices = previousState.prices;
+    activeIndex = previousState.activeIndex;
+    buttons[buttons.length - 1].style.display = previousState.lastButtonDisplay;
+    nextArrow.style.display = previousState.nextArrowDisplay;
 
+    restoreButtonStyles();
+    updatePrices();
     switchPrices();
-    updatePrevArrowVisibility();
   } else {
-    return;
+    console.log("Нет истории для возврата");
   }
+
+  updatePrevArrowVisibility();
+});
+
+buttons.forEach((button) => {
+  button.addEventListener("click", function () {
+    buttons.forEach(btn => btn.classList.remove("active"));
+    this.classList.add("active");
+    activeIndex = Array.from(buttons).indexOf(this);
+    updatePrices();
+    switchPrices();
+  });
 });
 
 updatePrices();

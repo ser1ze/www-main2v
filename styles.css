@@ -812,6 +812,14 @@ html {
   left: 15.2px;
   z-index: -1;
 }
+.prev-arrow .t-rail-price-left {
+
+left: 23px;
+
+}
+.prev-arrow .b-rail-price-left {
+  left: 23px;
+}
 
 .rate-btn.active.fast-click {
   background: #20272b;
@@ -899,19 +907,13 @@ html {
 .home-btn:hover::before {
   opacity: 1;
 }
-.next-arrow {
-  -webkit-user-select: none;
-  user-select: none;
-}
+
 
 .rate-btn.active:not(.fast-click) .main-price {
   color: #37779d;
   text-shadow: none;
 }
-.next-arrow img {
-  height: fit-content;
-  transition: all 0.2s ease-in-out;
-}
+
 
 .next-arrow img.fast-click {
   transform: translateX(5px);
@@ -999,8 +1001,13 @@ input:-webkit-autofill:active {
 }
 
 .pricing-menu {
-  position: relative;
-  transform-style: preserve-3d;
+ 
+}
+.prev-arrow {
+top: 10px;
+left:-50px;
+
+  position: absolute;
 }
 
 .rate-btn,
@@ -1673,10 +1680,19 @@ body
 .arrow {
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
+.next-arrow {
+  position: absolute;
+  top: 10px;
+  right: -50px;
+}
 
 .next-arrow:active .right-arrow {
   transform: translateX(5px);
 }
+.prev-arrow:active .left-arrow {
+  transform: translateX(-5px)
+}
+
 .arrow {
   fill: #252525;
   stroke-width: 0.83px;
