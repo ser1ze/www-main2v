@@ -1788,7 +1788,7 @@ function restoreButtonStyles() {
   buttons.forEach(button => {
     button.style.flexGrow = "";
     button.style.transition = "none";
-    button.style.width = "auto"; 
+    
   });
 }
 
