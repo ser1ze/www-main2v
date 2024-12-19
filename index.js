@@ -37,10 +37,10 @@ let SLIDER_HEIGHT = 0;
 let isRotated = false;
 
 const PRICE_RANGES = [
-  { max: 999, price: 5, widthPercentage: 23.8, discount: 0 },
-  { max: 9999, price: 4, widthPercentage: 25.6, discount: 20 },
-  { max: 49999, price: 3, widthPercentage: 26.2, discount: 40 },
-  { max: 100000, price: 2, widthPercentage: 24.4, discount: 60 },
+  { max: 999, price: 4, widthPercentage: 23.8, discount: 0 }, 
+  { max: 9999, price: 3, widthPercentage: 25.6, discount: 20 },
+  { max: 49999, price: 2, widthPercentage: 26.2, discount: 40 },
+  { max: 100000, price: 1, widthPercentage: 24.4, discount: 60 }, 
 ];
 
 function updateSliderDimensions() {
@@ -336,7 +336,6 @@ function calculateMinutesFromPrice(price) {
 
   return 0;
 }
-
 function updateDisplay(minutes, smooth = false) {
   minutes = Math.max(0, Math.min(minutes, 100000));
 
@@ -565,10 +564,10 @@ function showLoginForm() {
                 id="email"
                 name="email"
                 title=""
-                placeholder="email@email.com"
+                placeholder="email"
                 required
               />
-              <label for="email" class="form-label">E-mail</label>
+              <label for="email" class="form-label">Email</label>
             </div>
             <div class="input-group">
               <input
@@ -966,11 +965,11 @@ function showRegisterForm() {
               <input
                 type="email"
                 id="register-email"
-                placeholder="email@email.com"
+                placeholder="email"
                 required
                 title=""
               />
-              <label for="register-email" class="form-label">E-mail</label>
+              <label for="register-email" class="form-label">Email</label>
             </div>
 
             <div class="input-group">
@@ -1003,11 +1002,11 @@ function showRegisterForm() {
               <input
                 type="text"
                 id="username"
-                placeholder="Отображаемое имя"
+                placeholder="Имя пользователя"
                 required
                 title=""
               />
-              <label for="username" class="form-label">Имя пользователя</label>
+              <label for="username" class="form-label">Отображаемое имя</label>
             </div>
 
             <div class="input-group">

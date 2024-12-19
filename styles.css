@@ -1697,7 +1697,17 @@ body
   top: 10px;
   right: -50px;
 }
-.next-arrow
+.next-arrow .t-rail, .next-arrow .b-rail {
+  width: 6px;
+
+}
+.next-arrow .t-rail {
+  left: 3px;
+}
+.next-arrow .b-rail {
+  left: 3px;
+  bottom: 1.83px;
+}
 .next-arrow:active .right-arrow {
   transform: translateX(5px);
 }
@@ -1715,6 +1725,7 @@ body
 .b-rail {
   position: absolute;
   bottom: 1.26px;
+  height: 1px;
   z-index: -1;
 }
 .t-rail {
@@ -1722,6 +1733,7 @@ body
   top: 1.26px;
   width: 7px;
   z-index: -1;
+  height: 1px;
 }
 
 .image-container-price {
@@ -2415,7 +2427,7 @@ body
 }
 .switch-modals {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 50px;
 }
 #login-modal .switch-modals {
@@ -2568,6 +2580,7 @@ body
 
 .input-group input::placeholder {
   color: #aaa;
+  font-size: 18px;
 }
 
 .input-group {
@@ -3089,7 +3102,7 @@ input::placeholder {
   top: 12px;
   left: 10px;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 120%;
   color: rgba(204, 204, 204, 0.5);
   pointer-events: none;
