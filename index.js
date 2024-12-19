@@ -1749,32 +1749,31 @@ $(function () {
 });
 
 // Nav Menu
-
 const buttons = document.querySelectorAll(".rate-btn");
 const prevArrow = document.querySelector(".prev-arrow");
 
+
 let activeIndex = 0;
-const initialPrices = ["icon", "5 ₽", "4 ₽", "3 ₽"];
+const initialPrices = ["icon", "4 ₽", "3 ₽", "2 ₽"];
 let currentPrices = [...initialPrices];
 let prevArrowVisible = true;
 
 let priceHistory = [];
 
 const priceRanges = {
-  "5 ₽": "0 - 999",
-  "4 ₽": "1 000 - 9 999",
-  "3 ₽": "10 000 - 49 999",
-  "2 ₽": "50 000 - 99 999",
-  "1.9 ₽": "100 000 - 199 999",
-  "1.8 ₽": "200 000 - 299 999",
-  "1.7 ₽": "300 000 - 399 999",
-  "1.6 ₽": "400 000 - 499 999",
-  "1.5 ₽": "500 000 - 599 999",
-  "1.4 ₽": "600 000 - 699 999",
-  "1.3 ₽": "700 000 - 799 999",
-  "1.2 ₽": "800 000 - 899 999",
-  "1.1 ₽": "900 000 - 999 999",
-  "1 ₽": "от 1 000 000",
+  "4 ₽": "0 - 999",
+  "3 ₽": "1 000 - 9 999",
+  "2 ₽": "10 000 - 49 999",
+  "1.9 ₽": "50 000 - 99 999",
+  "1.8 ₽": "100 000 - 199 999",
+  "1.7 ₽": "200 000 - 299 999",
+  "1.6 ₽": "300 000 - 399 999",
+  "1.5 ₽": "400 000 - 499 999",
+  "1.4 ₽": "500 000 - 599 999",
+  "1.3 ₽": "600 000 - 699 999",
+  "1.2 ₽": "700 000 - 799 999",
+  "1.1 ₽": "800 000 - 899 999",
+  "1 ₽": "от 900 000",
 };
 
 function updatePrices() {
@@ -1792,28 +1791,9 @@ function updatePrices() {
         }
       }
     }
-
-    if ((currentPrices[index] === "1.1 ₽" || currentPrices[index] === "1 ₽") && (index === 1 || index === 2)) {
-      buttons[1].classList.add("flex-grow");
-      buttons[2].classList.add("flex-grow");
-      buttons[1].style.width = "266px";
-      buttons[2].style.width = "266px";
-    } else {
-      if (index !== 3 && currentPrices[index] !== "icon") { 
-        button.classList.add("flex-grow-disabled");
-      }
-      button.style.width = "";
-    }
-    if (index === 3 && currentPrices[index] === "1.1 ₽") {
-      button.style.animationName = "none";
-      button.style.animationDuration = "0s";
-      button.style.opacity = "1"
-      button.style.visibility = "visible"
-    }
   });
 
-  if (currentPrices[1] === "1.1 ₽" && buttons.length > 2) {
-    buttons[buttons.length - 1].style.display = "none";
+  if (currentPrices[1] === "1.2 ₽" && buttons.length > 2) {
     nextArrow.style.display = "none";
   } else {
     buttons[buttons.length - 1].style.display = "block";
@@ -1834,32 +1814,28 @@ function updateDecreasingPrices() {
   const newPrices = [];
   let basePrice = parseFloat(currentPrices[3]);
 
-  if (currentPrices[3] === "3 ₽") {
-    newPrices.push("3 ₽");
-    newPrices.push("2 ₽");
-    newPrices.push("1.9 ₽");
-    newPrices.push("1.1 ₽");
-  } else {
-    for (let i = 0; i < currentPrices.length; i++) {
-      if (basePrice > 1) {
-        newPrices.push(`${basePrice.toFixed(1)} ₽`);
-        basePrice -= 0.1;
-      } else if (basePrice === 1) {
-        newPrices.push("1 ₽");
-        break;
-      }
-    }
+  while (basePrice >= 1) {
+    newPrices.push(
+      `${basePrice % 1 === 0 ? parseInt(basePrice, 10) : basePrice.toFixed(1)} ₽`
+    );
+    basePrice = parseFloat((basePrice - 0.1).toFixed(1));
+  }
+
+  if (!newPrices.includes("1 ₽")) {
+    newPrices.push("1 ₽");
   }
 
   currentPrices = ["icon", ...newPrices];
 
-  if (currentPrices[3] === "1 ₽") {
-    nextArrow.style.visibility = "hidden";
-  } else {
-    nextArrow.style.visibility = "visible";
-  }
-
   updatePrices();
+}
+
+function resetToInitialPrices() {
+  currentPrices = [...initialPrices];
+  activeIndex = 0;
+  updatePrices();
+  switchPrices();
+  updatePrevArrowVisibility();
 }
 
 function updatePrevArrowVisibility() {
@@ -1895,38 +1871,32 @@ nextArrow.addEventListener("click", function () {
 });
 
 prevArrow.addEventListener("click", function () {
-  
   if (priceHistory.length > 0) {
-   
     const previousState = priceHistory.pop();
     currentPrices = [...previousState.prices];
-
-    
-    activeIndex = (activeIndex > 0) ? activeIndex - 1 : buttons.length - 1;
-
+    activeIndex = activeIndex > 0 ? activeIndex - 1 : buttons.length - 1;
 
     buttons.forEach((btn) => btn.classList.remove("active"));
     buttons[activeIndex].classList.add("active");
     buttons[buttons.length - 1].style.display = previousState.lastButtonDisplay;
     nextArrow.style.display = previousState.nextArrowDisplay;
 
- 
     updatePrices();
     updatePrevArrowVisibility();
-
-    
   } else {
-   
     buttons.forEach((btn) => btn.classList.remove("active"));
     activeIndex = buttons.length - 1;
     buttons[activeIndex].classList.add("active");
-    
   }
 });
 
-
-buttons.forEach((button) => {
+buttons.forEach((button, index) => {
   button.addEventListener("click", function () {
+    if (currentPrices[index] === "icon") {
+      resetToInitialPrices();
+      return;
+    }
+
     const clickedIndex = Array.from(buttons).indexOf(this);
 
     if (activeIndex !== clickedIndex) {
