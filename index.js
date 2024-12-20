@@ -36,12 +36,14 @@ let SLIDER_WIDTH = 1125;
 let SLIDER_HEIGHT = 0;
 let isRotated = false;
 
-const PRICE_RANGES = [
+const INITIAL_PRICE_RANGES = [
   { max: 999, price: 4, widthPercentage: 23.8, discount: 0 },
-  { max: 9999, price: 3, widthPercentage: 25.6, discount: 20 },
-  { max: 49999, price: 2, widthPercentage: 26.2, discount: 40 },
-  { max: 100000, price: 1, widthPercentage: 24.4, discount: 60 },
+  { max: 9999, price: 3, widthPercentage: 25.6, discount: 25 },
+  { max: 49999, price: 2, widthPercentage: 26.2, discount: 50 },
+  { max: 100000, price: 1.9, widthPercentage: 24.4, discount: 52.5 },
 ];
+
+const PRICE_RANGES = [...INITIAL_PRICE_RANGES];
 
 function updateSliderDimensions() {
   const windowWidth = window.innerWidth;
@@ -71,6 +73,12 @@ function updateSliderDimensions() {
     range.width = (range.widthPercentage / totalPercentage) * SLIDER_WIDTH;
   });
 }
+function getMaxMinutes() {
+  if (PRICE_RANGES.length > 0) {
+    return PRICE_RANGES[PRICE_RANGES.length - 1].max;
+  }
+  return 100000;
+}
 
 function updatePositions(position, smooth = false) {
   if (microphone) {
@@ -93,7 +101,12 @@ function calculateMinutes(position) {
     }
     accumulatedWidth += range.width;
   }
-  return 100000;
+  return getMaxMinutes();
+}
+function setPriceRanges(newRanges) {
+  PRICE_RANGES.splice(0, PRICE_RANGES.length, ...newRanges);
+  updateSliderDimensions();
+  updateDisplay(0, true);
 }
 
 function calculatePosition(minutes) {
@@ -113,7 +126,7 @@ function calculatePosition(minutes) {
 }
 
 function updateDisplay(minutes, smooth = false) {
-  minutes = Math.max(0, Math.min(minutes, 100000));
+  minutes = Math.max(0, Math.min(minutes, getMaxMinutes()));
 
   const formattedMinutes =
     minutes === 0
@@ -189,7 +202,6 @@ function animateDisplay() {
   requestAnimationFrame(updateAnimation);
 }
 
-// Вызов анимации при первой загрузке
 updateSliderDimensions();
 animateDisplay();
 
@@ -243,7 +255,7 @@ function updateCalculatorValue(amount) {
 
   currentMinutes += amount;
 
-  currentMinutes = Math.max(0, Math.min(currentMinutes, 100000));
+  currentMinutes = Math.max(0, Math.min(currentMinutes, getMaxMinutes()));
 
   updateDisplay(currentMinutes);
 }
@@ -337,7 +349,7 @@ function calculateMinutesFromPrice(price) {
   return 0;
 }
 function updateDisplay(minutes, smooth = false) {
-  minutes = Math.max(0, Math.min(minutes, 100000));
+  minutes = Math.max(0, Math.min(minutes, getMaxMinutes()));
 
   const formattedMinutes =
     minutes === 0
@@ -386,15 +398,12 @@ if (totalPrice) {
       totalPrice.value = "";
     }
   });
-
-  // Обработчик события input для totalPrice
   totalPrice.addEventListener("input", function (e) {
     let value = e.target.value.replace(/\D/g, "");
     if (value > 200000) {
-      value = "200000"; // Ограничение на максимальное значение
+      value = "200000";
     }
 
-    // Если значение равно 0, очищаем поле
     if (value === "0") {
       e.target.value = "";
     } else {
@@ -404,7 +413,7 @@ if (totalPrice) {
     clearTimeout(timer);
     timer = setTimeout(function () {
       if (value === "") {
-        updateDisplay(0); // Обновляем цену, если поле пустое
+        updateDisplay(0);
         return;
       }
 
@@ -412,7 +421,6 @@ if (totalPrice) {
       let totalMinutes = calculateMinutesFromPrice(totalValue);
       updateDisplay(totalMinutes);
 
-      // Форматируем цену с пробелами
       let formattedPrice = totalValue
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -420,12 +428,11 @@ if (totalPrice) {
     }, 2000);
   });
 
-  // Обработчик события blur для totalPrice
   totalPrice.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
     if (value === "") {
-      this.value = "0 рублей"; // Возвращаем текст по умолчанию, если поле пустое
-      updateDisplay(0); // Обновляем цену при потере фокуса
+      this.value = "0 рублей";
+      updateDisplay(0);
     } else {
       let totalValue = Math.min(200000, parseInt(value, 10));
       let formattedPrice = totalValue
@@ -437,7 +444,6 @@ if (totalPrice) {
 }
 
 if (calculatorInput) {
-  // Обработчик события input для calculatorInput
   calculatorInput.addEventListener("input", function () {
     let minutes = parseInt(calculatorInput.value.replace(/\D/g, ""), 10);
 
@@ -445,19 +451,17 @@ if (calculatorInput) {
       minutes = 0;
     }
 
-    minutes = Math.max(0, Math.min(minutes, 100000));
-
+    minutes = Math.max(0, Math.min(minutes, getMaxMinutes()));
     updateDisplay(minutes);
   });
 
-  // Обработчик события blur для calculatorInput
   calculatorInput.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
     if (value === "") {
-      this.value = "0 Минут"; // Возвращаем текст по умолчанию, если поле пустое
-      updateDisplay(0); // Обновляем цену при потере фокуса
+      this.value = "0 Минут";
+      updateDisplay(0);
     } else {
-      let minutes = Math.max(0, Math.min(parseInt(value, 10), 100000));
+      let minutes = Math.max(0, Math.min(parseInt(value, 10), getMaxMinutes()));
       this.value = minutes;
       updateDisplay(minutes);
     }
@@ -1759,6 +1763,22 @@ let prevArrowVisible = true;
 
 let priceHistory = [];
 
+const priceMap = {
+  "4 ₽": [{ max: 999, price: 4, widthPercentage: 100, discount: 0 }],
+  "3 ₽": [{ max: 9999, price: 3, widthPercentage: 100, discount: 25 }],
+  "2 ₽": [{ max: 49999, price: 2, widthPercentage: 100, discount: 50 }],
+  "1.9 ₽": [{ max: 99999, price: 1.9, widthPercentage: 100, discount: 52.5 }],
+  "1.8 ₽": [{ max: 199999, price: 1.8, widthPercentage: 100, discount: 55 }],
+  "1.7 ₽": [{ max: 299999, price: 1.7, widthPercentage: 100, discount: 57.5 }],
+  "1.6 ₽": [{ max: 399999, price: 1.6, widthPercentage: 100, discount: 60 }],
+  "1.5 ₽": [{ max: 499999, price: 1.5, widthPercentage: 100, discount: 62.5 }],
+  "1.4 ₽": [{ max: 599999, price: 1.4, widthPercentage: 100, discount: 65 }],
+  "1.3 ₽": [{ max: 699999, price: 1.3, widthPercentage: 100, discount: 67.5 }],
+  "1.2 ₽": [{ max: 799999, price: 1.2, widthPercentage: 100, discount: 70 }],
+  "1.1 ₽": [{ max: 899999, price: 1.1, widthPercentage: 100, discount: 72.5 }],
+  "1 ₽": [{ max: 1000000, price: 1, widthPercentage: 100, discount: 75 }],
+};
+
 const priceRanges = {
   "4 ₽": { min: 0, max: 999 },
   "3 ₽": { min: 1000, max: 9999 },
@@ -1791,6 +1811,10 @@ function updatePriceSlider() {
   if (!selectedRange) {
     console.error(`Диапазон не найден для тарифа: ${selectedPrice}`);
     return;
+  }
+
+  if (selectedPrice !== "icon" && priceMap[selectedPrice]) {
+    setPriceRanges(priceMap[selectedPrice]);
   }
 
   const minPrice = selectedRange.min;
@@ -1891,6 +1915,7 @@ function resetToInitialPrices() {
   updatePrices();
   switchPrices();
   resetPriceSlider();
+  setPriceRanges(INITIAL_PRICE_RANGES);
   updatePrevArrowVisibility();
 }
 
@@ -1950,6 +1975,7 @@ buttons.forEach((button, index) => {
   button.addEventListener("click", function () {
     if (currentPrices[index] === "icon") {
       resetToInitialPrices();
+      updateDisplay(0);
       return;
     }
 
