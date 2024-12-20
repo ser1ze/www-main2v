@@ -37,10 +37,10 @@ let SLIDER_HEIGHT = 0;
 let isRotated = false;
 
 const PRICE_RANGES = [
-  { max: 999, price: 4, widthPercentage: 23.8, discount: 0 }, 
+  { max: 999, price: 4, widthPercentage: 23.8, discount: 0 },
   { max: 9999, price: 3, widthPercentage: 25.6, discount: 20 },
   { max: 49999, price: 2, widthPercentage: 26.2, discount: 40 },
-  { max: 100000, price: 1, widthPercentage: 24.4, discount: 60 }, 
+  { max: 100000, price: 1, widthPercentage: 24.4, discount: 60 },
 ];
 
 function updateSliderDimensions() {
@@ -899,31 +899,31 @@ function showLoginForm() {
 
       event.preventDefault();
     });
-    document.querySelectorAll(".card-wrap").forEach((card) => {
-      const cardElement = card.querySelector(".card");
-  
-      card.addEventListener("mousemove", (e) => {
-        const isModalOpen =
-          document.querySelector(".modal-overlay").style.display !== "none";
-        const isInModal =
-          card.closest("#login-modal") || card.closest("#register-modal");
-  
-        const rect = cardElement.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-  
-        const rotateX = (mouseY / rect.height) * 30 - 15;
-        const rotateY =
-          isModalOpen || isInModal ? 0 : (mouseX / rect.width) * -30 + 15;
-        cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-      });
-  
-      card.addEventListener("mouseleave", () => {
-        cardElement.style.transition = "transform 0.5s ease-out";
-        cardElement.style.transform =
-          "rotateX(0deg) rotateY(0deg) translateZ(0px)";
-      });
+  document.querySelectorAll(".card-wrap").forEach((card) => {
+    const cardElement = card.querySelector(".card");
+
+    card.addEventListener("mousemove", (e) => {
+      const isModalOpen =
+        document.querySelector(".modal-overlay").style.display !== "none";
+      const isInModal =
+        card.closest("#login-modal") || card.closest("#register-modal");
+
+      const rect = cardElement.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const rotateX = (mouseY / rect.height) * 30 - 15;
+      const rotateY =
+        isModalOpen || isInModal ? 0 : (mouseX / rect.width) * -30 + 15;
+      cardElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
     });
+
+    card.addEventListener("mouseleave", () => {
+      cardElement.style.transition = "transform 0.5s ease-out";
+      cardElement.style.transform =
+        "rotateX(0deg) rotateY(0deg) translateZ(0px)";
+    });
+  });
 
   const togglePasswordBtn = document.getElementById("toggle-password");
   const passwordInput = document.getElementById("password");
@@ -1508,7 +1508,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   activateButtonGroup(".payment-navigation-btn", ".btn-text");
- 
 });
 document.querySelectorAll(".card-wrap").forEach((card) => {
   const cardElement = card.querySelector(".card");
@@ -1750,7 +1749,8 @@ $(function () {
 // Nav Menu
 const buttons = document.querySelectorAll(".rate-btn");
 const prevArrow = document.querySelector(".prev-arrow");
-
+const priceSlider = document.querySelector(".price-slider");
+const priceParagraphs = priceSlider.querySelectorAll("p");
 
 let activeIndex = 0;
 const initialPrices = ["icon", "4 ₽", "3 ₽", "2 ₽"];
@@ -1760,20 +1760,68 @@ let prevArrowVisible = true;
 let priceHistory = [];
 
 const priceRanges = {
-  "4 ₽": "0 - 999",
-  "3 ₽": "1 000 - 9 999",
-  "2 ₽": "10 000 - 49 999",
-  "1.9 ₽": "50 000 - 99 999",
-  "1.8 ₽": "100 000 - 199 999",
-  "1.7 ₽": "200 000 - 299 999",
-  "1.6 ₽": "300 000 - 399 999",
-  "1.5 ₽": "400 000 - 499 999",
-  "1.4 ₽": "500 000 - 599 999",
-  "1.3 ₽": "600 000 - 699 999",
-  "1.2 ₽": "700 000 - 799 999",
-  "1.1 ₽": "800 000 - 899 999",
-  "1 ₽": "от 900 000",
+  "4 ₽": { min: 0, max: 999 },
+  "3 ₽": { min: 1000, max: 9999 },
+  "2 ₽": { min: 10000, max: 49999 },
+  "1.9 ₽": { min: 50000, max: 99999 },
+  "1.8 ₽": { min: 100000, max: 199999 },
+  "1.7 ₽": { min: 200000, max: 299999 },
+  "1.6 ₽": { min: 300000, max: 399999 },
+  "1.5 ₽": { min: 400000, max: 499999 },
+  "1.4 ₽": { min: 500000, max: 599999 },
+  "1.3 ₽": { min: 600000, max: 699999 },
+  "1.2 ₽": { min: 700000, max: 799999 },
+  "1.1 ₽": { min: 800000, max: 899999 },
+  "1 ₽": { min: 900000, max: Infinity },
 };
+
+function formatNumber(num) {
+  return num.toLocaleString("ru-RU");
+}
+
+function updatePriceSlider() {
+  const selectedPrice = currentPrices[activeIndex];
+
+  if (selectedPrice === "icon") {
+    return;
+  }
+
+  const selectedRange = priceRanges[selectedPrice];
+
+  if (!selectedRange) {
+    console.error(`Диапазон не найден для тарифа: ${selectedPrice}`);
+    return;
+  }
+
+  const minPrice = selectedRange.min;
+  const maxPrice = selectedRange.max;
+
+  if (selectedPrice === "1 ₽") {
+    priceParagraphs[1].textContent = formatNumber(minPrice);
+    priceParagraphs[3].textContent = "";
+  } else {
+    priceParagraphs[1].textContent = formatNumber(minPrice);
+    priceParagraphs[3].textContent = formatNumber(maxPrice);
+  }
+
+  priceParagraphs[0].style.display = "none";
+  priceParagraphs[2].style.display = "none";
+  priceParagraphs[4].style.display = "none";
+  priceParagraphs[1].style.display = "block";
+  priceParagraphs[3].style.display = "block";
+}
+
+function resetPriceSlider() {
+  priceParagraphs[0].style.display = "block";
+  priceParagraphs[1].style.display = "block";
+  priceParagraphs[2].style.display = "block";
+  priceParagraphs[3].style.display = "block";
+  priceParagraphs[4].style.display = "block";
+
+  priceParagraphs[1].textContent = formatNumber(1000);
+  priceParagraphs[2].textContent = formatNumber(10000);
+  priceParagraphs[3].textContent = formatNumber(50000);
+}
 
 function updatePrices() {
   buttons.forEach((button, index) => {
@@ -1786,7 +1834,11 @@ function updatePrices() {
       } else {
         priceSpan.textContent = currentPrices[index];
         if (rangeSpan) {
-          rangeSpan.textContent = priceRanges[currentPrices[index]] || "";
+          const range = priceRanges[currentPrices[index]];
+          rangeSpan.textContent =
+            currentPrices[index] === "1 ₽"
+              ? `от ${formatNumber(range.min)}`
+              : `${formatNumber(range.min)} - ${formatNumber(range.max)}`;
         }
       }
     }
@@ -1807,6 +1859,8 @@ function switchPrices() {
       button.classList.add("active");
     }
   });
+
+  updatePriceSlider();
 }
 
 function updateDecreasingPrices() {
@@ -1815,7 +1869,9 @@ function updateDecreasingPrices() {
 
   while (basePrice >= 1) {
     newPrices.push(
-      `${basePrice % 1 === 0 ? parseInt(basePrice, 10) : basePrice.toFixed(1)} ₽`
+      `${
+        basePrice % 1 === 0 ? parseInt(basePrice, 10) : basePrice.toFixed(1)
+      } ₽`
     );
     basePrice = parseFloat((basePrice - 0.1).toFixed(1));
   }
@@ -1834,6 +1890,7 @@ function resetToInitialPrices() {
   activeIndex = 0;
   updatePrices();
   switchPrices();
+  resetPriceSlider();
   updatePrevArrowVisibility();
 }
 
@@ -1918,3 +1975,4 @@ buttons.forEach((button, index) => {
 
 updatePrices();
 updatePrevArrowVisibility();
+updatePriceSlider();
