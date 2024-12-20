@@ -1930,13 +1930,6 @@ function updatePrevArrowVisibility() {
 }
 
 nextArrow.addEventListener("click", function () {
-  priceHistory.push({
-    prices: [...currentPrices],
-    activeIndex,
-    lastButtonDisplay: buttons[buttons.length - 1].style.display,
-    nextArrowDisplay: nextArrow.style.display,
-  });
-
   if (activeIndex === 3) {
     updateDecreasingPrices();
   }
@@ -1949,21 +1942,34 @@ nextArrow.addEventListener("click", function () {
 
   switchPrices();
   updatePrevArrowVisibility();
+
+  priceHistory.push({
+    prices: [...currentPrices],
+    activeIndex,
+    lastButtonDisplay: buttons[buttons.length - 1].style.display,
+    nextArrowDisplay: nextArrow.style.display,
+    savedPriceRanges: PRICE_RANGES.map((range) => ({ ...range })),
+  });
 });
 
 prevArrow.addEventListener("click", function () {
   if (priceHistory.length > 0) {
     const previousState = priceHistory.pop();
     currentPrices = [...previousState.prices];
-    activeIndex = activeIndex > 0 ? activeIndex - 1 : buttons.length - 1;
+    activeIndex = previousState.activeIndex;
+
+    setPriceRanges(previousState.savedPriceRanges);
 
     buttons.forEach((btn) => btn.classList.remove("active"));
     buttons[activeIndex].classList.add("active");
+
     buttons[buttons.length - 1].style.display = previousState.lastButtonDisplay;
     nextArrow.style.display = previousState.nextArrowDisplay;
 
     updatePrices();
+    switchPrices();
     updatePrevArrowVisibility();
+    updateDisplay(0);
   } else {
     buttons.forEach((btn) => btn.classList.remove("active"));
     activeIndex = buttons.length - 1;
