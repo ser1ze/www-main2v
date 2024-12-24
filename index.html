@@ -1083,113 +1083,84 @@
           <img src="./img/burger.png" alt="Другой аккаунт" draggable="false" />
         </div>
         <div class="middle">
-          <div class="payment">
-            <div id="payment-navigation" class="payment-navigation">
-              <div class="payment-wrapper">
-                <button class="payment-navigation-btn active">
-                  <span class="btn-text active">Мой аккаунт</span>
-                </button>
-              </div>
-              <div class="payment-row-wrapper">
-                <button
-                  class="payment-navigation-btn"
-                  id="gift"
-                  data-delay="400"
-                >
-                  <span class="btn-text" data-delay="400">В подарок</span>
-                </button>
-                <button class="payment-navigation-btn" data-delay="340">
-                  <span class="btn-text" data-delay="340">Перевод минут</span>
-                </button>
-                <button class="payment-navigation-btn" data-delay="170">
-                  <span class="btn-text" data-delay="170">Организациям</span>
-                </button>
+          <section id="thanksSection">
+            <h2 class="thanks">Спасибо за покупку!</h2>
+            <div class="cards copyBtn">
+              <div class="card-wrap">
+                <div class="card" id="copyBtn">
+                  <div class="card-content">
+                    <span>Скопировать ссылку</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="menu-wrapper">
-              <div class="prev-arrow">
-                <span class="image-container-price">
-                    <svg
-                        class="t-rail-price-left"
-                        width="10"
-                        height="1"
-                        viewBox="0 0 10 1"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M8.87061 0.480469L1 0.480469"
-                            stroke="#252525"
-                            stroke-width="0.83"
-                            stroke-linecap="round"
-                        />
-                    </svg>
-                    <svg class="arrow left-arrow" width="32" height="51" viewBox="0 0 32 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <g filter="url(#filter0_d_1125_2793)">
-                        <path d="M28.6465 2H19.9335L0.999426 25.4474L19.9335 48.8948H28.6465L9.71244 25.4474L28.6465 2Z" fill="#252525" />
-                        <path d="M20.1316 48.4801H27.7786L9.38979 25.7079L9.1794 25.4474L9.38979 25.1869L27.7786 2.41471H20.1316L1.53246 25.4474L20.1316 48.4801Z" stroke="#424242" stroke-width="0.829412" />
-                      </g>
-                      <defs>
-                        <filter id="filter0_d_1125_2793" x="0" y="0" width="31.6465" height="50.8945" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                          <feOffset dx="1" />
-                          <feGaussianBlur stdDeviation="1" />
-                          <feComposite in2="hardAlpha" operator="out" />
-                          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0" />
-                          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1125_2793" />
-                          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1125_2793" result="shape" />
-                        </filter>
-                      </defs>
-                    </svg>
-                    <svg
-                        class="b-rail-price-left"
-                        width="10"
-                        height="1"
-                        viewBox="0 0 10 1"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M8.87061 0.480469L1 0.480469"
-                            stroke="#252525"
-                            stroke-width="0.83"
-                            stroke-linecap="round"
-                        />
-                    </svg>
-                </span>
-            </div>
-            
-            
-              <div class="pricing-menu">
-                
-                <button class="home-btn rate-btn active">
+            <div class="linkWrapper">
+              <div class="linkDuration">
+                <h3>*Ссылка действует 3 месяца.</h3>
+                <p>
+                  Чтобы активировать минуты, необходимо выполнить вход на другом
+                  аккаунте.
+                </p>
+                <div class="btn-container checkBtn">
+                  <div class="cards downloadCheckBtn">
+                    <div class="card-wrap enter-wrap">
+                      <div class="card enter">
+                        <div class="card-content enter-content">
+                          <button class="submitBtn">Скачать чек</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <form action="">
+                <h3 class="formHeading">
+                  Куда отправить чек и ссылку на активацию минут?
+                </h3>
+                <div class="checkBoxWrapper">
+                  <div class="first-row">
+                    <input
+                      type="checkbox"
+                      id="dontSend"
+                      name="dontSend"
+                      class="custom-checkbox"
+                    />
+                    <label for="dontSend">Не отправлять</label>
+                  </div>
+
+                  <div class="second-row">
+                    <input
+                      type="checkbox"
+                      id="email"
+                      name="email"
+                      class="custom-checkbox"
+                    />
+                    <label for="email">На почту</label>
+                  </div>
+                </div>
+                <div class="mailTO">johnsmi@gmail.com</div>
+                <button class="sendBtn" type="button">
+                  <span class="sendBtnText">Отправить</span>
                   <svg
-                    width="64"
-                    height="57"
-                    viewBox="0 0 64 57"
+                    width="31"
+                    height="30"
+                    viewBox="0 0 35 33"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <g opacity="1">
+                    <g filter="url(#filter0_d_1332_943)">
                       <path
-                        class="icon-path"
-                        d="M19.0856 15.3249C12.0059 21.0035 5.93904 25.8694 5.61196 26.133L5 26.6273L6.86753 29.1426L8.73505 31.6689L9.10434 31.3613C9.31536 31.1856 14.5487 26.9897 20.7526 22.036L32.0106 13.0183L43.279 22.036C49.4725 26.9897 54.7057 31.1856 54.9168 31.3613L55.286 31.6689L57.143 29.1536L59 26.6492L58.7784 26.4296C58.6518 26.3197 56.9214 24.9248 54.9379 23.3321L51.3189 20.4543V10.2613L47.4467 10.2833L43.5639 10.3162L43.5322 12.2055C43.5217 13.2489 43.4795 14.1057 43.4478 14.1057C43.4162 14.1057 40.8312 12.0517 37.7081 9.54736C34.5744 7.04304 32 4.98906 31.9894 5.00004C31.9683 5.00004 26.1653 9.64622 19.0856 15.3249Z"
-                        fill="#A4A4A4"
-                      />
-                      <path
-                        class="icon-path"
-                        d="M22.7046 24.6282L13.4408 32.0533V52H28.3177V37.3915H36.3365V52H50.5803V32.0533L41.3376 24.6392C36.2521 20.5642 32.0528 17.2251 32.0211 17.2141C31.9894 17.2031 27.7902 20.5422 22.7046 24.6282Z"
+                        d="M36.0627 2.9375L7.93066 14.1875L18.426 18.9336L33.2502 5.75L20.0666 20.5742L24.8127 31.0625L36.0627 2.9375Z"
                         fill="#A4A4A4"
                       />
                     </g>
                     <defs>
                       <filter
-                        id="filter0_d_160_3689"
-                        x="0"
-                        y="0"
-                        width="64"
-                        height="57"
+                        id="filter0_d_1332_943"
+                        x="0.790664"
+                        y="-0.00249982"
+                        width="39.6121"
+                        height="39.605"
                         filterUnits="userSpaceOnUse"
                         color-interpolation-filters="sRGB"
                       >
@@ -1203,52 +1174,516 @@
                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
                           result="hardAlpha"
                         />
-                        <feOffset />
-                        <feGaussianBlur stdDeviation="2.5" />
+                        <feOffset dx="-1.4" dy="2.8" />
+                        <feGaussianBlur stdDeviation="2.87" />
                         <feComposite in2="hardAlpha" operator="out" />
                         <feColorMatrix
                           type="matrix"
-                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"
                         />
                         <feBlend
                           mode="normal"
                           in2="BackgroundImageFix"
-                          result="effect1_dropShadow_160_3689"
+                          result="effect1_dropShadow_1332_943"
                         />
                         <feBlend
                           mode="normal"
                           in="SourceGraphic"
-                          in2="effect1_dropShadow_160_3689"
+                          in2="effect1_dropShadow_1332_943"
                           result="shape"
                         />
                       </filter>
                     </defs>
                   </svg>
                 </button>
-                <button class="rate-btn">
-                  <span class="pricing-wrapper">
-                    <span class="main-price">5 ₽</span>
-                    <span class="price-range">1 - 999</span>
-                  </span>
-                </button>
-                <button class="rate-btn">
-                  <span class="pricing-wrapper">
-                    <span class="main-price">4 ₽</span>
-                    <span class="price-range">1 000 - 9 999</span>
-                  </span>
-                </button>
-                <button class="rate-btn">
-                  <span class="pricing-wrapper">
-                    <span class="main-price">1 ₽</span>
-                    <span class="price-range">От 900</span>
-                  </span>
-                </button>
-              </div>
+              </form>
 
-              <div class="next-arrow">
-                <div class="image-container-price">
+              <p class="noRefund">
+                Минуты, купленные в подарок, возврату не подлежат.
+              </p>
+            </div>
+          </section>
+        </div>
+
+        <div class="payment">
+          <div id="payment-navigation" class="payment-navigation">
+            <div class="payment-wrapper">
+              <button class="payment-navigation-btn active">
+                <span class="btn-text active">Мой аккаунт</span>
+              </button>
+            </div>
+            <div class="payment-row-wrapper">
+              <button class="payment-navigation-btn" id="gift" data-delay="400">
+                <span class="btn-text" data-delay="400">В подарок</span>
+              </button>
+              <button class="payment-navigation-btn" data-delay="340">
+                <span class="btn-text" data-delay="340">Перевод минут</span>
+              </button>
+              <button class="payment-navigation-btn" data-delay="170">
+                <span class="btn-text" data-delay="170">Организациям</span>
+              </button>
+            </div>
+          </div>
+          <div class="menu-wrapper">
+            <div class="prev-arrow">
+              <span class="image-container-price">
+                <svg
+                  class="t-rail-price-left"
+                  width="10"
+                  height="1"
+                  viewBox="0 0 10 1"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8.87061 0.480469L1 0.480469"
+                    stroke="#252525"
+                    stroke-width="0.83"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <svg
+                  class="arrow left-arrow"
+                  width="32"
+                  height="51"
+                  viewBox="0 0 32 51"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g filter="url(#filter0_d_1125_2793)">
+                    <path
+                      d="M28.6465 2H19.9335L0.999426 25.4474L19.9335 48.8948H28.6465L9.71244 25.4474L28.6465 2Z"
+                      fill="#252525"
+                    />
+                    <path
+                      d="M20.1316 48.4801H27.7786L9.38979 25.7079L9.1794 25.4474L9.38979 25.1869L27.7786 2.41471H20.1316L1.53246 25.4474L20.1316 48.4801Z"
+                      stroke="#424242"
+                      stroke-width="0.829412"
+                    />
+                  </g>
+                  <defs>
+                    <filter
+                      id="filter0_d_1125_2793"
+                      x="0"
+                      y="0"
+                      width="31.6465"
+                      height="50.8945"
+                      filterUnits="userSpaceOnUse"
+                      color-interpolation-filters="sRGB"
+                    >
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feColorMatrix
+                        in="SourceAlpha"
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                        result="hardAlpha"
+                      />
+                      <feOffset dx="1" />
+                      <feGaussianBlur stdDeviation="1" />
+                      <feComposite in2="hardAlpha" operator="out" />
+                      <feColorMatrix
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in2="BackgroundImageFix"
+                        result="effect1_dropShadow_1125_2793"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="effect1_dropShadow_1125_2793"
+                        result="shape"
+                      />
+                    </filter>
+                  </defs>
+                </svg>
+                <svg
+                  class="b-rail-price-left"
+                  width="10"
+                  height="1"
+                  viewBox="0 0 10 1"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8.87061 0.480469L1 0.480469"
+                    stroke="#252525"
+                    stroke-width="0.83"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </span>
+            </div>
+
+            <div class="pricing-menu">
+              <button class="home-btn rate-btn active">
+                <svg
+                  width="64"
+                  height="57"
+                  viewBox="0 0 64 57"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g opacity="1">
+                    <path
+                      class="icon-path"
+                      d="M19.0856 15.3249C12.0059 21.0035 5.93904 25.8694 5.61196 26.133L5 26.6273L6.86753 29.1426L8.73505 31.6689L9.10434 31.3613C9.31536 31.1856 14.5487 26.9897 20.7526 22.036L32.0106 13.0183L43.279 22.036C49.4725 26.9897 54.7057 31.1856 54.9168 31.3613L55.286 31.6689L57.143 29.1536L59 26.6492L58.7784 26.4296C58.6518 26.3197 56.9214 24.9248 54.9379 23.3321L51.3189 20.4543V10.2613L47.4467 10.2833L43.5639 10.3162L43.5322 12.2055C43.5217 13.2489 43.4795 14.1057 43.4478 14.1057C43.4162 14.1057 40.8312 12.0517 37.7081 9.54736C34.5744 7.04304 32 4.98906 31.9894 5.00004C31.9683 5.00004 26.1653 9.64622 19.0856 15.3249Z"
+                      fill="#A4A4A4"
+                    />
+                    <path
+                      class="icon-path"
+                      d="M22.7046 24.6282L13.4408 32.0533V52H28.3177V37.3915H36.3365V52H50.5803V32.0533L41.3376 24.6392C36.2521 20.5642 32.0528 17.2251 32.0211 17.2141C31.9894 17.2031 27.7902 20.5422 22.7046 24.6282Z"
+                      fill="#A4A4A4"
+                    />
+                  </g>
+                  <defs>
+                    <filter
+                      id="filter0_d_160_3689"
+                      x="0"
+                      y="0"
+                      width="64"
+                      height="57"
+                      filterUnits="userSpaceOnUse"
+                      color-interpolation-filters="sRGB"
+                    >
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feColorMatrix
+                        in="SourceAlpha"
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                        result="hardAlpha"
+                      />
+                      <feOffset />
+                      <feGaussianBlur stdDeviation="2.5" />
+                      <feComposite in2="hardAlpha" operator="out" />
+                      <feColorMatrix
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in2="BackgroundImageFix"
+                        result="effect1_dropShadow_160_3689"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="effect1_dropShadow_160_3689"
+                        result="shape"
+                      />
+                    </filter>
+                  </defs>
+                </svg>
+              </button>
+              <button class="rate-btn">
+                <span class="pricing-wrapper">
+                  <span class="main-price">5 ₽</span>
+                  <span class="price-range">1 - 999</span>
+                </span>
+              </button>
+              <button class="rate-btn">
+                <span class="pricing-wrapper">
+                  <span class="main-price">4 ₽</span>
+                  <span class="price-range">1 000 - 9 999</span>
+                </span>
+              </button>
+              <button class="rate-btn">
+                <span class="pricing-wrapper">
+                  <span class="main-price">1 ₽</span>
+                  <span class="price-range">От 900</span>
+                </span>
+              </button>
+            </div>
+
+            <div class="next-arrow">
+              <div class="image-container-price">
+                <svg
+                  class="t-rail"
+                  width="10"
+                  height="1"
+                  viewBox="0 0 10 1"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8.87061 0.480469L1 0.480469"
+                    stroke="#252525"
+                    stroke-width="0.83"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <svg
+                  class="arrow right-arrow"
+                  width="33"
+                  height="51"
+                  viewBox="0 0 33 51"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g filter="url(#filter0_d_255_2916)">
+                    <path
+                      d="M3.51074 2H12.2238L31.1578 25.4474L12.2238 48.8948H3.51074L22.4448 25.4474L3.51074 2Z"
+                      fill="#252525"
+                    />
+                    <path
+                      d="M12.0256 48.4801H4.37866L22.7674 25.7079L22.9778 25.4474L22.7674 25.1869L4.37866 2.41471H12.0256L30.6248 25.4474L12.0256 48.4801Z"
+                      stroke="#424242"
+                      stroke-width="0.829412"
+                    />
+                  </g>
+                  <defs>
+                    <filter
+                      id="filter0_d_255_2916"
+                      x="0.510742"
+                      y="0"
+                      width="31.647"
+                      height="50.8945"
+                      filterUnits="userSpaceOnUse"
+                      color-interpolation-filters="sRGB"
+                    >
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feColorMatrix
+                        in="SourceAlpha"
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                        result="hardAlpha"
+                      />
+                      <feOffset dx="-1" />
+                      <feGaussianBlur stdDeviation="1" />
+                      <feComposite in2="hardAlpha" operator="out" />
+                      <feColorMatrix
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in2="BackgroundImageFix"
+                        result="effect1_dropShadow_255_2916"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="effect1_dropShadow_255_2916"
+                        result="shape"
+                      />
+                    </filter>
+                  </defs>
+                </svg>
+                <svg
+                  class="b-rail"
+                  width="10"
+                  height="1"
+                  viewBox="0 0 10 1"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8.87061 0.480469L1 0.480469"
+                    stroke="#252525"
+                    stroke-width="0.83"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="price-slider-block">
+          <div class="price-top">
+            <p class="price-counter"></p>
+            <p class="price-counter">4 ₽</p>
+            <p class="price-counter">3 ₽</p>
+            <p class="price-counter">2 ₽</p>
+            <p class="price-counter"></p>
+          </div>
+          <div class="price-middle">
+            <img
+              src="./img/slider.svg"
+              alt="slider"
+              draggable="false"
+              class="slider"
+            />
+            <img
+              src="./img/slider-850.svg"
+              alt="slider"
+              draggable="false"
+              class="slider850"
+            />
+            <img
+              src="./img/slider-612.svg"
+              alt="slider"
+              draggable="false"
+              class="slider612"
+            />
+            <img
+              src="./img/slider-460.svg"
+              alt="slider"
+              draggable="false"
+              class="slider460"
+            />
+            <img
+              src="./img/slider-460-rotate.svg"
+              alt="slider"
+              draggable="false"
+              class="slider460r"
+            />
+            <div class="microphone">
+              <p class="price-counter-active">5 ₽</p>
+              <img
+                src="./img/microphone.png"
+                alt="microphone"
+                draggable="false"
+                class="microphone"
+              />
+              <p class="price-counter-active">-10%</p>
+            </div>
+
+            <div class="price-slider">
+              <p></p>
+              <p>1 000</p>
+              <p>10 000</p>
+              <p>50 000</p>
+              <p></p>
+            </div>
+          </div>
+          <div class="price-bottom">
+            <p class="price-counter-percent"></p>
+            <p class="price-counter-percent">-20%</p>
+            <p class="price-counter-percent">-40%</p>
+            <p class="price-counter-percent">-60%</p>
+            <p class="price-counter-percent"></p>
+          </div>
+        </div>
+        <div class="calculator-box">
+          <div class="price-display-box">
+            <div class="change-price-box">
+              <button class="change-price-left-double">
+                <span class="image-container">
+                  <img
+                    src="./img/2leftw.svg"
+                    draggable="false"
+                    alt="left arrow white"
+                  />
+                  <img
+                    src="./img/2left.svg"
+                    draggable="false"
+                    alt="left arrow"
+                    class="hide"
+                  />
+                </span>
+              </button>
+              <button class="change-price-left">
+                <span class="image-container-price">
                   <svg
-                    class="t-rail"
+                    class="t-rail-price-left"
+                    width="10"
+                    height="1"
+                    viewBox="0 0 10 1"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.87061 0.480469L1 0.480469"
+                      stroke="#151515"
+                      stroke-width="0.83"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  <svg
+                    class="arrow left-arrow"
+                    width="24"
+                    height="38"
+                    viewBox="0 0 24 38"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g filter="url(#filter0_d_255_2906)">
+                      <path
+                        d="M21 2H14.697L1 18.962L14.697 35.9239H21L7.30303 18.962L21 2Z"
+                        fill="#252525"
+                      />
+                      <path
+                        d="M14.8403 35.6239H20.3721L7.06963 19.1504L6.91743 18.962L7.06963 18.7735L20.3721 2.3H14.8403L1.3856 18.962L14.8403 35.6239Z"
+                        stroke="#424242"
+                        stroke-width="0.6"
+                      />
+                    </g>
+                    <defs>
+                      <filter
+                        id="filter0_d_255_2906"
+                        x="0"
+                        y="0"
+                        width="24"
+                        height="37.9238"
+                        filterUnits="userSpaceOnUse"
+                        color-interpolation-filters="sRGB"
+                      >
+                        <feFlood
+                          flood-opacity="0"
+                          result="BackgroundImageFix"
+                        />
+                        <feColorMatrix
+                          in="SourceAlpha"
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                          result="hardAlpha"
+                        />
+                        <feOffset dx="1" />
+                        <feGaussianBlur stdDeviation="1" />
+                        <feComposite in2="hardAlpha" operator="out" />
+                        <feColorMatrix
+                          type="matrix"
+                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0"
+                        />
+                        <feBlend
+                          mode="normal"
+                          in2="BackgroundImageFix"
+                          result="effect1_dropShadow_255_2906"
+                        />
+                        <feBlend
+                          mode="normal"
+                          in="SourceGraphic"
+                          in2="effect1_dropShadow_255_2906"
+                          result="shape"
+                        />
+                      </filter>
+                    </defs>
+                  </svg>
+                  <svg
+                    class="b-rail-price-left"
+                    width="10"
+                    height="1"
+                    viewBox="0 0 10 1"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.87061 0.480469L1 0.480469"
+                      stroke="#151515"
+                      stroke-width="0.83"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <div class="calc">
+                <div class="calculator-value">
+                  <input
+                    type="text"
+                    value="0"
+                    min="1"
+                    max="100000"
+                    class="calculator-value-numb"
+                    placeholder="минуты"
+                  />
+                </div>
+              </div>
+              <button class="change-price-right">
+                <span class="image-container-price">
+                  <svg
+                    class="t-rail-price-right"
                     width="10"
                     height="1"
                     viewBox="0 0 10 1"
@@ -1264,30 +1699,30 @@
                   </svg>
                   <svg
                     class="arrow right-arrow"
-                    width="33"
-                    height="51"
-                    viewBox="0 0 33 51"
+                    width="25"
+                    height="38"
+                    viewBox="0 0 25 38"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <g filter="url(#filter0_d_255_2916)">
+                    <g filter="url(#filter0_d_255_2902)">
                       <path
-                        d="M3.51074 2H12.2238L31.1578 25.4474L12.2238 48.8948H3.51074L22.4448 25.4474L3.51074 2Z"
+                        d="M3.66699 2H9.97002L23.667 18.962L9.97002 35.9239H3.66699L17.364 18.962L3.66699 2Z"
                         fill="#252525"
                       />
                       <path
-                        d="M12.0256 48.4801H4.37866L22.7674 25.7079L22.9778 25.4474L22.7674 25.1869L4.37866 2.41471H12.0256L30.6248 25.4474L12.0256 48.4801Z"
+                        d="M9.82668 35.6239H4.29484L17.5974 19.1504L17.7496 18.962L17.5974 18.7735L4.29484 2.3H9.82668L23.2814 18.962L9.82668 35.6239Z"
                         stroke="#424242"
-                        stroke-width="0.829412"
+                        stroke-width="0.6"
                       />
                     </g>
                     <defs>
                       <filter
-                        id="filter0_d_255_2916"
-                        x="0.510742"
+                        id="filter0_d_255_2902"
+                        x="0.666992"
                         y="0"
-                        width="31.647"
-                        height="50.8945"
+                        width="24"
+                        height="37.9238"
                         filterUnits="userSpaceOnUse"
                         color-interpolation-filters="sRGB"
                       >
@@ -1311,19 +1746,19 @@
                         <feBlend
                           mode="normal"
                           in2="BackgroundImageFix"
-                          result="effect1_dropShadow_255_2916"
+                          result="effect1_dropShadow_255_2902"
                         />
                         <feBlend
                           mode="normal"
                           in="SourceGraphic"
-                          in2="effect1_dropShadow_255_2916"
+                          in2="effect1_dropShadow_255_2902"
                           result="shape"
                         />
                       </filter>
                     </defs>
                   </svg>
                   <svg
-                    class="b-rail"
+                    class="b-rail-price-right"
                     width="10"
                     height="1"
                     viewBox="0 0 10 1"
@@ -1337,95 +1772,34 @@
                       stroke-linecap="round"
                     />
                   </svg>
-                </div>
-              </div>
+                </span>
+              </button>
+              <button class="change-price-right-double">
+                <span class="image-container">
+                  <img
+                    src="./img/2rightw.svg"
+                    draggable="false"
+                    alt="arrow right"
+                  />
+                  <img
+                    src="./img/2right.svg"
+                    draggable="false"
+                    alt="arrow right"
+                    class="hide"
+                  />
+                </span>
+              </button>
+              <img
+                src="./img/mobile-line.svg"
+                alt="Другой аккаунт"
+                draggable="false"
+              />
             </div>
-          </div>
-          <div class="price-slider-block">
-            <div class="price-top">
-              <p class="price-counter"></p>
-              <p class="price-counter">4 ₽</p>
-              <p class="price-counter">3 ₽</p>
-              <p class="price-counter">2 ₽</p>
-              <p class="price-counter"></p>
-            </div>
-            <div class="price-middle">
-              <img
-                src="./img/slider.svg"
-                alt="slider"
-                draggable="false"
-                class="slider"
-              />
-              <img
-                src="./img/slider-850.svg"
-                alt="slider"
-                draggable="false"
-                class="slider850"
-              />
-              <img
-                src="./img/slider-612.svg"
-                alt="slider"
-                draggable="false"
-                class="slider612"
-              />
-              <img
-                src="./img/slider-460.svg"
-                alt="slider"
-                draggable="false"
-                class="slider460"
-              />
-              <img
-                src="./img/slider-460-rotate.svg"
-                alt="slider"
-                draggable="false"
-                class="slider460r"
-              />
-              <div class="microphone">
-                <p class="price-counter-active">5 ₽</p>
-                <img
-                  src="./img/microphone.png"
-                  alt="microphone"
-                  draggable="false"
-                  class="microphone"
-                />
-                <p class="price-counter-active">-10%</p>
-              </div>
-
-              <div class="price-slider">
-                <p></p>
-                <p>1 000</p>
-                <p>10 000</p>
-                <p>50 000</p>
-                <p></p>
-              </div>
-            </div>
-            <div class="price-bottom">
-              <p class="price-counter-percent"></p>
-              <p class="price-counter-percent">-20%</p>
-              <p class="price-counter-percent">-40%</p>
-              <p class="price-counter-percent">-60%</p>
-              <p class="price-counter-percent"></p>
-            </div>
-          </div>
-          <div class="calculator-box">
-            <div class="price-display-box">
-              <div class="change-price-box">
-                <button class="change-price-left-double">
-                  <span class="image-container">
-                    <img
-                      src="./img/2leftw.svg"
-                      draggable="false"
-                      alt="left arrow white"
-                    />
-                    <img
-                      src="./img/2left.svg"
-                      draggable="false"
-                      alt="left arrow"
-                      class="hide"
-                    />
-                  </span>
-                </button>
-                <button class="change-price-left">
+            <div class="calculator-bg"></div>
+            <div class="summary-wrapper">
+              <h3>Итого</h3>
+              <div class="totalPriceWrapper">
+                <button class="change-total-price-left">
                   <span class="image-container-price">
                     <svg
                       class="t-rail-price-left"
@@ -1437,7 +1811,7 @@
                     >
                       <path
                         d="M8.87061 0.480469L1 0.480469"
-                        stroke="#151515"
+                        stroke="#252525"
                         stroke-width="0.83"
                         stroke-linecap="round"
                       />
@@ -1512,26 +1886,15 @@
                     >
                       <path
                         d="M8.87061 0.480469L1 0.480469"
-                        stroke="#151515"
+                        stroke="#252525"
                         stroke-width="0.83"
                         stroke-linecap="round"
                       />
                     </svg>
                   </span>
                 </button>
-                <div class="calc">
-                  <div class="calculator-value">
-                    <input
-                      type="text"
-                      value="0"
-                      min="1"
-                      max="100000"
-                      class="calculator-value-numb"
-                      placeholder="минуты"
-                    />
-                  </div>
-                </div>
-                <button class="change-price-right">
+                <input type="text" class="totalPrice" value="0 Рублей" />
+                <button class="change-total-price-right">
                   <span class="image-container-price">
                     <svg
                       class="t-rail-price-right"
@@ -1625,298 +1988,84 @@
                     </svg>
                   </span>
                 </button>
-                <button class="change-price-right-double">
-                  <span class="image-container">
-                    <img
-                      src="./img/2rightw.svg"
-                      draggable="false"
-                      alt="arrow right"
-                    />
-                    <img
-                      src="./img/2right.svg"
-                      draggable="false"
-                      alt="arrow right"
-                      class="hide"
-                    />
-                  </span>
-                </button>
-                <img
-                  src="./img/mobile-line.svg"
-                  alt="Другой аккаунт"
-                  draggable="false"
-                />
               </div>
-              <div class="calculator-bg"></div>
-              <div class="summary-wrapper">
-                <h3>Итого</h3>
-                <div class="totalPriceWrapper">
-                  <button class="change-total-price-left">
-                    <span class="image-container-price">
-                      <svg
-                        class="t-rail-price-left"
-                        width="10"
-                        height="1"
-                        viewBox="0 0 10 1"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M8.87061 0.480469L1 0.480469"
-                          stroke="#252525"
-                          stroke-width="0.83"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                      <svg
-                        class="arrow left-arrow"
-                        width="24"
-                        height="38"
-                        viewBox="0 0 24 38"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g filter="url(#filter0_d_255_2906)">
-                          <path
-                            d="M21 2H14.697L1 18.962L14.697 35.9239H21L7.30303 18.962L21 2Z"
-                            fill="#252525"
-                          />
-                          <path
-                            d="M14.8403 35.6239H20.3721L7.06963 19.1504L6.91743 18.962L7.06963 18.7735L20.3721 2.3H14.8403L1.3856 18.962L14.8403 35.6239Z"
-                            stroke="#424242"
-                            stroke-width="0.6"
-                          />
-                        </g>
-                        <defs>
-                          <filter
-                            id="filter0_d_255_2906"
-                            x="0"
-                            y="0"
-                            width="24"
-                            height="37.9238"
-                            filterUnits="userSpaceOnUse"
-                            color-interpolation-filters="sRGB"
-                          >
-                            <feFlood
-                              flood-opacity="0"
-                              result="BackgroundImageFix"
-                            />
-                            <feColorMatrix
-                              in="SourceAlpha"
-                              type="matrix"
-                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                              result="hardAlpha"
-                            />
-                            <feOffset dx="1" />
-                            <feGaussianBlur stdDeviation="1" />
-                            <feComposite in2="hardAlpha" operator="out" />
-                            <feColorMatrix
-                              type="matrix"
-                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0"
-                            />
-                            <feBlend
-                              mode="normal"
-                              in2="BackgroundImageFix"
-                              result="effect1_dropShadow_255_2906"
-                            />
-                            <feBlend
-                              mode="normal"
-                              in="SourceGraphic"
-                              in2="effect1_dropShadow_255_2906"
-                              result="shape"
-                            />
-                          </filter>
-                        </defs>
-                      </svg>
-                      <svg
-                        class="b-rail-price-left"
-                        width="10"
-                        height="1"
-                        viewBox="0 0 10 1"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M8.87061 0.480469L1 0.480469"
-                          stroke="#252525"
-                          stroke-width="0.83"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                  <input type="text" class="totalPrice" value="0 Рублей" />
-                  <button class="change-total-price-right">
-                    <span class="image-container-price">
-                      <svg
-                        class="t-rail-price-right"
-                        width="10"
-                        height="1"
-                        viewBox="0 0 10 1"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M8.87061 0.480469L1 0.480469"
-                          stroke="#252525"
-                          stroke-width="0.83"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                      <svg
-                        class="arrow right-arrow"
-                        width="25"
-                        height="38"
-                        viewBox="0 0 25 38"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g filter="url(#filter0_d_255_2902)">
-                          <path
-                            d="M3.66699 2H9.97002L23.667 18.962L9.97002 35.9239H3.66699L17.364 18.962L3.66699 2Z"
-                            fill="#252525"
-                          />
-                          <path
-                            d="M9.82668 35.6239H4.29484L17.5974 19.1504L17.7496 18.962L17.5974 18.7735L4.29484 2.3H9.82668L23.2814 18.962L9.82668 35.6239Z"
-                            stroke="#424242"
-                            stroke-width="0.6"
-                          />
-                        </g>
-                        <defs>
-                          <filter
-                            id="filter0_d_255_2902"
-                            x="0.666992"
-                            y="0"
-                            width="24"
-                            height="37.9238"
-                            filterUnits="userSpaceOnUse"
-                            color-interpolation-filters="sRGB"
-                          >
-                            <feFlood
-                              flood-opacity="0"
-                              result="BackgroundImageFix"
-                            />
-                            <feColorMatrix
-                              in="SourceAlpha"
-                              type="matrix"
-                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                              result="hardAlpha"
-                            />
-                            <feOffset dx="-1" />
-                            <feGaussianBlur stdDeviation="1" />
-                            <feComposite in2="hardAlpha" operator="out" />
-                            <feColorMatrix
-                              type="matrix"
-                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0"
-                            />
-                            <feBlend
-                              mode="normal"
-                              in2="BackgroundImageFix"
-                              result="effect1_dropShadow_255_2902"
-                            />
-                            <feBlend
-                              mode="normal"
-                              in="SourceGraphic"
-                              in2="effect1_dropShadow_255_2902"
-                              result="shape"
-                            />
-                          </filter>
-                        </defs>
-                      </svg>
-                      <svg
-                        class="b-rail-price-right"
-                        width="10"
-                        height="1"
-                        viewBox="0 0 10 1"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M8.87061 0.480469L1 0.480469"
-                          stroke="#252525"
-                          stroke-width="0.83"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                </div>
-              </div>
+            </div>
 
-              <button
-                style="display: none !important"
-                class="payment-navigation-btn"
-              >
-                <span class="btn-text">Все тарифы</span>
-              </button>
-              <div class="cards">
-                <div class="card-wrap">
-                  <div class="card">
-                    <div class="card-content">
-                      <span>Регистрация</span>
-                    </div>
+            <button
+              style="display: none !important"
+              class="payment-navigation-btn"
+            >
+              <span class="btn-text">Все тарифы</span>
+            </button>
+            <div class="cards">
+              <div class="card-wrap">
+                <div class="card" id="buyBtn">
+                  <div class="card-content">
+                    <span>Регистрация</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="currency-display">
-              <img src="./img/euro.png" draggable="false" alt="euro" />
-              <img
-                class="hide"
-                style="opacity: 0.5"
-                src="./img/euro.png"
-                draggable="false"
-                alt="euro"
-              />
-              <img
-                class="hide"
-                src="./img/dollar.png"
-                draggable="false"
-                alt="dollar"
-              />
-            </div>
           </div>
-          <div class="gift-description">
-            <div class="container"></div>
-            <div class="giftMainDesc">
-              Выполните <span class="square">ВХОД</span> - мы сохраним историю
-              покупок <br />
-              для накопительной системы скидок. <br />
-              Перевод минут без выполненного входа — бонусная система <br />
-              передается получателю. <br />
-            </div>
-
-            <p class="preDescList">
-              Зарегистрированные пользователи видят информацию:
-            </p>
-            <ul class="infoList">
-              <li class="infoListItem">Баланс;</li>
-              <li class="infoListItem">Текущий тариф;</li>
-              <li class="infoListItem">Стоимость за минуту;</li>
-              <li class="infoListItem">
-                Сколько необходимо купить минут, для перехода на следующий
-                тарифный план.
-              </li>
-            </ul>
+          <div class="currency-display">
+            <img src="./img/euro.png" draggable="false" alt="euro" />
+            <img
+              class="hide"
+              style="opacity: 0.5"
+              src="./img/euro.png"
+              draggable="false"
+              alt="euro"
+            />
+            <img
+              class="hide"
+              src="./img/dollar.png"
+              draggable="false"
+              alt="dollar"
+            />
+          </div>
+        </div>
+        <div class="gift-description">
+          <div class="container"></div>
+          <div class="giftMainDesc">
+            Выполните <span class="square">ВХОД</span> - мы сохраним историю
+            покупок <br />
+            для накопительной системы скидок. <br />
+            Перевод минут без выполненного входа — бонусная система <br />
+            передается получателю. <br />
           </div>
 
-          <div class="typing-block">
-            <h2 class="typing-block-1" data-text="СКОЛЬКО МИНУТ">
-              СКОЛЬКО МИНУТ
-            </h2>
-            <h2 class="typing-block-2">
-              <span id="typing-text"></span><span id="cursor">|</span>
-            </h2>
-            <h2 class="reflection">
-              <span id="typing-text-reflection"></span>
-              <span id="cursor-reflection">|</span>
-            </h2>
-          </div>
-          <div class="gift-postpayment">
-            <p>После оплаты, сформируется чек и ссылка на активацию минут.</p>
-          </div>
+          <p class="preDescList">
+            Зарегистрированные пользователи видят информацию:
+          </p>
+          <ul class="infoList">
+            <li class="infoListItem">Баланс;</li>
+            <li class="infoListItem">Текущий тариф;</li>
+            <li class="infoListItem">Стоимость за минуту;</li>
+            <li class="infoListItem">
+              Сколько необходимо купить минут, для перехода на следующий
+              тарифный план.
+            </li>
+          </ul>
+        </div>
+
+        <div class="typing-block">
+          <h2 class="typing-block-1" data-text="СКОЛЬКО МИНУТ">
+            СКОЛЬКО МИНУТ
+          </h2>
+          <h2 class="typing-block-2">
+            <span id="typing-text"></span><span id="cursor">|</span>
+          </h2>
+          <h2 class="reflection">
+            <span id="typing-text-reflection"></span>
+            <span id="cursor-reflection">|</span>
+          </h2>
+        </div>
+        <div class="gift-postpayment">
+          <p>После оплаты, сформируется чек и ссылка на активацию минут.</p>
         </div>
       </div>
     </div>
+
     <div class="cursor">
       <div class="circle"></div>
       <div class="circle"></div>
@@ -2088,6 +2237,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="index.js"></script>
     <script src="./js/jquery.nice-select.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-ui-dist/jquery-ui.min.js"></script>
   </body>
 </html>

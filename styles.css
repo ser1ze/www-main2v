@@ -15,6 +15,30 @@
   margin: 0px;
   border: none;
 }
+#copyBtn {
+  width: 330px !important;
+  font-weight: 400;
+  font-size: 20px !important;
+  line-height: 110% !important;
+  border: 2px solid #737373;
+
+  letter-spacing: 0.02em !important;
+  text-align: center;
+  flex-wrap: nowrap;
+  text-wrap: nowrap;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+#copyBtn .card-content span {
+  font-weight: 400;
+  font-size: 20px !important;
+  line-height: 110% !important;
+  padding: 20px 18px;
+  letter-spacing: 0.02em !important;
+  text-align: center;
+}
 :root {
   --button-size: 40px;
   --close-width: calc(var(--button-size) / 41);
@@ -276,7 +300,25 @@ html {
   background-color: transparent;
   height: 70px;
 }
+.linkDuration h3 {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 140%;
+  color: #ccc;
+}
 
+.linkDuration p {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 140%;
+  color: #ccc;
+}
+.send h3 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 120%;
+  color: #ccc;
+}
 .logo:active {
   box-shadow: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.5),
     inset -2px -2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -689,10 +731,9 @@ html {
 }
 
 .payment {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 10px;
-  margin-left: 54px;
 }
 .menu-wrapper {
   display: flex;
@@ -1222,7 +1263,7 @@ input:-webkit-autofill:active {
 }
 
 .typing-block {
-  display: flex;
+  display: none;
   align-items: center;
   white-space: nowrap;
   margin-right: -160px;
@@ -1288,9 +1329,10 @@ input:-webkit-autofill:active {
 #typing-text {
   font-family: "ST-SimpleSquare" !important;
 }
+
 .price-slider-block {
   margin-top: 37px;
-  display: flex;
+  display: none;
   flex-direction: column;
 }
 #typing-text-reflection {
@@ -1484,6 +1526,7 @@ body
   margin-top: 13px;
   height: 210px;
   width: 360px;
+  display: none;
   position: relative;
 }
 .gift-description {
@@ -3060,6 +3103,22 @@ textarea:not(:focus):valid {
   text-align: center;
   color: #737373;
 }
+.checkBtn {
+  width: fit-content;
+}
+.checkBtn .card-wrap {
+  margin-top: 0;
+}
+#thanksSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.copyBtn {
+  margin-top: 0;
+  width: fit-content;
+}
 
 .btn-container .card {
   max-width: 360px !important;
@@ -3193,4 +3252,125 @@ input:hover::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.thanks {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 120%;
+  text-align: center;
+  color: #37779d;
+  text-shadow: 2px 4px px rgba(0, 0, 0, 0.5);
+}
+.linkWrapper {
+  margin-top: 40px;
+  box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2),
+    inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
+  background: #252525;
+  padding: 30px;
+  border-radius: 4px;
+  width: 829px;
+  height: 450px;
+}
+.copyBtn .card-wrap {
+  margin: 0 !important;
+}
+.copyBtn {
+  margin-top: 50px;
+}
+.downloadCheckBtn {
+  width: 300px;
+  margin: 30px 0;
+}
+.downloadCheckBtn .card {
+  background: linear-gradient(rgba(144, 15, 55, 1), rgba(144, 15, 55, 1))
+      padding-box,
+    linear-gradient(
+        90deg,
+        rgba(232, 232, 232, 1),
+        rgb(255, 255, 255) 100%,
+        rgb(255, 255, 255) 100%,
+        rgb(255, 255, 255) 100%,
+        rgba(232, 232, 232, 1)
+      )
+      border-box;
+
+  background-clip: padding-box, border-box;
+}
+.formHeading {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 120%;
+  color: #ccc;
+}
+.first-row,
+.second-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.checkBoxWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 8px;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 120%;
+  color: rgba(204, 204, 204, 0.5);
+}
+.mailTO {
+  border-bottom: 1px solid #ccc;
+  padding: 8px 0px;
+  width: fit-content;
+  height: 31px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 120%;
+  color: #ccc;
+}
+.sendBtn {
+  border: 1px solid #202020;
+  border-radius: 4px;
+  width: 178px;
+  margin: 16px 0;
+  height: 50px;
+  background: #2c2c2c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sendBtnText {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 120%;
+  text-align: center;
+  color: #a4a4a4;
+}
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  appearance: none;
+  background-color: #f0f0f000;
+  border: 1px solid #5f5f5f;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.8);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.custom-checkbox:checked {
+  background-color: #37779d;
+  border-color: #37779d;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="0.5" y="0.5" width="15" height="15" rx="1.5" fill="%2337779D"/><rect x="0.5" y="0.5" width="15" height="15" rx="1.5" stroke="%2337779D"/><path d="M6.58583 9.06059L4.46451 6.93927L3.05029 8.35348L6.58583 11.889L12.9498 5.52505L11.5356 4.11084L6.58583 9.06059Z" fill="%23313131"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.noRefund {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  color: rgba(255, 255, 255, 0.5);
+  padding-top: 14px;
 }

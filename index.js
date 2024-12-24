@@ -1548,6 +1548,11 @@ const calculatorBox = document.querySelector(".calculator-box");
 const typingBlock = document.querySelector(".typing-block");
 const giftDescription = document.querySelector(".gift-description");
 const minutesInput = document.querySelector(".calculator-value input");
+const buyButton = document.querySelector("#buyBtn")
+const payment = document.querySelector(".payment")
+
+const sliderBlock = document.querySelector(".price-slider-block");
+console.log(buyButton)
 const paymentNavigationButtons = document.querySelectorAll(
   ".payment-navigation-btn"
 );
@@ -1575,6 +1580,15 @@ const activateGiftMode = () => {
   if (giftPostpayment) giftPostpayment.style.display = "none";
   if (timer) timer.style.display = "block";
 
+
+  if (isGiftModeActive) {buyButton.addEventListener("click", () => {
+    console.log("")
+      payment.style.display = "none"
+      sliderBlock.style.display = "none "
+      calculatorBox.style.display = "none"
+      giftPostpayment.style.display = "none"
+    })
+  }
   updateCardText();
 
   resetTimerState();
@@ -1615,6 +1629,7 @@ const resetBlocks = () => {
     if (typingBlock) typingBlock.style.display = "none";
     if (giftPostpayment) giftPostpayment.style.display = "block";
     if (timer) timer.style.display = "none";
+
   }
 };
 
@@ -1727,6 +1742,7 @@ if (paymentNavigationButtons.length > 0) {
     });
   });
 }
+
 
 if (microphone) {
   const microphonePositionObserver = new MutationObserver(() => {
