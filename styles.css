@@ -305,6 +305,8 @@ html {
   font-size: 20px;
   line-height: 140%;
   color: #ccc;
+  margin-bottom: 12px;
+  width: fit-content;
 }
 
 .linkDuration p {
@@ -312,6 +314,7 @@ html {
   font-size: 16px;
   line-height: 140%;
   color: #ccc;
+  width: fit-content;
 }
 .send h3 {
   font-weight: 600;
@@ -2176,7 +2179,7 @@ input[type="number"] {
 
   transition: none;
   transform: translateZ(0);
-  will-change: transform;
+  will-change: transform, font-size;
 }
 .card-content .submitBtn {
   font-family: "ST-SimpleSquare" !important;
@@ -3259,7 +3262,7 @@ input:hover::placeholder {
   line-height: 120%;
   text-align: center;
   color: #37779d;
-  text-shadow: 2px 4px px rgba(0, 0, 0, 0.5);
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
 }
 .linkWrapper {
   margin-top: 40px;
