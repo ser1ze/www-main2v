@@ -1494,6 +1494,10 @@ makeButtonClickable(forgotPassword);
 
 const switchModalsBtns = document.querySelectorAll(".switch-modals__btn");
 switchModalsBtns.forEach((btn) => makeButtonClickable(btn));
+const sendBtn = document.querySelector(".sendBtn");
+makeButtonClickable(sendBtn);
+const downloadCheckBtn = document.querySelector(".downloadCheckBtn");
+makeButtonClickable(downloadCheckBtn);
 
 document.addEventListener("DOMContentLoaded", function () {
   function activateButtonGroup(buttonSelector, textSelector) {
@@ -1548,25 +1552,25 @@ const calculatorBox = document.querySelector(".calculator-box");
 const typingBlock = document.querySelector(".typing-block");
 const giftDescription = document.querySelector(".gift-description");
 const minutesInput = document.querySelector(".calculator-value input");
-const buyButton = document.querySelector("#buyBtn")
-const payment = document.querySelector(".payment")
-
-const sliderBlock = document.querySelector(".price-slider-block");
-console.log(buyButton)
-const paymentNavigationButtons = document.querySelectorAll(
-  ".payment-navigation-btn"
-);
-const cardSpans = document.querySelectorAll(".cards .card-content span");
-const giftPostpayment = document.querySelector(".gift-postpayment");
-
-if (!microphone) {
-  console.error("Элемент .microphone не найден.");
-}
+const buyButton = document.querySelector("#buyBtn");
+const payment = document.querySelector(".payment");
+const thanksSection = document.getElementById("thanksSection");
+const middle = document.querySelector(".middle");
+const hand = document.querySelector(".hand");
+const linkWrapper = document.querySelector(".linkWrapper");
 
 let isGiftModeActive = false;
+let isButtonClicked = false;
 let resetTimer;
 let startTime;
 let timerRunning = false;
+
+const sliderBlock = document.querySelector(".price-slider-block");
+const paymentNavigationButtons = document.querySelectorAll(
+  ".payment-navigation-btn"
+);
+const cardSpans = document.querySelectorAll(".cards .card-content  .reg");
+const giftPostpayment = document.querySelector(".gift-postpayment");
 
 const activateGiftMode = () => {
   if (isGiftModeActive) return;
@@ -1580,20 +1584,26 @@ const activateGiftMode = () => {
   if (giftPostpayment) giftPostpayment.style.display = "none";
   if (timer) timer.style.display = "block";
 
+  buyButton.removeEventListener("click", buyButtonHandler);
+  buyButton.addEventListener("click", buyButtonHandler);
 
-  if (isGiftModeActive) {buyButton.addEventListener("click", () => {
-    console.log("")
-      payment.style.display = "none"
-      sliderBlock.style.display = "none "
-      calculatorBox.style.display = "none"
-      giftPostpayment.style.display = "none"
-    })
-  }
   updateCardText();
-
   resetTimerState();
   startResetTimer();
   startTimer();
+};
+
+const buyButtonHandler = () => {
+  if (!isButtonClicked) {
+    isButtonClicked = true;
+    console.log("Кнопка 'Купить' нажата, скрываем блоки");
+    payment.style.display = "none";
+    sliderBlock.style.display = "none";
+    calculatorBox.style.display = "none";
+    giftPostpayment.style.display = "none";
+    middle.style.marginTop = "90px";
+    thanksSection.style.display = "flex";
+  }
 };
 
 const deactivateGiftMode = () => {
@@ -1610,6 +1620,10 @@ const deactivateGiftMode = () => {
 
   updateCardText();
   resetTimerState();
+
+  buyButton.removeEventListener("click", buyButtonHandler);
+
+  thanksSection.style.display = "none";
 };
 
 const updateCardText = () => {
@@ -1623,13 +1637,12 @@ const updateCardText = () => {
 };
 
 const resetBlocks = () => {
-  if (isGiftModeActive) {
+  if (isGiftModeActive && !isButtonClicked) {
     if (giftDescription) giftDescription.style.display = "none";
     if (calculatorBox) calculatorBox.style.display = "block";
     if (typingBlock) typingBlock.style.display = "none";
     if (giftPostpayment) giftPostpayment.style.display = "block";
     if (timer) timer.style.display = "none";
-
   }
 };
 
@@ -1687,7 +1700,9 @@ function startResetTimer() {
   }
 
   resetTimer = setTimeout(() => {
-    resetBlocks();
+    if (!isButtonClicked) {
+      resetBlocks();
+    }
   }, 8000);
 }
 
@@ -1743,7 +1758,6 @@ if (paymentNavigationButtons.length > 0) {
   });
 }
 
-
 if (microphone) {
   const microphonePositionObserver = new MutationObserver(() => {
     if (isGiftModeActive) {
@@ -1758,11 +1772,42 @@ if (microphone) {
   });
 }
 
+linkWrapper.addEventListener("mousemove", (e) => {
+  const sectionRect = linkWrapper.getBoundingClientRect();
+
+  const mouseX = e.clientX - sectionRect.left;
+  const mouseY = e.clientY - sectionRect.top;
+
+  if (
+    mouseX >= 0 &&
+    mouseX <= sectionRect.width &&
+    mouseY >= 0 &&
+    mouseY <= sectionRect.height
+  ) {
+    linkWrapper.classList.add("mouse-active");
+
+    if (animationCompleted) {
+      const offsetX = (mouseX / sectionRect.width - 0.5) * 10;
+      const offsetY = (mouseY / sectionRect.height - 0.5) * 10;
+
+      hand.style.transition = "transform 0.4s ease-out";
+      hand.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+    }
+  } else {
+    hand.style.transition = "transform 0.4s ease-out";
+    hand.style.transform = `translate(0, 0)`;
+    linkWrapper.classList.remove("mouse-active");
+  }
+});
+
+hand.addEventListener("animationend", () => {
+  hand.classList.add("no-animation");
+  animationCompleted = true;
+});
+
 $(function () {
   $(".draggable").draggable({
-    cancel: "input,textarea,button,select,option,a,.btn-container",
-
-    scroll: false,
+    cancel: "input,textarea,button,select,option,a",
   });
 });
 
@@ -2023,3 +2068,62 @@ buttons.forEach((button, index) => {
 updatePrices();
 updatePrevArrowVisibility();
 updatePriceSlider();
+
+window.onload = function () {
+  const nav = document.getElementById("payment-navigation");
+  if (nav) {
+    const addMouseEffect = (elements) => {
+      const elementsArray = Array.from(elements);
+
+      elementsArray.forEach((element) => {
+        element.onmousemove = (e) => {
+          const rect = element.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          element.style.setProperty("--mouse-x", `${x}px`);
+          element.style.setProperty("--mouse-y", `${y}px`);
+        };
+      });
+    };
+
+    const paymentButtons = document.getElementsByClassName(
+      "payment-navigation-btn"
+    );
+    addMouseEffect(paymentButtons);
+    const rateBtns = document.getElementsByClassName("rate-btn");
+    const homeBtn = document.getElementsByClassName("home-btn");
+    addMouseEffect(rateBtns);
+    addMouseEffect(homeBtn);
+
+    const switchModalsBtn =
+      document.getElementsByClassName("switch-modals__btn");
+    addMouseEffect(switchModalsBtn);
+    const inputs = document.querySelectorAll(".input-group input");
+    inputs.forEach((input) => addMouseEffect(input));
+    const sendBtn = document.querySelector(".sendBtn");
+    addMouseEffect(sendBtn);
+
+    const buyButtons = document.getElementsByClassName("card");
+    addMouseEffect(buyButtons);
+  } else {
+    console.log("Element not found");
+  }
+};
+
+function toggleCheckbox(clickedCheckbox) {
+  const checkboxes = document.querySelectorAll(".custom-checkbox");
+
+  if (clickedCheckbox.id === "email" && !clickedCheckbox.checked) {
+    clickedCheckbox.checked = true;
+    return;
+  }
+
+  if (clickedCheckbox.checked) {
+    checkboxes.forEach((checkbox) => {
+      if (checkbox !== clickedCheckbox) {
+        checkbox.checked = false;
+      }
+    });
+  }
+}

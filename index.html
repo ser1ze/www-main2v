@@ -1106,7 +1106,11 @@
                     <div class="card-wrap enter-wrap">
                       <div class="card enter">
                         <div class="card-content enter-content">
-                          <button class="submitBtn">Скачать чек</button>
+                          <button class="downloadCheckBtn">
+                            <span class="downloadCheckBtnText"
+                              >Скачать чек</span
+                            >
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1124,6 +1128,7 @@
                       id="dontSend"
                       name="dontSend"
                       class="custom-checkbox"
+                      onclick="toggleCheckbox(this)"
                     />
                     <label for="dontSend">Не отправлять</label>
                   </div>
@@ -1134,6 +1139,8 @@
                       id="email"
                       name="email"
                       class="custom-checkbox"
+                      checked
+                      onclick="toggleCheckbox(this)"
                     />
                     <label for="email">На почту</label>
                   </div>
@@ -1150,6 +1157,7 @@
                   >
                     <g filter="url(#filter0_d_1332_943)">
                       <path
+                        class="icon-path"
                         d="M36.0627 2.9375L7.93066 14.1875L18.426 18.9336L33.2502 5.75L20.0666 20.5742L24.8127 31.0625L36.0627 2.9375Z"
                         fill="#A4A4A4"
                       />
@@ -1202,6 +1210,7 @@
                 Минуты, купленные в подарок, возврату не подлежат.
               </p>
             </div>
+            <img class="hand" src="img/roboticHand.png" alt="" />
           </section>
         </div>
 
@@ -2001,7 +2010,7 @@
               <div class="card-wrap">
                 <div class="card" id="buyBtn">
                   <div class="card-content">
-                    <span>Регистрация</span>
+                    <span class="reg">Регистрация</span>
                   </div>
                 </div>
               </div>
@@ -2193,47 +2202,6 @@
       <div class="circle"></div>
     </div>
 
-    <script>
-      window.onload = function () {
-        const nav = document.getElementById("payment-navigation");
-        if (nav) {
-          const addMouseEffect = (elements) => {
-            const elementsArray = Array.from(elements);
-
-            elementsArray.forEach((element) => {
-              element.onmousemove = (e) => {
-                const rect = element.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                element.style.setProperty("--mouse-x", `${x}px`);
-                element.style.setProperty("--mouse-y", `${y}px`);
-              };
-            });
-          };
-
-          const paymentButtons = document.getElementsByClassName(
-            "payment-navigation-btn"
-          );
-          addMouseEffect(paymentButtons);
-          const rateBtns = document.getElementsByClassName("rate-btn");
-          const homeBtn = document.getElementsByClassName("home-btn");
-          addMouseEffect(rateBtns);
-          addMouseEffect(homeBtn);
-
-          const switchModalsBtn =
-            document.getElementsByClassName("switch-modals__btn");
-          addMouseEffect(switchModalsBtn);
-          const inputs = document.querySelectorAll(".input-group input");
-          inputs.forEach((input) => addMouseEffect(input));
-
-          const buyButtons = document.getElementsByClassName("card");
-          addMouseEffect(buyButtons);
-        } else {
-          console.log("Element not found");
-        }
-      };
-    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="index.js"></script>
     <script src="./js/jquery.nice-select.js"></script>

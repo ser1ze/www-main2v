@@ -726,7 +726,7 @@ html {
 .middle {
   margin-top: 120px;
   display: flex;
-  user-select: none;
+
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -734,7 +734,7 @@ html {
 }
 
 .payment {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 10px;
 }
@@ -1266,7 +1266,7 @@ input:-webkit-autofill:active {
 }
 
 .typing-block {
-  display: none;
+  display: flex;
   align-items: center;
   white-space: nowrap;
   margin-right: -160px;
@@ -1335,7 +1335,7 @@ input:-webkit-autofill:active {
 
 .price-slider-block {
   margin-top: 37px;
-  display: none;
+  display: flex;
   flex-direction: column;
 }
 #typing-text-reflection {
@@ -1529,7 +1529,7 @@ body
   margin-top: 13px;
   height: 210px;
   width: 360px;
-  display: none;
+  display: block;
   position: relative;
 }
 .gift-description {
@@ -2100,19 +2100,30 @@ input[type="number"] {
   transform: scale(0.97);
   transition: all 0.2s ease;
 }
-.card-content .submitBtn.fast-click {
+.downloadCheckBtn {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.downloadCheckBtnText {
+  display: flex;
+  flex-wrap: nowrap;
+  text-wrap: nowrap;
+  align-items: center;
+  will-change: transform;
+  transition: transform 0.3s ease;
+}
+.downloadCheckBtnText::after {
+  content: url(/img/pdf.svg);
+  position: relative;
+  top: 2px;
+  left: 15px;
+}
+.downloadCheckBtnText.fast-click {
   transform: scale(0.97);
-  transition: all 0.2s ease;
 }
 
-.card:active .submitBtn.fast-click {
-  transform: scale(0.97);
-  transition: all 0.2s ease;
-}
-.card:active .submitBtn {
-  transform: scale(0.97);
-  transition: all 0.2s ease;
-}
 .card::before {
   background: radial-gradient(
     250px circle at var(--mouse-x) var(--mouse-y),
@@ -3113,11 +3124,45 @@ textarea:not(:focus):valid {
   margin-top: 0;
 }
 #thanksSection {
-  display: flex;
+  display: none;
+  position: relative;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden; /* чтобы не вылезала за пределы секции */
 }
+
+.hand {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  transition: transform 0.4s ease-out; /* плавное движение, когда мышь выходит */
+  animation: handEntry 1s ease-out forwards; /* анимация появления руки */
+}
+
+/* Ключевые кадры для анимации выезда руки */
+@keyframes handEntry {
+  0% {
+    right: -100px;
+    bottom: -100px;
+    transform: translate(100px, 100px);
+  }
+  100% {
+    right: -10px;
+    bottom: -10px;
+    transform: translate(0, 0);
+  }
+}
+
+.hand.no-animation {
+  animation: none; /* Убираем анимацию */
+}
+
+.linkWrapper.mouse-active .hand {
+  transition: transform 0.4s ease-out;
+  animation: none; /* Отменить анимацию, когда мышь внутри секции */
+}
+
 .copyBtn {
   margin-top: 0;
   width: fit-content;
@@ -3264,6 +3309,7 @@ input:hover::placeholder {
   color: #37779d;
   text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
 }
+
 .linkWrapper {
   margin-top: 40px;
   box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2),
@@ -3281,7 +3327,6 @@ input:hover::placeholder {
   margin-top: 50px;
 }
 .downloadCheckBtn {
-  width: 300px;
   margin: 30px 0;
 }
 .downloadCheckBtn .card {
@@ -3322,6 +3367,7 @@ input:hover::placeholder {
   line-height: 120%;
   color: rgba(204, 204, 204, 0.5);
 }
+
 .mailTO {
   border-bottom: 1px solid #ccc;
   padding: 8px 0px;
@@ -3342,14 +3388,117 @@ input:hover::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.3s ease, color 0.3s ease, transform 150ms ease,
+    box-shadow 150ms ease;
+  will-change: background, box-shadow, transform;
 }
+.sendBtn .icon-path {
+  transition: fill 0.3s;
+}
+.sendBtn:active .icon-path {
+  fill: #4a738c !important;
+}
+.sendBtn:active .icon-path.fast-click {
+  fill: #4a738c !important;
+}
+
+Логин:	Administrator
+Пароль:	G01cEKXqy8G1A
+
+dlamvu35KAN
+г. Владивосток, Комсомольская ул., 9в, оф 201
+8 (964) 443-23-00
++79644312300
+
+.sendBtn:active {
+  background: #20272b;
+  box-shadow: inset 2px 2px 2px 0 rgba(7, 26, 38, 0.5),
+    inset -2px -2px 2px 0 rgba(7, 26, 38, 0.5);
+}
+
+.sendBtn.fast-click {
+  box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2),
+    inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
+  background: #20272b;
+}
+
 .sendBtnText {
-  font-weight: 700;
+  display: inline-block;
+  justify-content: center;
+  transition: transform 300ms ease, font-weight 300ms ease, color 300ms ease;
+  will-change: transform, color, font-weight;
+  font-weight: 400;
   font-size: 20px;
-  line-height: 120%;
+  line-height: 24px;
   text-align: center;
   color: #a4a4a4;
+  z-index: 200;
+  margin-bottom: 3.0025px;
+
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
 }
+
+.sendBtn.fast-click .sendBtnText {
+  transform: scale(0.95);
+  color: #4a738c;
+}
+
+.sendBtn:active .sendBtnText {
+  transform: scale(0.95);
+  color: #4a738c;
+}
+
+.sendBtn::before {
+  background: radial-gradient(
+    250px circle at var(--mouse-x) var(--mouse-y),
+    #c7c7c714,
+    transparent 30%
+  );
+  border-radius: inherit;
+  content: "";
+  height: 100%;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  z-index: 20;
+}
+
+.sendBtn:hover::before {
+  opacity: 1;
+}
+
+.sendBtn.fast-click {
+  background: #20272b;
+  box-shadow: inset 2px 2px 2px 0 rgba(0, 0, 0, 0.2),
+    inset -2px -2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+.sendBtn svg {
+  transition: all 0.3s;
+}
+.sendBtn:active svg {
+  transform: scale(0.75);
+}
+.sendBtn svg.fast-click {
+  transform: scale(0.75);
+}
+.sendBtnText {
+  display: inline-block;
+  justify-content: center;
+  transition: transform 300ms ease, font-weight 300ms ease;
+  will-change: transform, color, font-weight;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: #a4a4a4;
+  z-index: 200;
+  margin-bottom: 3.0025px;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+}
+
 .custom-checkbox {
   width: 20px;
   height: 20px;
@@ -3375,5 +3524,4 @@ input:hover::placeholder {
   font-size: 14px;
   line-height: 140%;
   color: rgba(255, 255, 255, 0.5);
-  padding-top: 14px;
 }
