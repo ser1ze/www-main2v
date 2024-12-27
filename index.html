@@ -73,7 +73,7 @@
                 id="email"
                 name="email"
                 title=""
-                placeholder="email@email.com"
+                placeholder="Email"
                 required
               />
               <label for="email" class="form-label">Email</label>
@@ -431,7 +431,7 @@
               <input
                 type="email"
                 id="register-email"
-                placeholder="email@email.com"
+                placeholder="Email"
                 required
                 title=""
               />
@@ -562,7 +562,7 @@
             cy="75"
             r="65"
             stroke="#ccc"
-            stroke-width="3"
+            stroke-width="0"
             fill="none"
           />
 
@@ -715,7 +715,12 @@
           <nav class="menu">
             <a href="#" class="menu-item">Блог</a>
             <a href="#" class="menu-item">FAQ</a>
-            <a href="#" class="menu-item menu-item-active">Cтоимость </a>
+            <a
+              href="#"
+              class="menu-item menu-item-active"
+              id="closeThanksSection"
+              >Cтоимость
+            </a>
             <a href="#" class="menu-item">Организациям</a>
             <a href="#" class="menu-item">Контакты </a>
           </nav>
@@ -1094,6 +1099,23 @@
                 </div>
               </div>
             </div>
+            <p class="successfulCopy">
+              Скопировано в буфер обмена
+              <svg
+                width="15"
+                height="12"
+                viewBox="0 0 15 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M14.7672 0.164958C15.0505 0.407412 15.0793 0.828587 14.8313 1.10568L5.28584 11.7723C5.16158 11.9112 4.98402 11.9935 4.79541 11.9996C4.60681 12.0058 4.42404 11.9352 4.29061 11.8047L0.1997 7.80474C-0.0665666 7.54439 -0.0665666 7.12228 0.1997 6.86193C0.465966 6.60158 0.897669 6.60158 1.16394 6.86193L4.73951 10.3581L13.8051 0.227673C14.053 -0.0494183 14.4838 -0.0774966 14.7672 0.164958Z"
+                  fill="#34C759"
+                />
+              </svg>
+            </p>
             <div class="linkWrapper">
               <div class="linkDuration">
                 <h3>*Ссылка действует 3 месяца.</h3>
@@ -1117,6 +1139,7 @@
                   </div>
                 </div>
               </div>
+
               <form action="">
                 <h3 class="formHeading">
                   Куда отправить чек и ссылку на активацию минут?
@@ -1139,13 +1162,19 @@
                       id="email"
                       name="email"
                       class="custom-checkbox"
-                      checked
                       onclick="toggleCheckbox(this)"
                     />
                     <label for="email">На почту</label>
                   </div>
                 </div>
-                <div class="mailTO">johnsmi@gmail.com</div>
+
+                <input
+                  type="email"
+                  placeholder="email"
+                  class="mailTo"
+                  style="display: none"
+                />
+
                 <button class="sendBtn" type="button">
                   <span class="sendBtnText">Отправить</span>
                   <svg
@@ -1820,7 +1849,7 @@
                     >
                       <path
                         d="M8.87061 0.480469L1 0.480469"
-                        stroke="#252525"
+                        stroke="#3f3f3f"
                         stroke-width="0.83"
                         stroke-linecap="round"
                       />
@@ -1895,7 +1924,7 @@
                     >
                       <path
                         d="M8.87061 0.480469L1 0.480469"
-                        stroke="#252525"
+                        stroke="#3f3f3f"
                         stroke-width="0.83"
                         stroke-linecap="round"
                       />
@@ -1915,7 +1944,7 @@
                     >
                       <path
                         d="M8.87061 0.480469L1 0.480469"
-                        stroke="#252525"
+                        stroke="#3f3f3f"
                         stroke-width="0.83"
                         stroke-linecap="round"
                       />
@@ -1990,7 +2019,7 @@
                     >
                       <path
                         d="M8.87061 0.480469L1 0.480469"
-                        stroke="#252525"
+                        stroke="#3f3f3f"
                         stroke-width="0.83"
                         stroke-linecap="round"
                       />

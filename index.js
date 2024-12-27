@@ -37,10 +37,16 @@ let SLIDER_HEIGHT = 0;
 let isRotated = false;
 
 const INITIAL_PRICE_RANGES = [
-  { max: 999, price: 4, widthPercentage: 23.8, discount: 0 },
-  { max: 9999, price: 3, widthPercentage: 25.6, discount: 25 },
-  { max: 49999, price: 2, widthPercentage: 26.2, discount: 50 },
-  { max: 100000, price: 1.9, widthPercentage: 24.4, discount: 52.5 },
+  { min: 0, max: 999, price: 4, widthPercentage: 23.8, discount: 0 },
+  { min: 1000, max: 9999, price: 3, widthPercentage: 25.6, discount: 25 },
+  { min: 10000, max: 49999, price: 2, widthPercentage: 26.2, discount: 50 },
+  {
+    min: 50000,
+    max: 100000,
+    price: 1.9,
+    widthPercentage: 24.4,
+    discount: 52.5,
+  },
 ];
 
 const PRICE_RANGES = [...INITIAL_PRICE_RANGES];
@@ -88,41 +94,50 @@ function updatePositions(position, smooth = false) {
 }
 
 function calculateMinutes(position) {
-  let accumulatedWidth = 0;
-  for (let range of PRICE_RANGES) {
-    if (position <= accumulatedWidth + range.width) {
-      const relativePosition = position - accumulatedWidth;
-      const rangePercentage = relativePosition / range.width;
-      const prevMax =
-        accumulatedWidth > 0
-          ? PRICE_RANGES[PRICE_RANGES.indexOf(range) - 1].max
-          : 0;
-      return Math.round(prevMax + (range.max - prevMax) * rangePercentage);
+  if (!PRICE_RANGES.length) return 0;
+
+  let accumulatedX = 0;
+
+  for (let i = 0; i < PRICE_RANGES.length; i++) {
+    const range = PRICE_RANGES[i];
+
+    const startX = accumulatedX;
+    const endX = accumulatedX + range.width;
+
+    if (position >= startX && position <= endX) {
+      const rangeWidthPixels = range.width;
+      const ratio = (position - startX) / rangeWidthPixels;
+
+      const minutesInRange = range.min + ratio * (range.max - range.min);
+
+      return Math.round(minutesInRange);
     }
-    accumulatedWidth += range.width;
+
+    accumulatedX += range.width;
   }
-  return getMaxMinutes();
-}
-function setPriceRanges(newRanges) {
-  PRICE_RANGES.splice(0, PRICE_RANGES.length, ...newRanges);
-  updateSliderDimensions();
-  updateDisplay(0, true);
+
+  return PRICE_RANGES[PRICE_RANGES.length - 1].max;
 }
 
 function calculatePosition(minutes) {
-  let accumulatedWidth = 0;
-  for (let range of PRICE_RANGES) {
-    if (minutes <= range.max) {
-      const prevMax =
-        accumulatedWidth > 0
-          ? PRICE_RANGES[PRICE_RANGES.indexOf(range) - 1].max
-          : 0;
-      const rangePercentage = (minutes - prevMax) / (range.max - prevMax);
-      return accumulatedWidth + rangePercentage * range.width;
+  if (!PRICE_RANGES.length) return 0;
+
+  let accumulatedX = 0;
+
+  for (let i = 0; i < PRICE_RANGES.length; i++) {
+    const range = PRICE_RANGES[i];
+    const startMinutes = range.min;
+    const endMinutes = range.max;
+
+    if (minutes >= startMinutes && minutes <= endMinutes) {
+      const ratio = (minutes - startMinutes) / (endMinutes - startMinutes);
+      return accumulatedX + ratio * range.width;
     }
-    accumulatedWidth += range.width;
+
+    accumulatedX += range.width;
   }
-  return SLIDER_WIDTH;
+
+  return accumulatedX;
 }
 
 function updateDisplay(minutes, smooth = false) {
@@ -140,19 +155,24 @@ function updateDisplay(minutes, smooth = false) {
   const currentRange =
     PRICE_RANGES.find((range) => minutes <= range.max) ||
     PRICE_RANGES[PRICE_RANGES.length - 1];
-  const price = currentRange.price;
+  const pricePerMinute = currentRange.price;
   const discount = currentRange.discount;
 
   if (totalPrice) {
-    const totalPriceValue = price * minutes;
-    const formattedPrice =
-      totalPriceValue === 0
-        ? "0 Рублей"
-        : totalPriceValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    const totalPriceValue = pricePerMinute * minutes;
 
-    if (/^\d+$/.test(totalPrice.value)) {
-      totalPrice.value = "";
+    let formattedPrice;
+
+    if (pricePerMinute >= 2 || pricePerMinute === 1) {
+      formattedPrice = totalPriceValue
+        .toFixed(0)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    } else {
+      formattedPrice = totalPriceValue
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
+
     totalPrice.value = formattedPrice;
   }
 
@@ -160,13 +180,14 @@ function updateDisplay(minutes, smooth = false) {
   updatePositions(position, smooth);
 
   if (activePriceCounter) {
-    activePriceCounter.textContent = price + " ₽";
+    activePriceCounter.textContent = pricePerMinute + " ₽";
   }
   if (activePriceCounterPercent) {
     activePriceCounterPercent.textContent = discount ? `-${discount}%` : "";
+
+    activePriceCounter.textContent = pricePerMinuteText;
   }
 }
-
 function animateDisplay() {
   const phases = [{ start: 1000, end: 0, duration: 1500 }];
 
@@ -255,7 +276,9 @@ function updateCalculatorValue(amount) {
 
   currentMinutes += amount;
 
-  currentMinutes = Math.max(0, Math.min(currentMinutes, getMaxMinutes()));
+  const { min, max } = getSelectedRange();
+
+  currentMinutes = Math.max(min, Math.min(currentMinutes, max));
 
   updateDisplay(currentMinutes);
 }
@@ -363,19 +386,28 @@ function updateDisplay(minutes, smooth = false) {
   const currentRange =
     PRICE_RANGES.find((range) => minutes <= range.max) ||
     PRICE_RANGES[PRICE_RANGES.length - 1];
-  const price = currentRange.price;
+  const pricePerMinute = currentRange.price;
   const discount = currentRange.discount;
 
   if (totalPrice) {
-    const totalPriceValue = price * minutes;
-    const formattedPrice =
-      totalPriceValue === 0
-        ? "0 Рублей"
-        : totalPriceValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    const totalPriceValue = pricePerMinute * minutes;
 
-    if (/^\d+$/.test(totalPrice.value)) {
-      totalPrice.value = "";
+    let formattedPrice;
+
+    if (pricePerMinute >= 2 || pricePerMinute === 1) {
+      formattedPrice = totalPriceValue
+        .toFixed(0)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    } else {
+      formattedPrice = totalPriceValue
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
+
+    if (totalPriceValue === 0) {
+      formattedPrice = "0 Рублей";
+    }
+
     totalPrice.value = formattedPrice;
   }
 
@@ -383,7 +415,7 @@ function updateDisplay(minutes, smooth = false) {
   updatePositions(position, smooth);
 
   if (activePriceCounter) {
-    activePriceCounter.textContent = price + " ₽";
+    activePriceCounter.textContent = pricePerMinute + " ₽";
   }
   if (activePriceCounterPercent) {
     activePriceCounterPercent.textContent = discount ? `-${discount}%` : "";
@@ -398,43 +430,42 @@ if (totalPrice) {
       totalPrice.value = "";
     }
   });
+  function getSelectedRange() {
+    const selectedPrice = currentPrices[activeIndex];
+
+    const selectedRange = priceRanges[selectedPrice];
+
+    if (!selectedRange) {
+      return { min: 0, max: getMaxMinutes() };
+    }
+
+    return selectedRange;
+  }
   totalPrice.addEventListener("input", function (e) {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value > 200000) {
-      value = "200000";
-    }
+    let value = parseFloat(e.target.value.replace(/\D/g, "")) || 0;
 
-    if (value === "0") {
-      e.target.value = "";
-    } else {
-      e.target.value = value;
-    }
+    const currentRange =
+      PRICE_RANGES.find((range) => value / range.price <= range.max) ||
+      PRICE_RANGES[PRICE_RANGES.length - 1];
 
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      if (value === "") {
-        updateDisplay(0);
-        return;
-      }
+    const pricePerMinute = currentRange.price;
+    const minutes = Math.floor(value / pricePerMinute);
 
-      let totalValue = parseInt(value, 10);
-      let totalMinutes = calculateMinutesFromPrice(totalValue);
-      updateDisplay(totalMinutes);
-
-      let formattedPrice = totalValue
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-      e.target.value = formattedPrice;
-    }, 2000);
+    updateDisplay(minutes);
   });
 
   totalPrice.addEventListener("blur", function () {
     let value = this.value.replace(/\D/g, "");
+    const min = parseInt(calculatorInput.min, 10) || 0;
+    const max = parseInt(calculatorInput.max, 10)
+      ? parseInt(calculatorInput.max, 10) * currentRange.price
+      : 200000;
+
     if (value === "") {
-      this.value = "0 рублей";
-      updateDisplay(0);
+      this.value = `${min} рублей`;
+      updateDisplay(min);
     } else {
-      let totalValue = Math.min(200000, parseInt(value, 10));
+      let totalValue = Math.min(max, parseInt(value, 10));
       let formattedPrice = totalValue
         .toFixed(0)
         .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -442,29 +473,64 @@ if (totalPrice) {
     }
   });
 }
+function formatNumberWithSpaces(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
 
 if (calculatorInput) {
-  calculatorInput.addEventListener("input", function () {
-    let minutes = parseInt(calculatorInput.value.replace(/\D/g, ""), 10);
+  let typingTimer = null;
+  const TYPING_DELAY = 1000;
 
-    if (isNaN(minutes)) {
-      minutes = 0;
+  calculatorInput.addEventListener("input", function () {
+    if (typingTimer) {
+      clearTimeout(typingTimer);
     }
 
-    minutes = Math.max(0, Math.min(minutes, getMaxMinutes()));
-    updateDisplay(minutes);
+    const rawValue = this.value.replace(/\D/g, "");
+
+    if (rawValue === "") {
+      this.value = "";
+    } else {
+      this.value = formatNumberWithSpaces(rawValue);
+    }
+
+    typingTimer = setTimeout(() => {
+      let value = parseInt(rawValue, 10);
+
+      if (isNaN(value)) {
+        const { min } = getSelectedRange();
+        value = min;
+      }
+
+      const { min, max } = getSelectedRange();
+
+      value = Math.max(min, Math.min(value, max));
+
+      updateDisplay(value);
+
+      this.value = formatNumberWithSpaces(value);
+    }, TYPING_DELAY);
   });
 
   calculatorInput.addEventListener("blur", function () {
-    let value = this.value.replace(/\D/g, "");
-    if (value === "") {
-      this.value = "0 Минут";
-      updateDisplay(0);
-    } else {
-      let minutes = Math.max(0, Math.min(parseInt(value, 10), getMaxMinutes()));
-      this.value = minutes;
-      updateDisplay(minutes);
+    if (typingTimer) {
+      clearTimeout(typingTimer);
     }
+
+    const rawValue = this.value.replace(/\D/g, "");
+    let value = parseInt(rawValue, 10);
+
+    if (isNaN(value)) {
+      const { min } = getSelectedRange();
+      value = min;
+    }
+
+    const { min, max } = getSelectedRange();
+    value = Math.max(min, Math.min(value, max));
+
+    updateDisplay(value);
+
+    this.value = formatNumberWithSpaces(value);
   });
 }
 
@@ -568,7 +634,7 @@ function showLoginForm() {
                 id="email"
                 name="email"
                 title=""
-                placeholder="email"
+                placeholder="Email"
                 required
               />
               <label for="email" class="form-label">Email</label>
@@ -969,7 +1035,7 @@ function showRegisterForm() {
               <input
                 type="email"
                 id="register-email"
-                placeholder="email"
+                placeholder="Email"
                 required
                 title=""
               />
@@ -1431,7 +1497,7 @@ const rateBtns = document
 
 const anotherButton = document.querySelector(".logo");
 const logoImg = document.querySelector(".logo-img");
-const buyBtn = document.querySelector(".card");
+const buyBtn = document.querySelectorAll(".card");
 const priceLeft = document.querySelector(".change-price-left");
 const priceRight = document.querySelector(".change-price-right");
 const currencyBtn = document.querySelector(".currency-lang-nav");
@@ -1448,7 +1514,7 @@ if (logoImg) {
   makeButtonClickable(logoImg);
 }
 if (buyBtn) {
-  makeButtonClickable(buyBtn);
+  buyBtn.forEach((btn) => makeButtonClickable(btn));
 }
 if (priceLeft) {
   makeButtonClickable(priceLeft);
@@ -1552,31 +1618,39 @@ const calculatorBox = document.querySelector(".calculator-box");
 const typingBlock = document.querySelector(".typing-block");
 const giftDescription = document.querySelector(".gift-description");
 const minutesInput = document.querySelector(".calculator-value input");
-const buyButton = document.querySelector("#buyBtn");
+const buyButton = document.getElementById("buyBtn");
 const payment = document.querySelector(".payment");
 const thanksSection = document.getElementById("thanksSection");
 const middle = document.querySelector(".middle");
 const hand = document.querySelector(".hand");
 const linkWrapper = document.querySelector(".linkWrapper");
+const closeThanksButton = document.getElementById("closeThanksSection");
+const copyBtn = document.getElementById("copyBtn");
+const successfulCopy = document.querySelector(".successfulCopy");
+const dontSendCheckbox = document.getElementById("dontSend");
+const emailCheckbox = document.getElementById("email");
+
+const emailInput = document.querySelector(".mailTo");
 
 let isGiftModeActive = false;
 let isButtonClicked = false;
 let resetTimer;
 let startTime;
 let timerRunning = false;
+let animationCompleted = false;
 
 const sliderBlock = document.querySelector(".price-slider-block");
 const paymentNavigationButtons = document.querySelectorAll(
   ".payment-navigation-btn"
 );
-const cardSpans = document.querySelectorAll(".cards .card-content  .reg");
+const cardSpans = document.querySelectorAll(".cards .card-content .reg");
 const giftPostpayment = document.querySelector(".gift-postpayment");
 
 const activateGiftMode = () => {
   if (isGiftModeActive) return;
 
   isGiftModeActive = true;
-  console.log("Режим подарка активирован");
+  isButtonClicked = false;
 
   if (calculatorBox) calculatorBox.style.display = "none";
   if (typingBlock) typingBlock.style.display = "none";
@@ -1596,7 +1670,7 @@ const activateGiftMode = () => {
 const buyButtonHandler = () => {
   if (!isButtonClicked) {
     isButtonClicked = true;
-    console.log("Кнопка 'Купить' нажата, скрываем блоки");
+
     payment.style.display = "none";
     sliderBlock.style.display = "none";
     calculatorBox.style.display = "none";
@@ -1610,7 +1684,6 @@ const deactivateGiftMode = () => {
   if (!isGiftModeActive) return;
 
   isGiftModeActive = false;
-  console.log("Режим подарка деактивирован");
 
   if (calculatorBox) calculatorBox.style.display = "block";
   if (typingBlock) typingBlock.style.display = "flex";
@@ -1624,6 +1697,7 @@ const deactivateGiftMode = () => {
   buyButton.removeEventListener("click", buyButtonHandler);
 
   thanksSection.style.display = "none";
+  isButtonClicked = false;
 };
 
 const updateCardText = () => {
@@ -1637,7 +1711,12 @@ const updateCardText = () => {
 };
 
 const resetBlocks = () => {
+  console.log("Проверка выполнения resetBlocks");
+  console.log("isGiftModeActive:", isGiftModeActive);
+  console.log("isButtonClicked:", isButtonClicked);
+
   if (isGiftModeActive && !isButtonClicked) {
+    console.log("Сброс блоков");
     if (giftDescription) giftDescription.style.display = "none";
     if (calculatorBox) calculatorBox.style.display = "block";
     if (typingBlock) typingBlock.style.display = "none";
@@ -1647,10 +1726,11 @@ const resetBlocks = () => {
 };
 
 const resetGiftMode = () => {
-  console.log("Сброс режима подарка");
-  deactivateGiftMode();
-  clearTimeout(resetTimer);
   resetTimerState();
+  resetBlocks();
+
+  deactivateGiftMode();
+  isButtonClicked = false;
 };
 
 const svg = document.getElementById("timer");
@@ -1675,9 +1755,6 @@ function updateTimer() {
   }
 
   if (remainingTime <= 0) {
-    console.log(
-      "Таймер истек, сбрасываем блоки, но не деактивируем режим подарка"
-    );
     resetBlocks();
   } else {
     requestAnimationFrame(updateTimer);
@@ -1690,7 +1767,6 @@ function startTimer() {
     startTime = Date.now();
     timerRunning = true;
     requestAnimationFrame(updateTimer);
-    console.log("Таймер запущен");
   }
 }
 
@@ -1714,10 +1790,7 @@ function resetTimerState() {
 if (giftButton) {
   giftButton.addEventListener("click", () => {
     if (!isGiftModeActive) {
-      console.log("Кнопка подарка нажата: активация режима подарка");
       activateGiftMode();
-    } else {
-      console.log("Режим подарка уже активен, ничего не делаем.");
     }
   });
 }
@@ -1747,9 +1820,6 @@ if (paymentNavigationButtons.length > 0) {
   paymentNavigationButtons.forEach((button) => {
     button.addEventListener("click", () => {
       if (button.id !== "gift") {
-        console.log(
-          "Кнопка payment-navigation-btn нажата, сброс режима подарка"
-        );
         if (isGiftModeActive) {
           resetGiftMode();
         }
@@ -1761,7 +1831,6 @@ if (paymentNavigationButtons.length > 0) {
 if (microphone) {
   const microphonePositionObserver = new MutationObserver(() => {
     if (isGiftModeActive) {
-      console.log("Позиция микрофона изменена, сброс блоков");
       resetBlocks();
     }
   });
@@ -1787,8 +1856,8 @@ linkWrapper.addEventListener("mousemove", (e) => {
     linkWrapper.classList.add("mouse-active");
 
     if (animationCompleted) {
-      const offsetX = (mouseX / sectionRect.width - 0.5) * 10;
-      const offsetY = (mouseY / sectionRect.height - 0.5) * 10;
+      const offsetX = (mouseX / sectionRect.width - 0.5) * 20;
+      const offsetY = (mouseY / sectionRect.height - 0.5) * 20;
 
       hand.style.transition = "transform 0.4s ease-out";
       hand.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
@@ -1804,6 +1873,114 @@ hand.addEventListener("animationend", () => {
   hand.classList.add("no-animation");
   animationCompleted = true;
 });
+
+function toggleCheckbox(clickedCheckbox) {
+  const checkboxes = document.querySelectorAll(".custom-checkbox");
+
+  if (clickedCheckbox.id === "email" && !clickedCheckbox.checked) {
+    emailInput.style.display = "none";
+
+    return;
+  }
+
+  if (clickedCheckbox.checked) {
+    checkboxes.forEach((checkbox) => {
+      if (checkbox !== clickedCheckbox) {
+        checkbox.checked = false;
+      }
+    });
+
+    if (clickedCheckbox.id === "dontSend") {
+      emailInput.style.display = "none";
+    } else if (clickedCheckbox.id === "email") {
+      emailInput.style.display = "block";
+    }
+  } else {
+    if (clickedCheckbox.id === "dontSend") {
+    } else if (clickedCheckbox.id === "email") {
+      emailInput.style.display = "none";
+    }
+  }
+}
+
+copyBtn.addEventListener("click", () => {
+  if (dontSendCheckbox.checked) {
+    const linkToCopy = "https://example.com/activation-link";
+
+    navigator.clipboard
+      .writeText(linkToCopy)
+      .then(() => {
+        successfulCopy.classList.add("show");
+        successfulCopy.classList.remove("hideCopy");
+
+        setTimeout(() => {
+          successfulCopy.classList.add("hideCopy");
+          successfulCopy.classList.remove("show");
+        }, 4000);
+      })
+      .catch((err) => {
+        console.error("Не удалось скопировать: ", err);
+      });
+  } else {
+    alert('Пожалуйста, выберите "Не отправлять", чтобы скопировать ссылку.');
+  }
+});
+
+function updateCopyBtnState() {
+  if (dontSendCheckbox.checked) {
+    copyBtn.style.pointerEvents = "auto";
+    copyBtn.style.opacity = "1";
+  } else {
+    copyBtn.style.pointerEvents = "none";
+    copyBtn.style.opacity = "0.5";
+  }
+}
+
+dontSendCheckbox.addEventListener("change", updateCopyBtnState);
+emailCheckbox.addEventListener("change", updateCopyBtnState);
+
+updateCopyBtnState();
+
+if (closeThanksButton) {
+  closeThanksButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    console.log(
+      "Кнопка 'Cтоимость' нажата, возвращаем все в исходное состояние"
+    );
+
+    if (isButtonClicked) {
+      deactivateGiftMode();
+      isGiftModeActive = false;
+
+      if (calculatorBox) calculatorBox.style.display = "block";
+      if (typingBlock) typingBlock.style.display = "flex";
+      if (giftDescription) giftDescription.style.display = "none";
+      if (giftPostpayment) giftPostpayment.style.display = "none";
+      if (timer) timer.style.display = "none";
+      if (payment) payment.style.display = "flex";
+      if (sliderBlock) sliderBlock.style.display = "flex";
+      if (thanksSection) thanksSection.style.display = "none";
+
+      resetGiftMode();
+      minutesInput.addEventListener("input", () => {
+        console.log("Изменение значений минут, сброс режима подарка");
+        resetGiftMode();
+      });
+
+      middle.style.marginTop = "120px";
+
+      paymentNavigationButtons.forEach((button) => {
+        button.classList.remove("active");
+      });
+
+      const firstButton = paymentNavigationButtons[0];
+      if (firstButton) {
+        firstButton.classList.add("active");
+      }
+    }
+  });
+}
 
 $(function () {
   $(".draggable").draggable({
@@ -1825,19 +2002,98 @@ let prevArrowVisible = true;
 let priceHistory = [];
 
 const priceMap = {
-  "4 ₽": [{ max: 999, price: 4, widthPercentage: 100, discount: 0 }],
-  "3 ₽": [{ max: 9999, price: 3, widthPercentage: 100, discount: 25 }],
-  "2 ₽": [{ max: 49999, price: 2, widthPercentage: 100, discount: 50 }],
-  "1.9 ₽": [{ max: 99999, price: 1.9, widthPercentage: 100, discount: 52.5 }],
-  "1.8 ₽": [{ max: 199999, price: 1.8, widthPercentage: 100, discount: 55 }],
-  "1.7 ₽": [{ max: 299999, price: 1.7, widthPercentage: 100, discount: 57.5 }],
-  "1.6 ₽": [{ max: 399999, price: 1.6, widthPercentage: 100, discount: 60 }],
-  "1.5 ₽": [{ max: 499999, price: 1.5, widthPercentage: 100, discount: 62.5 }],
-  "1.4 ₽": [{ max: 599999, price: 1.4, widthPercentage: 100, discount: 65 }],
-  "1.3 ₽": [{ max: 699999, price: 1.3, widthPercentage: 100, discount: 67.5 }],
-  "1.2 ₽": [{ max: 799999, price: 1.2, widthPercentage: 100, discount: 70 }],
-  "1.1 ₽": [{ max: 899999, price: 1.1, widthPercentage: 100, discount: 72.5 }],
-  "1 ₽": [{ max: 1000000, price: 1, widthPercentage: 100, discount: 75 }],
+  icon: INITIAL_PRICE_RANGES,
+  "4 ₽": [{ min: 0, max: 999, price: 4, widthPercentage: 100, discount: 0 }],
+  "3 ₽": [
+    { min: 1000, max: 9999, price: 3, widthPercentage: 100, discount: 25 },
+  ],
+  "2 ₽": [
+    { min: 10000, max: 49999, price: 2, widthPercentage: 100, discount: 50 },
+  ],
+  "1.9 ₽": [
+    {
+      min: 50000,
+      max: 99999,
+      price: 1.9,
+      widthPercentage: 100,
+      discount: 52.5,
+    },
+  ],
+  "1.8 ₽": [
+    {
+      min: 100000,
+      max: 199999,
+      price: 1.8,
+      widthPercentage: 100,
+      discount: 55,
+    },
+  ],
+  "1.7 ₽": [
+    {
+      min: 200000,
+      max: 299999,
+      price: 1.7,
+      widthPercentage: 100,
+      discount: 57.5,
+    },
+  ],
+  "1.6 ₽": [
+    {
+      min: 300000,
+      max: 399999,
+      price: 1.6,
+      widthPercentage: 100,
+      discount: 60,
+    },
+  ],
+  "1.5 ₽": [
+    {
+      min: 400000,
+      max: 499999,
+      price: 1.5,
+      widthPercentage: 100,
+      discount: 62.5,
+    },
+  ],
+  "1.4 ₽": [
+    {
+      min: 500000,
+      max: 599999,
+      price: 1.4,
+      widthPercentage: 100,
+      discount: 65,
+    },
+  ],
+  "1.3 ₽": [
+    {
+      min: 600000,
+      max: 699999,
+      price: 1.3,
+      widthPercentage: 100,
+      discount: 67.5,
+    },
+  ],
+  "1.2 ₽": [
+    {
+      min: 700000,
+      max: 799999,
+      price: 1.2,
+      widthPercentage: 100,
+      discount: 70,
+    },
+  ],
+  "1.1 ₽": [
+    {
+      min: 800000,
+      max: 899999,
+      price: 1.1,
+      widthPercentage: 100,
+      discount: 72.5,
+    },
+  ],
+  "1 ₽": [
+    { min: 900000, max: 1000000, price: 1, widthPercentage: 100, discount: 75 },
+  ],
 };
 
 const priceRanges = {
@@ -1859,16 +2115,34 @@ const priceRanges = {
 function formatNumber(num) {
   return num.toLocaleString("ru-RU");
 }
+const setPriceRanges = (newRanges) => {
+  PRICE_RANGES.splice(0, PRICE_RANGES.length, ...newRanges);
+  updateSliderDimensions();
+};
 
 function updatePriceSlider() {
   const selectedPrice = currentPrices[activeIndex];
 
   if (selectedPrice === "icon") {
+    setPriceRanges(priceMap["icon"]);
+
+    priceParagraphs[0].style.display = "block";
+    priceParagraphs[1].style.display = "block";
+    priceParagraphs[2].style.display = "block";
+    priceParagraphs[3].style.display = "block";
+
+    priceParagraphs[4].style.display = "block";
+
+    priceParagraphs[0].textContent = "";
+    priceParagraphs[1].textContent = formatNumber(1000);
+    priceParagraphs[2].textContent = formatNumber(10000);
+    priceParagraphs[3].textContent = formatNumber(50000);
+    priceParagraphs[4].textContent = "";
+
     return;
   }
 
   const selectedRange = priceRanges[selectedPrice];
-
   if (!selectedRange) {
     console.error(`Диапазон не найден для тарифа: ${selectedPrice}`);
     return;
@@ -1896,18 +2170,6 @@ function updatePriceSlider() {
   priceParagraphs[3].style.display = "block";
 }
 
-function resetPriceSlider() {
-  priceParagraphs[0].style.display = "block";
-  priceParagraphs[1].style.display = "block";
-  priceParagraphs[2].style.display = "block";
-  priceParagraphs[3].style.display = "block";
-  priceParagraphs[4].style.display = "block";
-
-  priceParagraphs[1].textContent = formatNumber(1000);
-  priceParagraphs[2].textContent = formatNumber(10000);
-  priceParagraphs[3].textContent = formatNumber(50000);
-}
-
 function updatePrices() {
   buttons.forEach((button, index) => {
     const priceSpan = button.querySelector(".main-price");
@@ -1920,6 +2182,12 @@ function updatePrices() {
         priceSpan.textContent = currentPrices[index];
         if (rangeSpan) {
           const range = priceRanges[currentPrices[index]];
+          if (!range) {
+            console.error(
+              `Диапазон не найден для тарифа: ${currentPrices[index]}`
+            );
+            return;
+          }
           rangeSpan.textContent =
             currentPrices[index] === "1 ₽"
               ? `от ${formatNumber(range.min)}`
@@ -1938,6 +2206,9 @@ function updatePrices() {
 }
 
 function switchPrices() {
+  console.log("Текущие цены:", currentPrices);
+  console.log("Активный индекс:", activeIndex);
+
   buttons.forEach((button, index) => {
     button.classList.remove("active");
     if (index === activeIndex) {
@@ -1945,12 +2216,50 @@ function switchPrices() {
     }
   });
 
+  if (activeIndex !== 0) {
+    prevArrow.style.display = "block";
+    prevArrowVisible = true;
+  } else {
+    prevArrow.style.display = "none";
+    prevArrowVisible = false;
+  }
+
   updatePriceSlider();
+
+  if (activeIndex !== 0) {
+    const selectedPrice = currentPrices[activeIndex];
+    const selectedRange = priceRanges[selectedPrice];
+
+    if (selectedRange && calculatorInput) {
+      calculatorInput.min = selectedRange.min;
+      calculatorInput.max = selectedRange.max;
+      calculatorInput.placeholder = `От ${formatNumber(
+        selectedRange.min
+      )} до ${formatNumber(selectedRange.max)} минут`;
+
+      updateDisplay(selectedRange.min);
+    }
+  } else {
+    if (calculatorInput) {
+      calculatorInput.min = 0;
+      calculatorInput.max = getMaxMinutes();
+      calculatorInput.placeholder = "Введите количество минут";
+    }
+
+    updateDisplay(0);
+  }
+
+  const isIconMode = currentPrices[activeIndex] === "icon";
+  if (activePriceCounterPercent) {
+    activePriceCounterPercent.style.display = isIconMode
+      ? "inline-block"
+      : "none";
+  }
 }
 
 function updateDecreasingPrices() {
   const newPrices = [];
-  let basePrice = parseFloat(currentPrices[3]);
+  let basePrice = parseFloat(currentPrices[activeIndex]) - 0.1;
 
   while (basePrice >= 1) {
     newPrices.push(
@@ -1967,24 +2276,54 @@ function updateDecreasingPrices() {
 
   currentPrices = ["icon", ...newPrices];
 
+  activeIndex = 1;
+
+  if (currentPrices[1] === "1 ₽") {
+    buttons[2].style.display = "none";
+    buttons[3].style.display = "none";
+    nextArrow.style.display = "none";
+  }
+
   updatePrices();
 }
+function resetPriceSlider() {
+  priceParagraphs[0].style.display = "block";
+  priceParagraphs[1].style.display = "block";
+  priceParagraphs[2].style.display = "block";
+  priceParagraphs[3].style.display = "block";
+  priceParagraphs[4].style.display = "block";
 
+  priceParagraphs[1].textContent = formatNumber(999);
+  priceParagraphs[2].textContent = formatNumber(9999);
+  priceParagraphs[3].textContent = formatNumber(49999);
+  priceParagraphs[4].textContent = formatNumber(100000);
+}
 function resetToInitialPrices() {
   currentPrices = [...initialPrices];
   activeIndex = 0;
+
+  setPriceRanges(INITIAL_PRICE_RANGES);
+
   updatePrices();
   switchPrices();
   resetPriceSlider();
-  setPriceRanges(INITIAL_PRICE_RANGES);
+  updatePriceSlider();
+
   updatePrevArrowVisibility();
+
+  if (calculatorInput) {
+    calculatorInput.min = 0;
+    calculatorInput.max = 100000;
+  }
+
+  updateDisplay(INITIAL_PRICE_RANGES[0].min || 0);
 }
 
 function updatePrevArrowVisibility() {
-  if (parseFloat(currentPrices[1]) <= 3 && !prevArrowVisible) {
+  if (activeIndex !== 0) {
     prevArrow.style.display = "block";
     prevArrowVisible = true;
-  } else if (parseFloat(currentPrices[1]) > 3) {
+  } else {
     prevArrow.style.display = "none";
     prevArrowVisible = false;
   }
@@ -2001,25 +2340,37 @@ nextArrow.addEventListener("click", function () {
 
   if (activeIndex === 3) {
     updateDecreasingPrices();
+  } else if (activeIndex < buttons.length - 1) {
+    activeIndex++;
   }
 
-  if (activeIndex < buttons.length - 1) {
-    activeIndex++;
-  } else {
-    activeIndex = 0;
+  if (currentPrices[1] === "1 ₽") {
+    buttons[2].style.display = "none";
+    buttons[3].style.display = "none";
+    nextArrow.style.display = "none";
+
+    buttons[1].classList.add("border-radius");
+    console.log("Hello!");
   }
 
   switchPrices();
   updatePrevArrowVisibility();
 });
-
 prevArrow.addEventListener("click", function () {
   if (priceHistory.length > 0) {
     const previousState = priceHistory.pop();
     currentPrices = [...previousState.prices];
     activeIndex = previousState.activeIndex;
 
-    setPriceRanges(previousState.savedPriceRanges);
+    if (Array.isArray(previousState.savedPriceRanges)) {
+      setPriceRanges(previousState.savedPriceRanges);
+    } else {
+      console.error(
+        "Сохраненные диапазоны отсутствуют или некорректны:",
+        previousState.savedPriceRanges
+      );
+      setPriceRanges(INITIAL_PRICE_RANGES);
+    }
 
     buttons.forEach((btn) => btn.classList.remove("active"));
     buttons[activeIndex].classList.add("active");
@@ -2029,11 +2380,31 @@ prevArrow.addEventListener("click", function () {
     updatePrices();
     switchPrices();
     updatePrevArrowVisibility();
-    updateDisplay(0);
+
+    const selectedPrice = currentPrices[activeIndex];
+    const selectedRange = priceRanges[selectedPrice] || { min: 0 };
+
+    updateDisplay(selectedRange.min);
   } else {
     buttons.forEach((btn) => btn.classList.remove("active"));
     activeIndex = buttons.length - 1;
     buttons[activeIndex].classList.add("active");
+  }
+
+  if (currentPrices[1] !== "1 ₽") {
+    buttons[2].style.display = "block";
+    buttons[3].style.display = "block";
+    nextArrow.style.display = "block";
+
+    buttons[2].style.visibility = "visible";
+    buttons[3].style.visibility = "visible";
+
+    buttons[2].style.opacity = "1";
+    buttons[3].style.opacity = "1";
+
+    buttons[2].style.animationDuration = "0s";
+    buttons[3].style.animationDuration = "0s";
+    buttons[1].classList.remove("border-radius");
   }
 });
 
@@ -2041,27 +2412,28 @@ buttons.forEach((button, index) => {
   button.addEventListener("click", function () {
     if (currentPrices[index] === "icon") {
       resetToInitialPrices();
-      updateDisplay(0);
       return;
     }
 
-    const clickedIndex = Array.from(buttons).indexOf(this);
+    priceHistory.push({
+      prices: [...currentPrices],
+      activeIndex,
+      lastButtonDisplay: buttons[buttons.length - 1].style.display,
+      nextArrowDisplay: nextArrow.style.display,
+      savedPriceRanges: PRICE_RANGES.map((range) => ({ ...range })),
+    });
 
-    if (activeIndex !== clickedIndex) {
-      priceHistory.push({
-        prices: [...currentPrices],
-        activeIndex,
-        lastButtonDisplay: buttons[buttons.length - 1].style.display,
-        nextArrowDisplay: nextArrow.style.display,
-      });
+    activeIndex = index;
 
-      activeIndex = clickedIndex;
-      buttons.forEach((btn) => btn.classList.remove("active"));
-      this.classList.add("active");
+    const selectedPrice = currentPrices[activeIndex];
+    const selectedRange = priceRanges[selectedPrice] || { min: 0 };
 
-      updatePrices();
-      switchPrices();
-    }
+    buttons.forEach((btn) => btn.classList.remove("active"));
+    this.classList.add("active");
+
+    updatePrices();
+    switchPrices();
+    updateDisplay(selectedRange.min);
   });
 });
 
@@ -2110,20 +2482,3 @@ window.onload = function () {
     console.log("Element not found");
   }
 };
-
-function toggleCheckbox(clickedCheckbox) {
-  const checkboxes = document.querySelectorAll(".custom-checkbox");
-
-  if (clickedCheckbox.id === "email" && !clickedCheckbox.checked) {
-    clickedCheckbox.checked = true;
-    return;
-  }
-
-  if (clickedCheckbox.checked) {
-    checkboxes.forEach((checkbox) => {
-      if (checkbox !== clickedCheckbox) {
-        checkbox.checked = false;
-      }
-    });
-  }
-}
