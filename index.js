@@ -1905,7 +1905,7 @@ function toggleCheckbox(clickedCheckbox) {
 
 copyBtn.addEventListener("click", () => {
   if (dontSendCheckbox.checked) {
-    const linkToCopy = "https://example.com/activation-link";
+    const linkToCopy = "https://audisector.ru/activation/node22dofkw";
 
     navigator.clipboard
       .writeText(linkToCopy)
