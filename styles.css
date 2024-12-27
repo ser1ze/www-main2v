@@ -2209,7 +2209,7 @@ input[type="number"] {
   transition: transform 0.3s ease;
 }
 .downloadCheckBtnText::after {
-  content: url(/img/pdf.svg);
+  content: url(./img/pdf.svg);
   position: relative;
   top: 2px;
   left: 15px;
